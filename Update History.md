@@ -6,6 +6,13 @@
 
 ## August 2022
 
+### CRUD Update 0.1V
+
+1. Require Node Modules Express, Ejs and Mongoose.
+2. Setup the Server, HTTP Verbs, View Engine and Paths.
+3. Connect to MongoDB using Mongoose.
+4. Listen to the Server at Home Route and any other route.
+
 ### Initial Commit
 
 1. Initialize Git and NPM.
