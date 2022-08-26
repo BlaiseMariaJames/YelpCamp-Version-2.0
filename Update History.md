@@ -6,6 +6,11 @@
 
 ## August 2022
 
+### CRUD Update 0.2V
+
+1. Define Campground Schema and Create Campground Model.
+2. Add (Seed) Campground data into Database. 
+
 ### CRUD Update 0.1V
 
 1. Require Node Modules Express, Ejs and Mongoose.
