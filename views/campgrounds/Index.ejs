@@ -25,7 +25,7 @@
                 <th>Title</th>
                 <th>Price</th>
                 <th>Location</th>
-                <th>Operations</th>
+                <th colspan="2">Operations</th>
             </tr>
             <% for (let campground of campgrounds) { %>
                 <tr>
@@ -43,6 +43,7 @@
                         <%=campground.location%>
                     </td>
                     <td><a href="/campgrounds/<%=campground._id%>/edit"><b>Edit</b></a></td>
+                    <td><a href="/campgrounds/<%=campground._id%>/remove"><b>Remove</b></a></td>
                 </tr>
                 <% } %>
         </table>

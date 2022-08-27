@@ -97,12 +97,13 @@ application.post('/campgrounds', async (request, response) => {
 // Show --> Details for one specific campground.
 application.get('/campgrounds/:id', async (request, response) => {
     const { id } = request.params;
-    let campground = await Campground.findById(id);
-    if (campground) {
-        response.render('campgrounds/Show', { campground });
-    } else {
-        response.render('PageNotFound');
-    }
+    await Campground.findById(id)
+        .then((campground) => {
+            response.render('campgrounds/Show', { campground });
+        })
+        .catch((error) => {
+            response.render('PageNotFound');
+        });
 });
 
 // Index --> Display all campgrounds.
@@ -123,12 +124,14 @@ application.get('/campgrounds', async (request, response) => {
 application.get('/campgrounds/:id/edit', async (request, response) => {
     let error = "";
     const { id } = request.params;
-    const campground = await Campground.findById(id);
-    if (campground) {
-        response.render('campgrounds/Edit', { campground, error });
-    } else {
-        response.render('PageNotFound');
-    }
+    await Campground.findById(id)
+        .then((campground) => {
+            response.render('campgrounds/Edit', { campground, error });
+        }
+        )
+        .catch((error) => {
+            response.render('PageNotFound');
+        });
 });
 
 // Update --> Updates a campground on server.
@@ -151,6 +154,32 @@ application.patch('/campgrounds', async (request, response) => {
     } else {
         response.render('PageNotFound');
     }
+});
+
+// DELETE OPERATIONS ROUTES
+
+// Remove --> Form to remove a campground.
+application.get('/campgrounds/:id/remove', async (request, response) => {
+    const { id } = request.params;
+    await Campground.findById(id)
+        .then((campground) => {
+            response.render('campgrounds/Remove', { campground });
+        })
+        .catch((error) => {
+            response.render('PageNotFound');
+        });
+});
+
+// Delete --> Deletes a campground on server.
+application.delete('/campgrounds', async (request, response) => {
+    const { id } = request.body;
+    await Campground.findByIdAndDelete(id)
+        .then(() => {
+            response.redirect('/campgrounds');
+        })
+        .catch((error) => {
+            console("Couldn't delete the campground ", error);
+        });
 });
 
 // OTHER ROUTES //

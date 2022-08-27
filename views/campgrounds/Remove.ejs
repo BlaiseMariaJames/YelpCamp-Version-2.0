@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Remove</title>
+    <style>
+        a {
+            color: purple;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Remove a campground</h1>
+    <form action="/campgrounds?_method=DELETE" method="post">
+        <label for="id">Registration Id : </label>
+        <input style="width: 180px;" type="text" name="id" id="id" value=<%=campground._id %> readonly>
+        <p>
+            Campground Title : <%= campground.title %>
+        </p>
+        <p>
+            Campground Price : Rs. <%= campground.price %>/-
+        </p>
+        <p>
+            Campground Location : <%= campground.location %>
+        </p>
+        <p>
+            Campground Description : <%= campground.description ? campground.description : 'none' %>
+        </p>
+        <p>To remove, click on submit</p>
+        <input type="submit" value="Submit">
+    </form>
+    <br>
+    <button><a href="/campgrounds"><b>Go Back</b></a></button>
+</body>
+
+</html>

@@ -6,6 +6,13 @@
 
 ## August 2022
 
+### CRUD Update 0.6V
+
+1. Create Remove view.
+2. Modify Index and Show views.
+3. Simplify Show and Edit routes.
+4. Listen to the Server at Remove and Delete routes.
+
 ### CRUD Update 0.5V
 
 1. Create Edit view.
