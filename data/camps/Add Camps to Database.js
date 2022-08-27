@@ -75,7 +75,7 @@ databaseConnection.once("open", async () => {
     console.log("We are connected to the database and are good to go!\n");
     await seedData()
         .then(() => {
-            console.log("\nData inserted successfully...");
+            console.log("\nData inserted Successfully...");
             console.log("Closing database...");
             mongoose.connection.close();
 

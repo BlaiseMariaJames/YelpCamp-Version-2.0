@@ -117,6 +117,42 @@ application.get('/campgrounds', async (request, response) => {
     }
 });
 
+// UPDATE OPERATION ROUTES
+
+// Edit --> Form to edit a campground.
+application.get('/campgrounds/:id/edit', async (request, response) => {
+    let error = "";
+    const { id } = request.params;
+    const campground = await Campground.findById(id);
+    if (campground) {
+        response.render('campgrounds/Edit', { campground, error });
+    } else {
+        response.render('PageNotFound');
+    }
+});
+
+// Update --> Updates a campground on server.
+application.patch('/campgrounds', async (request, response) => {
+    let { id, title, price, location, description } = request.body;
+    let campground = await Campground.findById(id);
+    if (campground) {
+        campground.title = title;
+        campground.price = price;
+        campground.location = location;
+        campground.description = description;
+        await campground.save()
+            .then(() => {
+                response.redirect(`/campgrounds/${campground.id}`);
+            })
+            .catch(() => {
+                let error = "Couldn't edit the campground, Price of the campground on parsing has to be a number with a minimum value of 0.";
+                response.render('campgrounds/Edit', { campground, error });
+            });
+    } else {
+        response.render('PageNotFound');
+    }
+});
+
 // OTHER ROUTES //
 
 // HOME ROUTE 

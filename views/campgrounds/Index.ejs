@@ -20,11 +20,12 @@
         <button><a href="/"><b>Go Home</b></a></button>
         <button><a href="/campgrounds/new"><b>New</b></a></button>
         <br><br>
-        <table border="1px" width="600px">
+        <table border="1px" width="750px">
             <tr>
                 <th>Title</th>
                 <th>Price</th>
                 <th>Location</th>
+                <th>Operations</th>
             </tr>
             <% for (let campground of campgrounds) { %>
                 <tr>
@@ -41,6 +42,7 @@
                     <td>
                         <%=campground.location%>
                     </td>
+                    <td><a href="/campgrounds/<%=campground._id%>/edit"><b>Edit</b></a></td>
                 </tr>
                 <% } %>
         </table>

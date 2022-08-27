@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta title="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+    <style>
+        a {
+            color: purple;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Edit a campground</h1>
+    <p>
+        <%= error %>
+    </p>
+    <form action="/campgrounds?_method=PATCH" method="post">
+        <label for="id">Registration Id : </label>
+        <input style="width: 175px;" type="text" name="id" id="id" value="<%=campground._id%>" readonly><br><br>
+        <label for="title">Campground Title : </label>
+        <input type="text" name="title" id="title" value="<%=campground.title%>" required><br><br>
+        <label for="price">Campground Price (In Rupees) : </label>
+        <input type="text" name="price" id="price" value="<%=campground.price%>" required><br><br>
+        <label for="location">Campground Location : </label>
+        <input type="text" name="location" id="location" value="<%=campground.location%>" required><br><br>
+        <label for="description">Campground Description (Optional) : </label>
+        <input type="text" name="description" id="description"
+            value="<%= campground.description ? campground.description : 'none' %>"><br><br>
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+    </form>
+    <br>
+    <button><a href="/campgrounds"><b>Go Back</b></a></button>
+</body>
+
+</html>

@@ -6,6 +6,12 @@
 
 ## August 2022
 
+### CRUD Update 0.5V
+
+1. Create Edit view.
+2. Modify Index and Show views.
+3. Listen to the Server at Edit and Update routes.
+
 ### CRUD Update 0.4V
 
 1. Create New view.
