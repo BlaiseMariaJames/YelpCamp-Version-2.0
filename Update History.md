@@ -6,6 +6,12 @@
 
 ## August 2022
 
+### CRUD Update 0.4V
+
+1. Create New view.
+2. Modify Campground Schema and Index view.
+3. Listen to the Server at New and Create routes.
+
 ### CRUD Update 0.3V
 
 1. Create Index view.

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta title="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New</title>
+    <style>
+        a {
+            color: purple;
+            text-decoration: none;
+        }
+
+        span {
+            color: red
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Create a new campground</h1>
+    <p>
+        <%= error %>
+    </p>
+    <p><span>*Mandatory Fields</span></p>
+    <form action="/campgrounds" method="post">
+        <label for="title">Enter Campground Title<span>*</span> : </label>
+        <input type="text" name="campgroundFromForm[title]" id="title" placeholder="Enter Campground title"
+            required><br><br>
+        <label for="price">Enter Campground Price<span>*</span> : </label>
+        <input type="text" name="campgroundFromForm[price]" id="price" placeholder="Enter campground price"
+            required><br><br>
+        <label for="location">Enter Campground Location<span>*</span> : </label>
+        <input type="text" name="campgroundFromForm[location]" id="location" placeholder="Enter campground location"
+            required><br><br>
+        <label for="description">Enter Campground Description (Optional) : </label>
+        <input type="text" name="campgroundFromForm[description]" id="description"
+            placeholder="Enter campground description"><br><br>
+        <input type="submit" value="Submit">
+        <input type="reset" value="Reset">
+    </form>
+    <br>
+    <button><a href="/campgrounds"><b>Go Back</b></a></button>
+</body>
+
+</html>

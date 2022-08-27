@@ -70,17 +70,29 @@ databaseConnection.once("open", async () => {
 
 // CRUD (CREATE - READ - UPDATE - DELETE) OPERATIONS ROUTES //
 
-// Index --> Display all campgrounds.
-application.get('/campgrounds', async (request, response) => {
+// CREATE OPERATION ROUTES
+
+// New --> Form to create a new campground.
+application.get('/campgrounds/new', (request, response) => {
     let error = "";
-    let campgrounds = await Campground.find({});
-    if (campgrounds.length > 0) {
-        response.render('campgrounds/Index', { campgrounds, error });
-    } else {
-        error = "No campgrounds are currently available.";
-        response.render('campgrounds/Index', { campgrounds, error });
-    }
+    response.render('campgrounds/New', { error });
 });
+
+// Create --> Creates new campground on server.
+application.post('/campgrounds', async (request, response) => {
+    let { campgroundFromForm } = request.body;
+    const campground = new Campground(campgroundFromForm);
+    await campground.save()
+        .then(() => {
+            response.redirect(`/campgrounds/${campground._id}`);
+        })
+        .catch(() => {
+            let error = "Couldn't create a campground, Price of the campground on parsing has to be a number with a minimum value of 0.";
+            response.render('campgrounds/New', { error });
+        });
+});
+
+// READ OPERATION ROUTES
 
 // Show --> Details for one specific campground.
 application.get('/campgrounds/:id', async (request, response) => {
@@ -90,6 +102,18 @@ application.get('/campgrounds/:id', async (request, response) => {
         response.render('campgrounds/Show', { campground });
     } else {
         response.render('PageNotFound');
+    }
+});
+
+// Index --> Display all campgrounds.
+application.get('/campgrounds', async (request, response) => {
+    let error = "";
+    let campgrounds = await Campground.find({});
+    if (campgrounds.length > 0) {
+        response.render('campgrounds/Index', { campgrounds, error });
+    } else {
+        error = "No campgrounds are currently available.";
+        response.render('campgrounds/Index', { campgrounds, error });
     }
 });
 

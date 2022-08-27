@@ -17,6 +17,9 @@
 <body>
     <h1>All Campgrounds</h1>
     <% if(!error) { %>
+        <button><a href="/"><b>Go Home</b></a></button>
+        <button><a href="/campgrounds/new"><b>New</b></a></button>
+        <br><br>
         <table border="1px" width="600px">
             <tr>
                 <th>Title</th>
@@ -45,9 +48,9 @@
             <p>
                 <%= error %>
             </p>
+            <button><a href="/"><b>Go Home</b></a></button>
+            <button><a href="/campgrounds/new"><b>New</b></a></button>
             <% } %>
-                <br>
-                <button><a href="/"><b>Go Home</b></a></button>
 </body>
 
 </html>
