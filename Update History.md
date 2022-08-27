@@ -6,6 +6,13 @@
 
 ## August 2022
 
+### CRUD Update 0.3V
+
+1. Create Index view.
+2. Create Show view.
+3. Modify HomePage and PageNotFound views.
+4. Listen to the Server at Index and Show routes.
+
 ### CRUD Update 0.2V
 
 1. Define Campground Schema and Create Campground Model.

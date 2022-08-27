@@ -1,10 +1,13 @@
 // STAGE 1: SETTING THE SERVER, VIEW ENGINE, ASSETS, FORM/JSON DATA AND PATHS //
 
-// REQUIRING EXPRESS, PATH, METHOD-OVERRIDE AND MONGOOSE
+// REQUIRING EXPRESS, PATH, AND METHOD-OVERRIDE
 const express = require("express");
 const path = require("path");
 const methodOverride = require("method-override");
+
+// REQUIRING MONGOOSE AND CAMPGROUND SCHEMA
 const mongoose = require("mongoose");
+const Campground = require("./models/Campground Model.js");
 
 // STARTING THE SERVER
 let portNumber = 8888;
@@ -40,7 +43,7 @@ async function startServer() {
 
 
 
-// STAGE 3: CONNECTING TO DATABASE AND RESPONDING TO THE SERVER //
+// STAGE 3: CONNECTING TO DATABASE //
 
 // CONNECTING TO MONGO DATABASE USING MONGOOSE
 mongoose.set("strictQuery", false);
@@ -61,12 +64,43 @@ databaseConnection.once("open", async () => {
     await startServer();
 });
 
-// RESPONDING TO THE HOME ROUTE 
+
+
+// STAGE 4: RESPONDING TO THE SERVER //
+
+// CRUD (CREATE - READ - UPDATE - DELETE) OPERATIONS ROUTES //
+
+// Index --> Display all campgrounds.
+application.get('/campgrounds', async (request, response) => {
+    let error = "";
+    let campgrounds = await Campground.find({});
+    if (campgrounds.length > 0) {
+        response.render('campgrounds/Index', { campgrounds, error });
+    } else {
+        error = "No campgrounds are currently available.";
+        response.render('campgrounds/Index', { campgrounds, error });
+    }
+});
+
+// Show --> Details for one specific campground.
+application.get('/campgrounds/:id', async (request, response) => {
+    const { id } = request.params;
+    let campground = await Campground.findById(id);
+    if (campground) {
+        response.render('campgrounds/Show', { campground });
+    } else {
+        response.render('PageNotFound');
+    }
+});
+
+// OTHER ROUTES //
+
+// HOME ROUTE 
 application.get('/', (request, response) => {
     response.render('HomePage');
 });
 
-// RESPONDING TO ANY OTHER ROUTE
+// ANY OTHER ROUTE
 application.get('*', (request, response) => {
     response.render('PageNotFound');
 });

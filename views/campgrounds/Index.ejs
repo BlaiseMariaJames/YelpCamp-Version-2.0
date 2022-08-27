@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <style>
+        a {
+            color: purple;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>All Campgrounds</h1>
+    <% if(!error) { %>
+        <table border="1px" width="600px">
+            <tr>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Location</th>
+            </tr>
+            <% for (let campground of campgrounds) { %>
+                <tr>
+                    <td>
+                        <a href="/campgrounds/<%=campground._id%> ">
+                            <b>
+                                <%=campground.title%>
+                            </b>
+                        </a>
+                    </td>
+                    <td align="center">
+                        Rs. <%=campground.price%>/-
+                    </td>
+                    <td>
+                        <%=campground.location%>
+                    </td>
+                </tr>
+                <% } %>
+        </table>
+        <% } else { %>
+            <p>
+                <%= error %>
+            </p>
+            <% } %>
+                <br>
+                <button><a href="/"><b>Go Home</b></a></button>
+</body>
+
+</html>
