@@ -6,6 +6,11 @@
 
 ## August 2022
 
+### Styles Update 0.8V
+
+1. Create navbar using BootStrap classes.
+2. Create navbar partial and add it to boilerplate layout.
+
 ### Styles Update 0.7V
 
 1. Install ejs-mate node module along with BootStrap 5.
