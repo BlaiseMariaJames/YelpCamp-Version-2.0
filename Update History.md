@@ -6,6 +6,11 @@
 
 ## August 2022
 
+### Styles Update 0.7V
+
+1. Install ejs-mate node module along with BootStrap 5.
+2. Create boilerplate layout and add it to every view.
+   
 ### CRUD Update 0.6V
 
 1. Create Remove view.

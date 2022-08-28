@@ -1,37 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta title="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New</title>
-    <style>
-        a {
-            color: purple;
-            text-decoration: none;
-        }
-
-        span {
-            color: red
-        }
-    </style>
-</head>
-
-<body>
+<% layout('/layouts/BoilerPlate') %>
     <h1>Create a new campground</h1>
     <p>
         <%= error %>
     </p>
-    <p><span>*Mandatory Fields</span></p>
+    <p><span style="color: red;">* Mandatory Fields</span></p>
     <form action="/campgrounds" method="post">
-        <label for="title">Enter Campground Title<span>*</span> : </label>
+        <label for="title">Enter Campground Title<span style="color: red;">*</span> : </label>
         <input type="text" name="campgroundFromForm[title]" id="title" placeholder="Enter Campground title"
             required><br><br>
-        <label for="price">Enter Campground Price<span>*</span> : </label>
+        <label for="price">Enter Campground Price<span style="color: red;">*</span> : </label>
         <input type="text" name="campgroundFromForm[price]" id="price" placeholder="Enter campground price"
             required><br><br>
-        <label for="location">Enter Campground Location<span>*</span> : </label>
+        <label for="location">Enter Campground Location<span style="color: red;">*</span> : </label>
         <input type="text" name="campgroundFromForm[location]" id="location" placeholder="Enter campground location"
             required><br><br>
         <label for="description">Enter Campground Description (Optional) : </label>
@@ -42,6 +22,3 @@
     </form>
     <br>
     <button><a href="/campgrounds"><b>Go Back</b></a></button>
-</body>
-
-</html>

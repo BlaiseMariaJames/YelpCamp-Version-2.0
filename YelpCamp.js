@@ -1,8 +1,9 @@
 // STAGE 1: SETTING THE SERVER, VIEW ENGINE, ASSETS, FORM/JSON DATA AND PATHS //
 
-// REQUIRING EXPRESS, PATH, AND METHOD-OVERRIDE
+// REQUIRING EXPRESS, PATH, EJS-MATE AND METHOD-OVERRIDE
 const express = require("express");
 const path = require("path");
+const ejsMate = require("ejs-mate");
 const methodOverride = require("method-override");
 
 // REQUIRING MONGOOSE AND CAMPGROUND SCHEMA
@@ -13,8 +14,9 @@ const Campground = require("./models/Campground Model.js");
 let portNumber = 8888;
 const application = express();
 
-// SETTING THE VIEW ENGINE AND PATH
+// SETTING THE VIEW ENGINE, DEFAULT ENGINE BEHAVIOUR AND PATH
 application.set('view engine', 'ejs');
+application.engine('ejs', ejsMate);
 application.set('views', path.join(__dirname, '/views'));
 
 // PARSING FORM DATA AND JSON DATA
@@ -75,7 +77,7 @@ databaseConnection.once("open", async () => {
 // New --> Form to create a new campground.
 application.get('/campgrounds/new', (request, response) => {
     let error = "";
-    response.render('campgrounds/New', { error });
+    response.render('campgrounds/New', { title: "New", error });
 });
 
 // Create --> Creates new campground on server.
@@ -88,7 +90,7 @@ application.post('/campgrounds', async (request, response) => {
         })
         .catch(() => {
             let error = "Couldn't create a campground, Price of the campground on parsing has to be a number with a minimum value of 0.";
-            response.render('campgrounds/New', { error });
+            response.render('campgrounds/New', { title: "Create", error });
         });
 });
 
@@ -99,10 +101,10 @@ application.get('/campgrounds/:id', async (request, response) => {
     const { id } = request.params;
     await Campground.findById(id)
         .then((campground) => {
-            response.render('campgrounds/Show', { campground });
+            response.render('campgrounds/Show', { title: campground.title, campground });
         })
         .catch((error) => {
-            response.render('PageNotFound');
+            response.render('PageNotFound', { title: "Page Not Found" });
         });
 });
 
@@ -111,10 +113,10 @@ application.get('/campgrounds', async (request, response) => {
     let error = "";
     let campgrounds = await Campground.find({});
     if (campgrounds.length > 0) {
-        response.render('campgrounds/Index', { campgrounds, error });
+        response.render('campgrounds/Index', { title: "Index", campgrounds, error });
     } else {
         error = "No campgrounds are currently available.";
-        response.render('campgrounds/Index', { campgrounds, error });
+        response.render('campgrounds/Index', { title: "Index", campgrounds, error });
     }
 });
 
@@ -126,11 +128,11 @@ application.get('/campgrounds/:id/edit', async (request, response) => {
     const { id } = request.params;
     await Campground.findById(id)
         .then((campground) => {
-            response.render('campgrounds/Edit', { campground, error });
+            response.render('campgrounds/Edit', { title: "Edit", campground, error });
         }
         )
         .catch((error) => {
-            response.render('PageNotFound');
+            response.render('PageNotFound', { title: "Page Not Found" });
         });
 });
 
@@ -149,10 +151,10 @@ application.patch('/campgrounds', async (request, response) => {
             })
             .catch(() => {
                 let error = "Couldn't edit the campground, Price of the campground on parsing has to be a number with a minimum value of 0.";
-                response.render('campgrounds/Edit', { campground, error });
+                response.render('campgrounds/Edit', { title: "Edit", campground, error });
             });
     } else {
-        response.render('PageNotFound');
+        response.render('PageNotFound', { title: "Page Not Found" });
     }
 });
 
@@ -163,10 +165,10 @@ application.get('/campgrounds/:id/remove', async (request, response) => {
     const { id } = request.params;
     await Campground.findById(id)
         .then((campground) => {
-            response.render('campgrounds/Remove', { campground });
+            response.render('campgrounds/Remove', { title: "Remove", campground });
         })
         .catch((error) => {
-            response.render('PageNotFound');
+            response.render('PageNotFound', { title: "Page Not Found" });
         });
 });
 
@@ -186,10 +188,10 @@ application.delete('/campgrounds', async (request, response) => {
 
 // HOME ROUTE 
 application.get('/', (request, response) => {
-    response.render('HomePage');
+    response.render('HomePage', { title: "HomePage" });
 });
 
 // ANY OTHER ROUTE
 application.get('*', (request, response) => {
-    response.render('PageNotFound');
+    response.render('PageNotFound', { title: "Page Not Found" });
 });
