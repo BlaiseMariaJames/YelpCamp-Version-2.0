@@ -6,6 +6,11 @@
 
 ## August 2022
 
+### Styles Update 0.9V
+
+1. Create footer using BootStrap classes.
+2. Create footer partial and add it to boilerplate layout.
+
 ### Styles Update 0.8V
 
 1. Create navbar using BootStrap classes.
