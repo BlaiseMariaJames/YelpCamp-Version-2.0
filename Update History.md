@@ -6,6 +6,11 @@
 
 ## August 2022
 
+### Styles Update 1.0V
+
+1. Add (Seed) image url and description into database.
+2. Modify Campground Schema and Show view to support Images.
+
 ### Styles Update 0.9V
 
 1. Create footer using BootStrap classes.

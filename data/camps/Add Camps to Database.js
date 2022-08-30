@@ -9,6 +9,9 @@ const { descriptors, places } = require("./Places.js");
 // DEFINING FIND RANDOM FUNCTION
 const findRandom = array => array[Math.floor(Math.random() * array.length)];
 
+// DEFINING GET IMAGE URL FUNCTION FROM UNSPLASH API
+const getImageURL = () => `https://source.unsplash.com/collection/483251`;
+
 // DEFINING WAIT FUNCTION
 async function wait(ms) {
     return new Promise(res => setTimeout(res, ms))
@@ -35,17 +38,17 @@ async function seedData() {
     for (let i = 0; i < 50; i++) {
         // Select a random title.
         const title = `${findRandom(descriptors)} ${findRandom(places)}`;
+        // Select random images (One for now).
+        const imageURL = [getImageURL()];
         // Select a random price.
         let price = Math.floor(Math.random() * 10000) + 2001;
         price -= price % 500;
         // Select a random location.
         const location = `${findRandom(cities).city}, ${findRandom(cities).state}`;
+        // Random description
+        const description = 'An awesome place awaits you...';
         // Creating new camp
-        const camp = new Campground({
-            title: title,
-            price: price,
-            location: location
-        });
+        const camp = new Campground({ title, imageURL, price, location, description });
         await camp.save()
             .then(async () => {
                 // CREATE PROGRESS BAR
