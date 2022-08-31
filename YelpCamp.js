@@ -138,10 +138,11 @@ application.get('/campgrounds/:id/edit', async (request, response) => {
 
 // Update --> Updates a campground on server.
 application.patch('/campgrounds', async (request, response) => {
-    let { id, title, price, location, description } = request.body;
+    let { id, title, imageURL, price, location, description } = request.body;
     let campground = await Campground.findById(id);
     if (campground) {
         campground.title = title;
+        campground.imageURL = imageURL;
         campground.price = price;
         campground.location = location;
         campground.description = description;

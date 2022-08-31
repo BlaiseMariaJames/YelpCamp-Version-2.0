@@ -1,22 +1,63 @@
 <% layout('/layouts/BoilerPlate') %>
-    <h1>Edit a campground</h1>
-    <p>
-        <%= error %>
-    </p>
-    <form action="/campgrounds?_method=PATCH" method="post">
-        <label for="id">Registration Id : </label>
-        <input style="width: 175px;" type="text" name="id" id="id" value="<%=campground._id%>" readonly><br><br>
-        <label for="title">Campground Title : </label>
-        <input type="text" name="title" id="title" value="<%=campground.title%>" required><br><br>
-        <label for="price">Campground Price (In Rupees) : </label>
-        <input type="text" name="price" id="price" value="<%=campground.price%>" required><br><br>
-        <label for="location">Campground Location : </label>
-        <input type="text" name="location" id="location" value="<%=campground.location%>" required><br><br>
-        <label for="description">Campground Description (Optional) : </label>
-        <input type="text" name="description" id="description"
-            value="<%= campground.description ? campground.description : 'none' %>"><br><br>
-        <input type="submit" value="Submit">
-        <input type="reset" value="Reset">
-    </form>
-    <br>
-    <button><a href="/campgrounds"><b>Go Back</b></a></button>
+    <div class="row">
+        <h1 class="text-center">Edit a campground</h1>
+        <% if(error){ %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= error %><button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+            <% } %>
+                <div class="col-6 offset-3">
+                    <p style="color: red;" class="mt-2">* Mandatory Fields</p>
+                    <form action="/campgrounds?_method=PATCH" method="post">
+                        <% if(campground.imageURL[0]) { %>
+                            <img src="<%=campground.imageURL%> " alt="Campground Image" class="img-fluid mb-3">
+                            <% } %>
+                                <div class="mb-3">
+                                    <label for="id" class="form-label">Registration Id : </label>
+                                    <input type="text" class="form-control" name="id" id="id"
+                                        value="<%=campground._id%>" readonly>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Campground Title<span
+                                            style="color: red;">*</span> :
+                                    </label>
+                                    <input type="text" class="form-control" name="title" id="title"
+                                        placeholder="Enter campground title" value="<%=campground.title%>" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="imageURL" class="form-label">Campground Image URL (Optional) : </label>
+                                    <input type="text" class="form-control" name="imageURL" id="imageURL"
+                                        placeholder="Enter campground image url" <% if(campground.imageURL[0]) { %>
+                                    value="<%=campground.imageURL[0]%>"<%}%>>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="price" class="form-label">Campground Price<span
+                                            style="color: red;">*</span> :
+                                    </label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">Rupees </span>
+                                        <input type="text" class="form-control" name="price" id="price"
+                                            placeholder="Enter campground price" value="<%=campground.price%>" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="location" class="form-label">Campground Location<span
+                                            style="color: red;">*</span> :
+                                    </label>
+                                    <input type="text" class="form-control" name="location" id="location"
+                                        placeholder="Enter campground location" value="<%=campground.location%>"
+                                        required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Campground Description (Optional) :
+                                    </label>
+                                    <textarea class="form-control" name="description" id="description" cols="30"
+                                        rows="3"
+                                        placeholder="Enter campground description"><% if(campground.description) { %><%=campground.description%><% } %></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                                <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+                    </form>
+                    <a href="/campgrounds" class="btn btn-secondary btn-sm mt-3">Go Back</a>
+                </div>
+    </div>

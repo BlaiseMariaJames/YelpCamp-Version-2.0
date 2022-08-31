@@ -6,6 +6,11 @@
 
 ## August 2022
 
+### Styles Update 1.2V
+
+1. Modify Update route to support Images.
+2. Style New and Edit views.
+
 ### Styles Update 1.1V
 
 1. Modify boilerplate layout and footer partial.
