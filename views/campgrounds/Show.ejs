@@ -1,23 +1,39 @@
 <% layout('/layouts/BoilerPlate') %>
-    <h1>
-        <%=campground.title%>
-    </h1>
-    <p>
-        Registrarion Id : <%=campground._id %>
-    </p>
-    <div>
-        <img src="<%=campground.imageURL%>" alt="Campground Image" width="400px" height="300px">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card">
+                <% if(campground.imageURL[0]) { %>
+                    <img src="<%=campground.imageURL%>" alt="Campground Image" class="card-img-top">
+                    <% } %>
+                        <div class="card-body">
+                            <h1 class="card-title">
+                                <%=campground.title%>
+                            </h1>
+                            <p class="card-text text-muted">
+                                <%=campground.location %>
+
+                            </p>
+                        </div>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                                <b>About:</b>
+                                <%= (campground.description) ? campground.description : "None" %>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Registration Id:</b>
+                                <%=campground._id %>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Price:</b> Rs. <%=campground.price %>/-
+                            </li>
+                        </ul>
+                        <div class="card-body">
+                            <a href="/campgrounds" class="card-link btn btn-secondary btn-sm">Go Back</a>
+                            <a href="/campgrounds/<%=campground._id%>/edit"
+                                class="card-link btn btn-warning btn-sm">Edit</a>
+                            <a href="/campgrounds/<%=campground._id%>/remove"
+                                class="card-link btn btn-danger btn-sm">Delete</a>
+                        </div>
+            </div>
+        </div>
     </div>
-    <br>
-    <p>
-        Price : Rs. <%=campground.price %>/-
-    </p>
-    <p>
-        Location : <%=campground.location %>
-    </p>
-    <p>
-        Description : <%= (campground.description) ? campground.description : "None" %>
-    </p>
-    <button><a href="/campgrounds"><b>Go Back</b></a></button>
-    <button><a href="/campgrounds/<%=campground._id%>/edit"><b>Edit</b></a></button>
-    <button><a href="/campgrounds/<%=campground._id%>/remove"><b>Delete</b></a></button>

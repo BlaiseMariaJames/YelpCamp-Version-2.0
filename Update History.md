@@ -6,6 +6,10 @@
 
 ## August 2022
 
+### Styles Update 1.3V
+
+1. Style Show and Remove views.
+   
 ### Styles Update 1.2V
 
 1. Modify Update route to support Images.
