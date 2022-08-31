@@ -6,6 +6,11 @@
 
 ## August 2022
 
+### Styles Update 1.1V
+
+1. Modify boilerplate layout and footer partial.
+2. Style Index, HomePage and PageNotFound views.
+
 ### Styles Update 1.0V
 
 1. Add (Seed) image url and description into database.

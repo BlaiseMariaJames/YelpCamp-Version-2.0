@@ -1,40 +1,47 @@
 <% layout('/layouts/BoilerPlate') %>
     <h1>All Campgrounds</h1>
     <% if(!error) { %>
-        <button><a href="/"><b>Go Home</b></a></button>
-        <button><a href="/campgrounds/new"><b>New</b></a></button>
+        <a href="/" class="btn btn-secondary btn-sm">Go Home</a>
+        <a href="/campgrounds/new" class="btn btn-success btn-sm">New</a>
         <br><br>
-        <table border="1px" width="750px">
-            <tr>
-                <th>Title</th>
-                <th>Price</th>
-                <th>Location</th>
-                <th colspan="2">Operations</th>
-            </tr>
-            <% for (let campground of campgrounds) { %>
-                <tr>
-                    <td>
-                        <a href="/campgrounds/<%=campground._id%> ">
-                            <b>
+        <% for (let campground of campgrounds) { %>
+            <div class="card mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <% if(campground.imageURL[0]) { %>
+                            <img src="<%=campground.imageURL%> " alt="Campground Image" class="img-fluid">
+                            <% } %>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body py-5">
+                            <h1 class="card-title">
                                 <%=campground.title%>
-                            </b>
-                        </a>
-                    </td>
-                    <td align="center">
-                        Rs. <%=campground.price%>/-
-                    </td>
-                    <td>
-                        <%=campground.location%>
-                    </td>
-                    <td><a href="/campgrounds/<%=campground._id%>/edit"><b>Edit</b></a></td>
-                    <td><a href="/campgrounds/<%=campground._id%>/remove"><b>Remove</b></a></td>
-                </tr>
-                <% } %>
-        </table>
-        <% } else { %>
-            <p>
-                <%= error %>
-            </p>
-            <button><a href="/"><b>Go Home</b></a></button>
-            <button><a href="/campgrounds/new"><b>New</b></a></button>
+                            </h1>
+                            <div class="card-text">
+                                <small class="text-muted">
+                                    <%=campground.location%>
+                                </small>
+                                <p class="mt-3">
+                                    Price: Rs. <%=campground.price%>/-
+                                </p>
+                                <p class="mt-3">
+                                    <%=campground.description%>
+                                </p>
+                            </div>
+                            <a href="/campgrounds/<%=campground._id%>" class="card-link btn btn-primary btn-sm">View</a>
+                            <a href="/campgrounds/<%=campground._id%>/edit"
+                                class="card-link btn btn-warning btn-sm">Edit</a>
+                            <a href="/campgrounds/<%=campground._id%>/remove"
+                                class="card-link btn btn-danger btn-sm">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <% } %>
+                <% } else { %>
+                    <p>
+                        <%= error %>
+                    </p>
+                    <a href="/" class="btn btn-secondary btn-sm">Go Home</a>
+                    <a href="/campgrounds/new" class="btn btn-success btn-sm">New</a>
+                    <% } %>
