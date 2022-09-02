@@ -39,7 +39,7 @@ async function seedData() {
         // Select a random title.
         const title = `${findRandom(descriptors)} ${findRandom(places)}`;
         // Select random images (One for now).
-        const imageURL = [getImageURL()];
+        const imageURL = getImageURL();
         // Select a random price.
         let price = Math.floor(Math.random() * 10000) + 2001;
         price -= price % 500;

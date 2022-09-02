@@ -23,6 +23,14 @@
 
 <h2 id="Sep22">September 2022</h2>
 
+### Validations Update 1.5V (Major Update)
+
+1. Install morgan node module.
+2. Create utilities folder and Add files.
+3. Modify YelpCamp to support Error Handling.
+4. Modify Add Camps to Database and Campground Schema.
+5. Modify All views and Update PageNotFound to ErrorPage view.
+
 ### Validations Update 1.4V
 
 1. Modify New and Edit views.

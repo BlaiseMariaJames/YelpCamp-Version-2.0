@@ -3,7 +3,7 @@
         <h1 class="text-center">Remove a campground</h1>
         <div class="col-6 offset-3">
             <form action="/campgrounds?_method=DELETE" method="post" class="d-inline">
-                <% if(campground.imageURL[0]) { %>
+                <% if(campground.imageURL) { %>
                     <img src="<%=campground.imageURL%> " alt="Campground Image" class="img-fluid mb-3 mt-3">
                     <% } %>
                         <div class="mb-3">
@@ -19,7 +19,7 @@
                         <div class="mb-3">
                             <label for="imageURL" class="form-label">Campground Image URL : </label>
                             <input type="text" class="form-control" name="imageURL" id="imageURL"
-                                value="<%=campground.imageURL[0] ? campground.imageURL : 'None' %>" readonly>
+                                value="<%=campground.imageURL ? campground.imageURL : 'None' %>" readonly>
                         </div>
                         <div class=" mb-3">
                             <label for="price" class="form-label">Campground Price : </label>

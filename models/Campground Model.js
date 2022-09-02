@@ -8,22 +8,27 @@ const Schema = mongoose.Schema;
 const CampgroundSchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: [true, "The field 'title' is mandatory"]
     },
     imageURL: {
-        type: [String]
+        type: String
     },
     price: {
-        type: Number,
-        required: true,
-        min: 0
+        type: String,
+        validate: {
+            validator: function (price) {
+                return /^\d+$/.test(price);
+            },
+            message: "Price of the campground has to be a number with a minimum value of 0"
+        },
+        required: [true, "The field 'price' is mandatory"]
     },
     description: {
         type: String
     },
     location: {
         type: String,
-        required: true
+        required: [true, "The field 'location' is mandatory"]
     }
 });
 
