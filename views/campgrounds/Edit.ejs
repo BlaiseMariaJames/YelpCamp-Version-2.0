@@ -8,7 +8,7 @@
             <% } %>
                 <div class="col-6 offset-3">
                     <p style="color: red;" class="mt-2">* Mandatory Fields</p>
-                    <form action="/campgrounds?_method=PATCH" method="post">
+                    <form action="/campgrounds?_method=PATCH" method="post" class="needs-validation" novalidate>
                         <% if(campground.imageURL[0]) { %>
                             <img src="<%=campground.imageURL%> " alt="Campground Image" class="img-fluid mb-3">
                             <% } %>
@@ -23,12 +23,21 @@
                                     </label>
                                     <input type="text" class="form-control" name="title" id="title"
                                         placeholder="Enter campground title" value="<%=campground.title%>" required>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid title.
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="imageURL" class="form-label">Campground Image URL (Optional) : </label>
                                     <input type="text" class="form-control" name="imageURL" id="imageURL"
                                         placeholder="Enter campground image url" <% if(campground.imageURL[0]) { %>
                                     value="<%=campground.imageURL[0]%>"<%}%>>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="price" class="form-label">Campground Price<span
@@ -38,6 +47,12 @@
                                         <span class="input-group-text">Rupees </span>
                                         <input type="text" class="form-control" name="price" id="price"
                                             placeholder="Enter campground price" value="<%=campground.price%>" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid price.
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="mb-3">
@@ -47,6 +62,12 @@
                                     <input type="text" class="form-control" name="location" id="location"
                                         placeholder="Enter campground location" value="<%=campground.location%>"
                                         required>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
+                                    <div class="invalid-feedback">
+                                        Please provide a valid location.
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Campground Description (Optional) :
@@ -54,6 +75,9 @@
                                     <textarea class="form-control" name="description" id="description" cols="30"
                                         rows="3"
                                         placeholder="Enter campground description"><% if(campground.description) { %><%=campground.description%><% } %></textarea>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
                                 </div>
                                 <button type="submit" class="btn btn-success btn-sm">Submit</button>
                                 <button type="reset" class="btn btn-danger btn-sm">Reset</button>

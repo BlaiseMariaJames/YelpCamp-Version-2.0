@@ -4,9 +4,34 @@
   </ul>
 </div>
 
-## August 2022
+## Quick Glance
 
-### Styles Update 1.3V
+#### By Month:
+
+<ul>
+<li><a href="#Sep22">September 2022</a></li>
+<li><a href="#Aug22">August 2022</a></li>
+</ul>
+
+#### By Type:
+
+<ul>
+<li><a href="#Styles">Styles</a></li>
+<li><a href="#CRUD">CRUD</a></li>
+<li><a href="#Initial">Initial</a></li>
+</ul>
+
+<h2 id="Sep22">September 2022</h2>
+
+### Validations Update 1.4V
+
+1. Modify New and Edit views.
+2. Modify boilerplate layout.
+3. Add Bootstrap client side form validations.
+
+<h2 id="Aug22">August 2022</h2>
+
+<h3 id="Styles">Styles Update 1.3V</h3>
 
 1. Style Show and Remove views.
    
@@ -40,7 +65,7 @@
 1. Install ejs-mate node module along with BootStrap 5.
 2. Create boilerplate layout and add it to every view.
    
-### CRUD Update 0.6V
+<h3 id="CRUD">CRUD Update 0.6V</h3>
 
 1. Create Remove view.
 2. Modify Index and Show views.
@@ -78,7 +103,7 @@
 3. Connect to MongoDB using Mongoose.
 4. Listen to the Server at Home Route and any other route.
 
-### Initial Commit
+<h3 id="Initial">Initial Commit</h3>
 
 1. Initialize Git and NPM.
 2. Install node modules.
