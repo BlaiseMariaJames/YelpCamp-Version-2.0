@@ -16,12 +16,18 @@
 #### By Type:
 
 <ul>
+<li><a href="#Validations">Validations</a></li>
 <li><a href="#Styles">Styles</a></li>
 <li><a href="#CRUD">CRUD</a></li>
 <li><a href="#Initial">Initial</a></li>
 </ul>
 
 <h2 id="Sep22">September 2022</h2>
+
+<h3 id="Validations">Validations Update 1.6V</h3>
+
+1. Install joi node module and Define joi Campground Schema.
+2. Modify YelpCamp to support Error Handling using joi schema validations.
 
 ### Validations Update 1.5V (Major Update)
 

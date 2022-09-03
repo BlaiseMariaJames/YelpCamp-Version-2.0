@@ -49,10 +49,14 @@ function print(request, response, next) {
     next();
 }
 
+/* LEGACY CODE TO HANDLE MONGOOSE ERRORS 
+========================================
+
 // FUNCTION TO RESTRUCTURE ERROR MESSAGE
 function restructureErrorMessage(message) {
     return message.replace(/: /g, '\n').replace(/,/g, '\n').split('\n').filter((value, index) => !(index % 2)).slice(1).join(', ');
 }
+*/
 
 // USING LOGGER, 'PATCH' AND 'DELETE' HTTP VERBS
 application.use(print, morgan('tiny'));
@@ -65,7 +69,8 @@ application.use(methodOverride('_method'));
 // REQUIRING MONGOOSE, OBJECTID AND CAMPGROUND SCHEMA
 const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
-const Campground = require("./models/Campground Model.js");
+const Campground = require("./models/Mongoose Models/Campground Model.js");
+const CampgroundSchema = require("./models/Joi Models/Campground Model.js");
 
 // CONNECTING TO MONGO DATABASE USING MONGOOSE
 mongoose.set("strictQuery", false);
@@ -103,6 +108,26 @@ application.get('/campgrounds/new', (request, response) => {
 // Create --> Creates new campground on server.
 application.post('/campgrounds', handleAsyncErrors(async (request, response, next) => {
     let { campground } = request.body;
+    const { error } = CampgroundSchema.validate(campground);
+    if (error) {
+        let errorMessage = error.details.map(error => error.message).join(',');
+        // Below two lines of code will redirect to the same page and make user aware of errors.
+        errorMessage = `Cannot create campground, ${errorMessage}.`;
+        response.status(400).render('campgrounds/New', { title: "Create", error: errorMessage });
+        // Use below code to redirect to Error Page and make user aware of errors.
+        // return next(new ApplicationError(errorMessage, "Bad Request", 400));
+    } else {
+        const newCampground = new Campground(campground);
+        await newCampground.save()
+        response.redirect(`/campgrounds/${newCampground._id}`);
+    }
+
+    /* LEGACY CODE TO HANDLE MONGOOSE ERRORS 
+    ========================================
+    // In this piece of code, instead of using outside JOI Schema validations, we directly pass the request.body.
+    // The mongoose ODM, then performs schema validations and throw errors if any, and are handled here.
+    
+    let { campground } = request.body;
     const newCampground = new Campground(campground);
     await newCampground.save()
 
@@ -121,6 +146,7 @@ application.post('/campgrounds', handleAsyncErrors(async (request, response, nex
             // Use below code to redirect to Error Page and make user aware of errors.
             // return next(new ApplicationError(error.message, error.name, 400)); 
         });
+    */
 }));
 
 // READ OPERATION ROUTES
@@ -173,6 +199,28 @@ application.get('/campgrounds/:id/edit', handleAsyncErrors(async (request, respo
 // Update --> Updates a campground on server.
 application.patch('/campgrounds', handleAsyncErrors(async (request, response, next) => {
     let { id, campground } = request.body;
+    const { error } = CampgroundSchema.validate(campground);
+    if (error) {
+        let errorMessage = error.details.map(error => error.message).join(',');
+        // Below two lines of code will redirect to the same page and make user aware of errors.
+        campground._id = id;
+        errorMessage = `Cannot edit campground, ${errorMessage}.`;
+        response.status(400).render('campgrounds/Edit', { title: "Edit", campground, error: errorMessage });
+        // Use below code to redirect to Error Page and make user aware of errors.
+        // return next(new ApplicationError(errorMessage, "Bad Request", 400));
+    } else {
+        const newCampground = await Campground.findById(id);
+        Object.assign(newCampground, campground);
+        await newCampground.save();
+        response.redirect(`/campgrounds/${newCampground._id}`);
+    }
+
+    /* LEGACY CODE TO HANDLE MONGOOSE ERRORS 
+    ========================================
+    // In this piece of code, instead of using outside JOI Schema validations, we directly pass the request.body.
+    // The mongoose ODM, then performs schema validations and throw errors if any, and are handled here.
+    
+    let { id, campground } = request.body;
     const newCampground = await Campground.findById(id);
     Object.assign(newCampground, campground);
     await newCampground.save()
@@ -192,6 +240,7 @@ application.patch('/campgrounds', handleAsyncErrors(async (request, response, ne
             // Use below code to redirect to Error Page and make user aware of errors.
             // return next(new ApplicationError(error.message, error.name, 400)); 
         });
+    */
 }));
 
 // DELETE OPERATIONS ROUTES
