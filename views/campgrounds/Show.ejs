@@ -1,6 +1,6 @@
 <% layout('/layouts/BoilerPlate') %>
-    <div class="row">
-        <div class="col-6 offset-3">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
             <div class="card">
                 <% if(campground.imageURL) { %>
                     <img src="<%=campground.imageURL%>" alt="Campground Image" class="card-img-top">
@@ -11,7 +11,6 @@
                             </h1>
                             <p class="card-text text-muted">
                                 <%=campground.location %>
-
                             </p>
                         </div>
                         <ul class="list-group list-group-flush">
@@ -34,6 +33,81 @@
                             <a href="/campgrounds/<%=campground._id%>/remove"
                                 class="card-link btn btn-danger btn-sm">Delete</a>
                         </div>
+                        <% if(!campground.reviews.length) { %>
+                            <div class="card-footer text-muted">No reviews yet.</div>
+                            <% } %>
             </div>
+        </div>
+        <div class="col-6">
+            <% if(campground.reviews.length) { %>
+                <div class="card mb-3">
+                    <div class="card-header">
+                        <h2>Reviews</h2>
+                    </div>
+                    <div class="card-body">
+                        <% for(let review of campground.reviews) { %>
+                            <div class="card mb-3">
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <b>Rating:</b>
+                                        <%= review.rating %>
+                                            <%= (review.rating==1) ? "star" : "stars" %>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <%= review.body %>
+                                    </li>
+                                </ul>
+                                <div class="card-body">
+                                    <form
+                                        action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
+                                        method="post">
+                                        <button class="card-link btn btn-danger btn-sm">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                            <% } %>
+                    </div>
+                </div>
+                <% } %>
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Leave a Review</h4>
+                        </div>
+                        <div class="card-body">
+                            <% if(error){ %>
+                                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                    <%= error %><button type="button" class="btn-close"
+                                            data-bs-dismiss="alert"></button>
+                                </div>
+                                <% } %>
+                                    <p style="color: red;" class="mb-2">* Mandatory Fields</p>
+                                    <form action="/campgrounds/<%=campground._id%>/reviews" method="post"
+                                        class="needs-validation" novalidate>
+                                        <div class="mb-3">
+                                            <label for="rating" class="form-label">Rating<span
+                                                    style="color: red;">*</span>
+                                                :
+                                            </label>
+                                            <input class="form-range" type="range" min="1" max="5" step="1"
+                                                name="review[rating]" id="rating">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="body" class="form-label">Review<span
+                                                    style="color: red;">*</span> :
+                                            </label>
+                                            <textarea class="form-control" name="review[body]" id="body" cols="30"
+                                                rows="3" placeholder="Give us your feedback" required></textarea>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please provide us your feeback.
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                                        <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+                                    </form>
+                        </div>
+                    </div>
         </div>
     </div>

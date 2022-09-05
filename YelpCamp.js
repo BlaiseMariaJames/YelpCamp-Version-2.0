@@ -60,9 +60,11 @@ application.use(methodOverride('_method'));
 // REQUIRING MONGOOSE, OBJECTID, CAMPGROUND AND REVIEW SCHEMA
 const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
+
 const Campground = require("./models/Mongoose Models/Campground Model.js");
-const Review = require("./models/Mongoose Models/Review Model.js");
 const CampgroundSchema = require("./models/Joi Models/Campground Model.js");
+
+const Review = require("./models/Mongoose Models/Review Model.js");
 const ReviewSchema = require("./models/Joi Models/Review Model.js");
 
 // CONNECTING TO MONGO DATABASE USING MONGOOSE
@@ -86,16 +88,14 @@ databaseConnection.once("open", async () => {
 
 
 
-// STAGE 4: RESPONDING TO THE SERVER //
-
-// CRUD (CREATE - READ - UPDATE - DELETE) OPERATIONS ROUTES //
+// STAGE 4: RESPONDING TO THE SERVER AT CAMPGROUND MODEL BASED ROUTES //
 
 // CREATE OPERATION ROUTES
 
 // New --> Form to create a new campground.
 application.get('/campgrounds/new', (request, response) => {
     let error = "";
-    response.render('campgrounds/New', { title: "New", error });
+    response.render('campgrounds/New', { title: "New Campground", error });
 });
 
 // Create --> Creates new campground on server.
@@ -106,12 +106,12 @@ application.post('/campgrounds', handleAsyncErrors(async (request, response, nex
         let errorMessage = error.details.map(error => error.message).join(',');
         // Below two lines of code will redirect to the same page and make user aware of errors.
         errorMessage = `Cannot create campground, ${errorMessage}.`;
-        response.status(400).render('campgrounds/New', { title: "Create", error: errorMessage });
+        response.status(400).render('campgrounds/New', { title: "Create Campground", error: errorMessage });
         // Use below code to redirect to Error Page and make user aware of errors.
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
         const newCampground = new Campground(campground);
-        await newCampground.save()
+        await newCampground.save();
         response.redirect(`/campgrounds/${newCampground._id}`);
     }
 }));
@@ -120,17 +120,18 @@ application.post('/campgrounds', handleAsyncErrors(async (request, response, nex
 
 // Show --> Details for one specific campground.
 application.get('/campgrounds/:id', handleAsyncErrors(async (request, response, next) => {
+    let error = "";
     const { id } = request.params;
     // ERROR HANDLED : Campground not found due to invalid Campground ID. 
     if (!ObjectID.isValid(id)) {
         return next(new ApplicationError("Sorry!, Invalid Campground ID. We couldn't find the campground!", 'Invalid Campground ID', 400));
     }
-    const campground = await Campground.findById(id);
+    const campground = await Campground.findById(id).populate('reviews');
     if (!campground) {
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));
     }
-    response.render('campgrounds/Show', { title: campground.title, campground });
+    response.render('campgrounds/Show', { title: campground.title, error, campground });
 }));
 
 // Index --> Display all campgrounds.
@@ -138,10 +139,10 @@ application.get('/campgrounds', handleAsyncErrors(async (request, response, next
     let error = "";
     let campgrounds = await Campground.find({});
     if (campgrounds.length > 0) {
-        response.render('campgrounds/Index', { title: "Index", campgrounds, error });
+        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, error });
     } else {
         error = "No campgrounds are currently available.";
-        response.render('campgrounds/Index', { title: "Index", campgrounds, error });
+        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, error });
     }
 }));
 
@@ -160,7 +161,7 @@ application.get('/campgrounds/:id/edit', handleAsyncErrors(async (request, respo
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));
     }
-    response.render('campgrounds/Edit', { title: "Edit", campground, error });
+    response.render('campgrounds/Edit', { title: "Edit Campground", campground, error });
 }));
 
 // Update --> Updates a campground on server.
@@ -172,7 +173,7 @@ application.patch('/campgrounds', handleAsyncErrors(async (request, response, ne
         // Below two lines of code will redirect to the same page and make user aware of errors.
         campground._id = id;
         errorMessage = `Cannot edit campground, ${errorMessage}.`;
-        response.status(400).render('campgrounds/Edit', { title: "Edit", campground, error: errorMessage });
+        response.status(400).render('campgrounds/Edit', { title: "Edit Campground", campground, error: errorMessage });
         // Use below code to redirect to Error Page and make user aware of errors.
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
@@ -197,7 +198,7 @@ application.get('/campgrounds/:id/remove', handleAsyncErrors(async (request, res
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));
     }
-    response.render('campgrounds/Remove', { title: "Remove", campground });
+    response.render('campgrounds/Remove', { title: "Remove Campground", campground });
 }));
 
 // Delete --> Deletes a campground on server.
@@ -208,11 +209,53 @@ application.delete('/campgrounds', handleAsyncErrors(async (request, response, n
             response.redirect('/campgrounds');
         })
         .catch((error) => {
-            console("Couldn't delete the campground ", error);
+            return next(new ApplicationError(error.message, error.name));
         });
 }));
 
-// OTHER ROUTES //
+
+
+// STAGE 5: RESPONDING TO THE SERVER AT REVIEW MODEL BASED ROUTES //
+
+// Create --> Creates new review on server.
+application.post('/campgrounds/:id/reviews', handleAsyncErrors(async (request, response, next) => {
+    let { id } = request.params;
+    let { review } = request.body;
+    const { error } = ReviewSchema.validate(review);
+    const campground = await Campground.findById(id).populate('reviews');
+    if (error) {
+        let errorMessage = error.details.map(error => error.message).join(',');
+        // Below two lines of code will redirect to the same page and make user aware of errors.
+        errorMessage = `Cannot create review, ${errorMessage}.`;
+        response.status(400).render('campgrounds/Show', { title: campground.title, error: errorMessage, campground });
+        // Use below code to redirect to Error Page and make user aware of errors.
+        // return next(new ApplicationError(errorMessage, "Bad Request", 400));
+    } else {
+        review.body = review.body.replace(/[\r\n\t]/gm, ' ');
+        const newReview = new Review(review);
+        await newReview.save();
+        campground.reviews.push(newReview);
+        await campground.save();
+        response.redirect(`/campgrounds/${campground._id}`);
+    }
+}));
+
+// Delete --> Deletes a review on server.
+application.delete('/campgrounds/:campgroundId/reviews/:reviewId', handleAsyncErrors(async (request, response, next) => {
+    const { campgroundId, reviewId } = request.params;
+    const campground = await Campground.findByIdAndUpdate(campgroundId, { $pull: { reviews: reviewId } });
+    await Review.findByIdAndDelete(reviewId)
+        .then(() => {
+            response.redirect(`/campgrounds/${campground._id}`);
+        })
+        .catch((error) => {
+            return next(new ApplicationError(error.message, error.name));
+        });
+}));
+
+
+
+// STAGE 6: RESPONDING TO THE SERVER AT OTHER ROUTES //
 
 // HOME ROUTE 
 application.get('/', (request, response) => {
@@ -227,7 +270,7 @@ application.all('*', (request, response, next) => {
 
 
 
-// STAGE 5: DEFINING ERROR HANDLING MIDDLEWARE FUNCTIONS //
+// STAGE 7: DEFINING ERROR HANDLING MIDDLEWARE FUNCTIONS //
 
 // ERROR HANDLER MIDDLEWARE FUNCTION TO HANDLE DEFAULT ERRORS
 function handleDefaultErrors(error, request, response, next) {

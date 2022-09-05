@@ -16,6 +16,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#ReviewCRUD">Review CRUD</a></li>
 <li><a href="#Validations">Validations</a></li>
 <li><a href="#Styles">Styles</a></li>
 <li><a href="#CampgroundCRUD">Campground CRUD</a></li>
@@ -23,6 +24,13 @@
 </ul>
 
 <h2 id="Sep22">September 2022</h2>
+
+<h3 id="ReviewCRUD">Review CRUD Update 1.8V</h3>
+
+1. Add Create and Delete routes for Review Model.
+2. Modify boilerplate layout to set minimum width of web page.
+3. Modify Show view to support creating, viewing and deleting of reviews.
+4. Modify Campground Schema to support deleting of models associated with Campground.
 
 ### Review CRUD Update 1.7V
 

@@ -4,6 +4,9 @@ const mongoose = require("mongoose");
 // STORING SCHEMA OBJECT INTO A VARIABLE
 const Schema = mongoose.Schema;
 
+// REQUIRING MODELS ASSOCIATED WITH CAMPGROUND
+const Review = require("./Review Model");
+
 // DEFINING CAMPGROUND SCHEMA
 const CampgroundSchema = new Schema({
     title: {
@@ -38,6 +41,19 @@ const CampgroundSchema = new Schema({
             required: false
         }
     ]
+});
+
+// DEFINING POST-MIDDLEWARE-FUNCTION AFTER DELETING A CAMPGROUND
+CampgroundSchema.post('findOneAndDelete', async function (campground) {
+    // Check for items of associated model. In this case, reviews.
+    if (campground.reviews.length > 0) {
+        // Delete all items inside associated model.
+        await Review.deleteMany({
+            // Delete every item of associated model, whose id belongs to Campground. 
+            _id: { $in: campground.reviews }
+        });
+    }
+    // Continue the same procedure for rest of the associated models.
 });
 
 // DEFINING CAMPGROUND MODEL
