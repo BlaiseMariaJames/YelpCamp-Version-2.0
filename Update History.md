@@ -18,11 +18,17 @@
 <ul>
 <li><a href="#Validations">Validations</a></li>
 <li><a href="#Styles">Styles</a></li>
-<li><a href="#CRUD">CRUD</a></li>
+<li><a href="#CampgroundCRUD">Campground CRUD</a></li>
 <li><a href="#Initial">Initial</a></li>
 </ul>
 
 <h2 id="Sep22">September 2022</h2>
+
+### Review CRUD Update 1.7V
+
+1. Remove legacy code from YelpCamp.
+2. Define mongoose schema and joi schema for Review Model.
+3. Establish one-to-many relationship between Campground and Review Model.
 
 <h3 id="Validations">Validations Update 1.6V</h3>
 
@@ -79,38 +85,38 @@
 1. Install ejs-mate node module along with BootStrap 5.
 2. Create boilerplate layout and add it to every view.
    
-<h3 id="CRUD">CRUD Update 0.6V</h3>
+<h3 id="CampgroundCRUD">Campground CRUD Update 0.6V</h3>
 
 1. Create Remove view.
 2. Modify Index and Show views.
 3. Simplify Show and Edit routes.
 4. Listen to the Server at Remove and Delete routes.
 
-### CRUD Update 0.5V
+### Campground CRUD Update 0.5V
 
 1. Create Edit view.
 2. Modify Index and Show views.
 3. Listen to the Server at Edit and Update routes.
 
-### CRUD Update 0.4V
+### Campground CRUD Update 0.4V
 
 1. Create New view.
 2. Modify Campground Schema and Index view.
 3. Listen to the Server at New and Create routes.
 
-### CRUD Update 0.3V
+### Campground CRUD Update 0.3V
 
 1. Create Index view.
 2. Create Show view.
 3. Modify HomePage and PageNotFound views.
 4. Listen to the Server at Index and Show routes.
 
-### CRUD Update 0.2V
+### Campground CRUD Update 0.2V
 
 1. Define Campground Schema and Create Campground Model.
 2. Add (Seed) Campground data into Database. 
 
-### CRUD Update 0.1V
+### Campground CRUD Update 0.1V
 
 1. Require Node Modules Express, Ejs and Mongoose.
 2. Setup the Server, HTTP Verbs, View Engine and Paths.

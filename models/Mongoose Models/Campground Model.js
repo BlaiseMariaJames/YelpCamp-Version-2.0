@@ -29,7 +29,15 @@ const CampgroundSchema = new Schema({
     location: {
         type: String,
         required: [true, "The field 'location' is mandatory"]
-    }
+    },
+    reviews: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Review',
+            // A campground may or may not have any reviews.
+            required: false
+        }
+    ]
 });
 
 // DEFINING CAMPGROUND MODEL

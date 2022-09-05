@@ -49,15 +49,6 @@ function print(request, response, next) {
     next();
 }
 
-/* LEGACY CODE TO HANDLE MONGOOSE ERRORS 
-========================================
-
-// FUNCTION TO RESTRUCTURE ERROR MESSAGE
-function restructureErrorMessage(message) {
-    return message.replace(/: /g, '\n').replace(/,/g, '\n').split('\n').filter((value, index) => !(index % 2)).slice(1).join(', ');
-}
-*/
-
 // USING LOGGER, 'PATCH' AND 'DELETE' HTTP VERBS
 application.use(print, morgan('tiny'));
 application.use(methodOverride('_method'));
@@ -66,11 +57,13 @@ application.use(methodOverride('_method'));
 
 // STAGE 3: REQUIRING MONGOOSE, SCHEMA AND CONNECTING TO DATABASE //
 
-// REQUIRING MONGOOSE, OBJECTID AND CAMPGROUND SCHEMA
+// REQUIRING MONGOOSE, OBJECTID, CAMPGROUND AND REVIEW SCHEMA
 const mongoose = require("mongoose");
 const ObjectID = mongoose.Types.ObjectId;
 const Campground = require("./models/Mongoose Models/Campground Model.js");
+const Review = require("./models/Mongoose Models/Review Model.js");
 const CampgroundSchema = require("./models/Joi Models/Campground Model.js");
+const ReviewSchema = require("./models/Joi Models/Review Model.js");
 
 // CONNECTING TO MONGO DATABASE USING MONGOOSE
 mongoose.set("strictQuery", false);
@@ -121,32 +114,6 @@ application.post('/campgrounds', handleAsyncErrors(async (request, response, nex
         await newCampground.save()
         response.redirect(`/campgrounds/${newCampground._id}`);
     }
-
-    /* LEGACY CODE TO HANDLE MONGOOSE ERRORS 
-    ========================================
-    // In this piece of code, instead of using outside JOI Schema validations, we directly pass the request.body.
-    // The mongoose ODM, then performs schema validations and throw errors if any, and are handled here.
-    
-    let { campground } = request.body;
-    const newCampground = new Campground(campground);
-    await newCampground.save()
-
-        // If no mongoose errors.   
-        .then(() => {
-            response.redirect(`/campgrounds/${newCampground._id}`);
-        })
-
-        // If any mongoose errors.
-        .catch((error) => {
-
-            // Below two lines of code will redirect to the same page and make user aware of errors.
-            error.message = `Cannot create campground, ${restructureErrorMessage(error.message)}.`;
-            response.status(400).render('campgrounds/New', { title: "Create", error: error.message });
-
-            // Use below code to redirect to Error Page and make user aware of errors.
-            // return next(new ApplicationError(error.message, error.name, 400)); 
-        });
-    */
 }));
 
 // READ OPERATION ROUTES
@@ -214,33 +181,6 @@ application.patch('/campgrounds', handleAsyncErrors(async (request, response, ne
         await newCampground.save();
         response.redirect(`/campgrounds/${newCampground._id}`);
     }
-
-    /* LEGACY CODE TO HANDLE MONGOOSE ERRORS 
-    ========================================
-    // In this piece of code, instead of using outside JOI Schema validations, we directly pass the request.body.
-    // The mongoose ODM, then performs schema validations and throw errors if any, and are handled here.
-    
-    let { id, campground } = request.body;
-    const newCampground = await Campground.findById(id);
-    Object.assign(newCampground, campground);
-    await newCampground.save()
-
-        // If no mongoose errors.   
-        .then(() => {
-            response.redirect(`/campgrounds/${newCampground._id}`);
-        })
-
-        // If any mongoose errors.
-        .catch((error) => {
-
-            // Below two lines of code will redirect to the same page and make user aware of errors.
-            error.message = `Cannot edit campground, ${restructureErrorMessage(error.message)}.`;
-            response.status(400).render('campgrounds/Edit', { title: "Edit", campground: newCampground, error: error.message });
-
-            // Use below code to redirect to Error Page and make user aware of errors.
-            // return next(new ApplicationError(error.message, error.name, 400)); 
-        });
-    */
 }));
 
 // DELETE OPERATIONS ROUTES
