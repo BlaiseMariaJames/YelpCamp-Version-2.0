@@ -25,6 +25,12 @@
 
 <h2 id="Sep22">September 2022</h2>
 
+### Restructuring Update 1.9V
+
+1. Seperate Campground and Review based routes from YelpCamp.
+2. Install express-session node module and configure sessions.
+3. Seperate BootStrap Form Validations from boilerplate layout.
+
 <h3 id="ReviewCRUD">Review CRUD Update 1.8V</h3>
 
 1. Add Create and Delete routes for Review Model.
