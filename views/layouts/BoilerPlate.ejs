@@ -20,7 +20,8 @@
 <body class="d-flex flex-column vh-100">
     <%- include('../partials/Navbar') %>
         <main class="container mt-3 mb-3">
-            <%- body %>
+            <%- include('../partials/Flash') %>
+                <%- body %>
         </main>
         <%- include('../partials/Footer') %>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"

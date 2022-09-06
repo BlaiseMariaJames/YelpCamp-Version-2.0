@@ -21,8 +21,7 @@ const CampgroundSchema = require("../models/Joi Models/Campground Model.js");
 
 // New --> Form to create a new campground.
 router.get('/new', (request, response) => {
-    let error = "";
-    response.render('campgrounds/New', { title: "New Campground", error });
+    response.render('campgrounds/New', { title: "New Campground" });
 });
 
 // Create --> Creates new campground on server.
@@ -32,13 +31,14 @@ router.post('/', handleAsyncErrors(async (request, response, next) => {
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
         // Below two lines of code will redirect to the same page and make user aware of errors.
-        errorMessage = `Cannot create campground, ${errorMessage}.`;
-        response.status(400).render('campgrounds/New', { title: "Create Campground", error: errorMessage });
+        request.flash('error', `Cannot create campground, ${errorMessage}.`);
+        response.status(400).redirect('/campgrounds/new');
         // Use below code to redirect to Error Page and make user aware of errors.
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
         const newCampground = new Campground(campground);
         await newCampground.save();
+        request.flash('success', 'Successfully created a new Campground!');
         response.redirect(`/campgrounds/${newCampground._id}`);
     }
 }));
@@ -47,7 +47,6 @@ router.post('/', handleAsyncErrors(async (request, response, next) => {
 
 // Show --> Details for one specific campground.
 router.get('/:id', handleAsyncErrors(async (request, response, next) => {
-    let error = "";
     const { id } = request.params;
     // ERROR HANDLED : Campground not found due to invalid Campground ID. 
     if (!ObjectID.isValid(id)) {
@@ -58,18 +57,18 @@ router.get('/:id', handleAsyncErrors(async (request, response, next) => {
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));
     }
-    response.render('campgrounds/Show', { title: campground.title, error, campground });
+    response.render('campgrounds/Show', { title: campground.title, campground });
 }));
 
 // Index --> Display all campgrounds.
 router.get('/', handleAsyncErrors(async (request, response, next) => {
-    let error = "";
+    let errorMessage = "";
     let campgrounds = await Campground.find({});
     if (campgrounds.length > 0) {
-        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, error });
+        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, errorMessage });
     } else {
-        error = "No campgrounds are currently available.";
-        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, error });
+        errorMessage = "No campgrounds are currently available.";
+        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, errorMessage });
     }
 }));
 
@@ -77,7 +76,6 @@ router.get('/', handleAsyncErrors(async (request, response, next) => {
 
 // Edit --> Form to edit a campground.
 router.get('/:id/edit', handleAsyncErrors(async (request, response, next) => {
-    let error = "";
     const { id } = request.params;
     // ERROR HANDLED : Campground not found due to invalid Campground ID. 
     if (!ObjectID.isValid(id)) {
@@ -88,7 +86,7 @@ router.get('/:id/edit', handleAsyncErrors(async (request, response, next) => {
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));
     }
-    response.render('campgrounds/Edit', { title: "Edit Campground", campground, error });
+    response.render('campgrounds/Edit', { title: "Edit Campground", campground });
 }));
 
 // Update --> Updates a campground on server.
@@ -99,14 +97,15 @@ router.patch('/', handleAsyncErrors(async (request, response, next) => {
         let errorMessage = error.details.map(error => error.message).join(',');
         // Below two lines of code will redirect to the same page and make user aware of errors.
         campground._id = id;
-        errorMessage = `Cannot edit campground, ${errorMessage}.`;
-        response.status(400).render('campgrounds/Edit', { title: "Edit Campground", campground, error: errorMessage });
+        request.flash('error', `Cannot edit campground, ${errorMessage}.`);
+        response.status(400).redirect(`/campgrounds/${id}/edit`);
         // Use below code to redirect to Error Page and make user aware of errors.
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
         const newCampground = await Campground.findById(id);
         Object.assign(newCampground, campground);
         await newCampground.save();
+        request.flash('success', 'Successfully edited the Campground!');
         response.redirect(`/campgrounds/${newCampground._id}`);
     }
 }));
@@ -133,6 +132,7 @@ router.delete('/', handleAsyncErrors(async (request, response, next) => {
     const { id } = request.body;
     await Campground.findByIdAndDelete(id)
         .then(() => {
+            request.flash('success', 'Successfully deleted the Campground!');
             response.redirect('/campgrounds');
         })
         .catch((error) => {

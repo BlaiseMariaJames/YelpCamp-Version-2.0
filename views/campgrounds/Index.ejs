@@ -1,6 +1,6 @@
 <% layout('/layouts/BoilerPlate') %>
     <h1>All Campgrounds</h1>
-    <% if(!error) { %>
+    <% if(!errorMessage) { %>
         <a href="/" class="btn btn-secondary btn-sm">Go Home</a>
         <a href="/campgrounds/new" class="btn btn-success btn-sm">New</a>
         <br><br>
@@ -40,7 +40,7 @@
             <% } %>
                 <% } else { %>
                     <p>
-                        <%= error %>
+                        <%= errorMessage %>
                     </p>
                     <a href="/" class="btn btn-secondary btn-sm">Go Home</a>
                     <a href="/campgrounds/new" class="btn btn-success btn-sm">New</a>

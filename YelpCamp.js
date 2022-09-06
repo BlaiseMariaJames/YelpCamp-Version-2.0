@@ -1,11 +1,12 @@
 // STAGE 1: SETTING THE SERVER, VIEW ENGINE, ASSETS, SESSIONS, FORM/JSON DATA AND PATHS //
 
-// REQUIRING PATH, MORGAN, EXPRESS, EJS-MATE, MONGOOSE, EXPRESS-SESSION AND METHOD-OVERRIDE
+// REQUIRING NODE MODULES
 const path = require("path");
 const morgan = require("morgan");
 const express = require("express");
 const ejsMate = require("ejs-mate");
 const mongoose = require("mongoose");
+const flash = require("connect-flash");
 const session = require("express-session");
 const methodOverride = require("method-override");
 
@@ -62,10 +63,17 @@ function print(request, response, next) {
     next();
 }
 
-// USING LOGGER, 'PATCH' AND 'DELETE' HTTP VERBS
+// USING MIDDLEWARES
+application.use(flash());
 application.use(print, morgan('tiny'));
 application.use(methodOverride('_method'));
 
+// DEFINING FLASH MIDDLEWARE TO FLASH SUCCESS AND ERRORS (IF ANY) AT EVERY ROUTE
+application.use((request, response, next) => {
+    response.locals.error = request.flash('error');
+    response.locals.success = request.flash('success');
+    next();
+});
 
 
 // STAGE 3: CONNECTING TO DATABASE //
@@ -88,7 +96,6 @@ databaseConnection.once("open", async () => {
     console.log("We are connected to the database and are good to go!");
     startServer();
 });
-
 
 
 // STAGE 4: RESPONDING TO THE SERVER //
@@ -117,7 +124,6 @@ application.all('*', (request, response, next) => {
     // ERROR HANDLED : Path not found.
     return next(new ApplicationError("I don't know that path!", 'Page Not Found', 404));
 });
-
 
 
 // STAGE 5: DEFINING ERROR HANDLING MIDDLEWARE FUNCTIONS //

@@ -16,6 +16,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Restructuring">Restructuring</a></li>
 <li><a href="#ReviewCRUD">Review CRUD</a></li>
 <li><a href="#Validations">Validations</a></li>
 <li><a href="#Styles">Styles</a></li>
@@ -24,6 +25,12 @@
 </ul>
 
 <h2 id="Sep22">September 2022</h2>
+
+<h3 id="Restructuring">Restructuring Update 2.0V (Major Update)</h3>
+
+1. Install connect-flash node module.
+2. Add Flash partial to show success and error messages to user.
+3. Modify models, routes, views, layout and YelpCamp to support Flash.
 
 ### Restructuring Update 1.9V
 

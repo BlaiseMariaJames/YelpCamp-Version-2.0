@@ -2,20 +2,7 @@
 const express = require("express");
 
 // CREATING ROUTER INSTANCE 
-const router = express.Router(
-    /* Setting mergeParams to true will merge request.params of the main app file to this file.
-    
-    Use case:
-    =========
-    
-    The router object cannot access the campground id even though if it is specified in the URL ('/campgrounds/:campgroundId/reviews'). 
-    It is because the router object adds the string '/campgrounds/:campgroundId/reviews' after requiring this file in the main app.
-    Therefore the campgroundId is not accessible through request.params in this file rather can be only be accessed in main app.
-    And hence we merge the request.params of the main app with this file to access the parameters.
-    
-    */
-    { mergeParams: true }
-);
+const router = express.Router({ mergeParams: true });
 
 // REQUIRING APPLICATION ERROR HANDLER CLASS 
 const ApplicationError = require("../utilities/Application Error Handler Class.js");
@@ -41,8 +28,8 @@ router.post('/', handleAsyncErrors(async (request, response, next) => {
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
         // Below two lines of code will redirect to the same page and make user aware of errors.
-        errorMessage = `Cannot create review, ${errorMessage}.`;
-        response.status(400).render('campgrounds/Show', { title: campground.title, error: errorMessage, campground });
+        request.flash('error', `Cannot create review, ${errorMessage}.`);
+        response.status(400).redirect(`/campgrounds/${campgroundId}`);
         // Use below code to redirect to Error Page and make user aware of errors.
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
@@ -51,6 +38,7 @@ router.post('/', handleAsyncErrors(async (request, response, next) => {
         await newReview.save();
         campground.reviews.push(newReview);
         await campground.save();
+        request.flash('success', 'Successfully created a new Review!');
         response.redirect(`/campgrounds/${campground._id}`);
     }
 }));
@@ -61,6 +49,7 @@ router.delete('/:reviewId', handleAsyncErrors(async (request, response, next) =>
     const campground = await Campground.findByIdAndUpdate(campgroundId, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId)
         .then(() => {
+            request.flash('success', 'Successfully deleted the Review!');
             response.redirect(`/campgrounds/${campground._id}`);
         })
         .catch((error) => {
