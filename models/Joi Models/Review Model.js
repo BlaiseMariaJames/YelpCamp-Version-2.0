@@ -7,4 +7,5 @@ const ReviewSchema = Joi.object({
     rating: Joi.number().min(1).max(5).required()
 });
 
+// EXPORTING REVIEW SCHEMA
 module.exports = ReviewSchema; 

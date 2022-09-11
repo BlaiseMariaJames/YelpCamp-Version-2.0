@@ -26,6 +26,12 @@
 
 <h2 id="Sep22">September 2022</h2>
 
+### Authentication Update 2.1V
+
+1. Install passport, passport-local, passport-local-mongoose node modules.
+2. Define mongoose schema, joi schema and create User Model.
+3. Modify YelpCamp to configure passport on User Model.
+
 <h3 id="Restructuring">Restructuring Update 2.0V (Major Update)</h3>
 
 1. Install connect-flash node module.

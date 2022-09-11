@@ -10,4 +10,5 @@ const CampgroundSchema = Joi.object({
     description: Joi.string().allow('')
 });
 
+// EXPORTING CAMPGROUND SCHEMA
 module.exports = CampgroundSchema;  

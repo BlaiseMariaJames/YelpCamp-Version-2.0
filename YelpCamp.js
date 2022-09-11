@@ -1,4 +1,4 @@
-// STAGE 1: SETTING THE SERVER, VIEW ENGINE, ASSETS, SESSIONS, FORM/JSON DATA AND PATHS //
+// STAGE 1: SETTING THE APPLICATION //
 
 // REQUIRING NODE MODULES
 const path = require("path");
@@ -6,9 +6,11 @@ const morgan = require("morgan");
 const express = require("express");
 const ejsMate = require("ejs-mate");
 const mongoose = require("mongoose");
+const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
 const methodOverride = require("method-override");
+const passportLocalStrategy = require("passport-local");
 
 // STARTING THE SERVER
 let portNumber = 8888;
@@ -23,9 +25,19 @@ application.set('views', path.join(__dirname, '/views'));
 application.use(express.json());
 application.use(express.urlencoded({ extended: true }));
 
+// DEFINING HTTP VERBS
+application.use(methodOverride('_method'));
+
 // SERVING STATIC ASSETS IN EXPRESS AND SETTING THE 'PUBLIC' PATH
 application.use(express.static('public'));
 application.set('public', path.join(__dirname, '/public'));
+
+// REQUIRING APPLICATION ERROR HANDLER CLASS 
+const ApplicationError = require("./utilities/Application Error Handler Class.js");
+
+
+
+// STAGE 2: CONFIGURATION OF MIDDLEWARES //
 
 // CONFIGURING SESSIONS
 const sessionConfig = {
@@ -42,31 +54,15 @@ const sessionConfig = {
 }
 application.use(session(sessionConfig));
 
-
-// STAGE 2: DEFINING ERROR HANDLER, FUNCTIONS, LOGGER AND HTTP VERBS //
-
-// REQUIRING APPLICATION ERROR HANDLER CLASS 
-const ApplicationError = require("./utilities/Application Error Handler Class.js");
-
-// FUNCTION TO START LISTENING TO THE SERVER
-function startServer() {
-    // LISTENING TO THE SERVER
-    application.listen(portNumber, () => {
-        console.log("\nStarting the server...");
-        console.log(`Listening at the port ${portNumber}!`);
-    });
-}
-
-// FUNCTION TO HELP MORGAN LOGGER MIDDLEWARE
+// CONFIGURING MORGAN
 function print(request, response, next) {
     console.log();
     next();
 }
-
-// USING MIDDLEWARES
-application.use(flash());
 application.use(print, morgan('tiny'));
-application.use(methodOverride('_method'));
+
+// CONFIGURING FLASH
+application.use(flash());
 
 // DEFINING FLASH MIDDLEWARE TO FLASH SUCCESS AND ERRORS (IF ANY) AT EVERY ROUTE
 application.use((request, response, next) => {
@@ -74,6 +70,19 @@ application.use((request, response, next) => {
     response.locals.success = request.flash('success');
     next();
 });
+
+// CONFIGURING PASSPORT
+application.use(passport.initialize());
+application.use(passport.session());
+
+// REQUIRING USER MODEL
+const User = require("./models/Mongoose Models/User Model.js");
+
+// CONFIGURING PASSPORT TO USE LOCAL STRATEGY ON USER MODEL
+passport.use(new passportLocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 
 
 // STAGE 3: CONNECTING TO DATABASE //
@@ -94,8 +103,13 @@ databaseConnection.on("error", console.error.bind(console, "\nError!, Couldn't c
 databaseConnection.once("open", async () => {
     console.log("\nConnecting to the database...");
     console.log("We are connected to the database and are good to go!");
-    startServer();
+    // LISTENING TO THE SERVER
+    application.listen(portNumber, () => {
+        console.log("\nStarting the server...");
+        console.log(`Listening at the port ${portNumber}!`);
+    });
 });
+
 
 
 // STAGE 4: RESPONDING TO THE SERVER //
@@ -124,6 +138,7 @@ application.all('*', (request, response, next) => {
     // ERROR HANDLED : Path not found.
     return next(new ApplicationError("I don't know that path!", 'Page Not Found', 404));
 });
+
 
 
 // STAGE 5: DEFINING ERROR HANDLING MIDDLEWARE FUNCTIONS //
