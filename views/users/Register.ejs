@@ -1,0 +1,44 @@
+<% layout('/layouts/BoilerPlate') %>
+    <div class="row">
+        <h1 class="text-center">Create a new account</h1>
+        <div class="col-6 offset-3">
+            <p style="color: red;" class="mt-2">* Mandatory Fields</p>
+            <form action="/register" method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Enter Username<span style="color: red;">*</span> :
+                    </label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username"
+                        required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a valid username.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Enter Email<span style="color: red;">*</span> :
+                    </label>
+                    <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Enter Password<span style="color: red;">*</span> :
+                    </label>
+                    <input type="password" class="form-control" name="password" id="password"
+                        placeholder="Enter Password" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a valid password.
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">Register</button>
+                <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+            </form>
+            <a href="/campgrounds" class="btn btn-secondary btn-sm mt-3">Go Back</a>
+        </div>
+    </div>

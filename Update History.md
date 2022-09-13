@@ -26,6 +26,11 @@
 
 <h2 id="Sep22">September 2022</h2>
 
+### Authentication Update 2.2V
+
+1. Create Login route and view.
+2. Create Register route and view.
+
 ### Authentication Update 2.1V
 
 1. Install passport, passport-local, passport-local-mongoose node modules.

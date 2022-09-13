@@ -1,0 +1,36 @@
+<% layout('/layouts/BoilerPlate') %>
+    <div class="row">
+        <h1 class="text-center">Login to Continue</h1>
+        <div class="col-6 offset-3">
+            <p style="color: red;" class="mt-2">* Mandatory Fields</p>
+            <form action="/login" method="post" class="needs-validation" novalidate>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Enter Username<span style="color: red;">*</span> :
+                    </label>
+                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username"
+                        required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a valid username.
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Enter Password<span style="color: red;">*</span> :
+                    </label>
+                    <input type="password" class="form-control" name="password" id="password"
+                        placeholder="Enter Password" required>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a valid password.
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">Login</button>
+                <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+            </form>
+            <a href="/campgrounds" class="btn btn-secondary btn-sm mt-3">Go Back</a>
+        </div>
+    </div>

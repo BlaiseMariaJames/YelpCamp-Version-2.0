@@ -120,6 +120,12 @@ databaseConnection.once("open", async () => {
 const campgroundRouteHandler = require("./routes/Campground Routes");
 application.use('/campgrounds', campgroundRouteHandler);
 
+// USER MODEL BASED ROUTES
+
+// REQUIRING USER ROUTES HANDLER
+const userRouteHandler = require("./routes/User Routes");
+application.use('/', userRouteHandler);
+
 // REVIEW MODEL BASED ROUTES
 
 // REQUIRING REVIEW ROUTES HANDLER
