@@ -15,28 +15,37 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">
-                                <b>About:</b>
-                                <%= (campground.description) ? campground.description : "None" %>
-                            </li>
-                            <li class="list-group-item">
                                 <b>Registration Id:</b>
                                 <%=campground._id %>
                             </li>
                             <li class="list-group-item">
+                                <b>Suggested By:</b>
+                                <%= campground.author.username %>
+                            </li>
+                            <li class="list-group-item">
                                 <b>Price:</b> Rs. <%=campground.price %>/-
                             </li>
+                            <li class="list-group-item">
+                                <b>About:</b>
+                                <%= (campground.description) ? campground.description : "None" %>
+                            </li>
                         </ul>
-                        <div class="card-body">
-                            <a href="/campgrounds" class="card-link btn btn-secondary btn-sm">Go Back</a>
-                            <a href="/campgrounds/<%=campground._id%>/edit"
-                                class="card-link btn btn-warning btn-sm">Edit</a>
-                            <a href="/campgrounds/<%=campground._id%>/remove"
-                                class="card-link btn btn-danger btn-sm">Delete</a>
-                        </div>
-                        <% if(!campground.reviews.length) { %>
-                            <div class="card-footer text-muted">No reviews yet.</div>
+                        <% if(currentUser && currentUser.equals(campground.author)) { %>
+                            <div class="card-body">
+                                <a href="/campgrounds" class="card-link btn btn-secondary btn-sm">Go Back</a>
+                                <a href="/campgrounds/<%=campground._id%>/edit"
+                                    class="card-link btn btn-warning btn-sm">Edit</a>
+                                <a href="/campgrounds/<%=campground._id%>/remove"
+                                    class="card-link btn btn-danger btn-sm">Delete</a>
+                            </div>
                             <% } %>
+                                <% if(!campground.reviews.length) { %>
+                                    <div class="card-footer text-muted">No reviews yet.</div>
+                                    <% } %>
             </div>
+            <% if(!(currentUser && currentUser.equals(campground.author))) { %>
+                <a href="/campgrounds" class="card-link btn btn-secondary btn-sm mt-3">Go Back</a>
+                <% } %>
         </div>
         <div class="col-6">
             <% if(campground.reviews.length) { %>

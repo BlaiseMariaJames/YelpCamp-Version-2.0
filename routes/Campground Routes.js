@@ -30,6 +30,7 @@ router.get('/new', isNotLoggedIn, (request, response) => {
 // Create --> Creates new campground on server.
 router.post('/', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     let { campground } = request.body;
+    campground.author = request.user._id.toString();
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
@@ -55,7 +56,7 @@ router.get('/:id', isNotLoggedIn, handleAsyncErrors(async (request, response, ne
     if (!ObjectID.isValid(id)) {
         return next(new ApplicationError("Sorry!, Invalid Campground ID. We couldn't find the campground!", 'Invalid Campground ID', 400));
     }
-    const campground = await Campground.findById(id).populate('reviews');
+    const campground = await Campground.findById(id).populate('reviews').populate('author');
     if (!campground) {
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));
@@ -66,7 +67,7 @@ router.get('/:id', isNotLoggedIn, handleAsyncErrors(async (request, response, ne
 // Index --> Display all campgrounds.
 router.get('/', handleAsyncErrors(async (request, response, next) => {
     let errorMessage = "";
-    let campgrounds = await Campground.find({});
+    let campgrounds = await Campground.find({}).populate('author');
     if (campgrounds.length > 0) {
         response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, errorMessage });
     } else {
@@ -84,7 +85,7 @@ router.get('/:id/edit', isNotLoggedIn, handleAsyncErrors(async (request, respons
     if (!ObjectID.isValid(id)) {
         return next(new ApplicationError("Sorry!, Invalid Campground ID. We couldn't find the campground!", 'Invalid Campground ID', 400));
     }
-    const campground = await Campground.findById(id);
+    const campground = await Campground.findById(id).populate('author');
     if (!campground) {
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));

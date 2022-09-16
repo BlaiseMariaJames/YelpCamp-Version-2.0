@@ -27,6 +27,12 @@
 
 <h2 id="Sep22">September 2022</h2>
 
+### Authorization Update 2.4V
+
+1. Modify Campground routes and views to associate Campground Model to User Model.
+2. Modify Add Camps to Database to associate default campgrounds to a default user.
+3. Modify Campground joi schema and mongoose schema to associate Campground Model to User Model.
+
 <h3 id="Authentication">Authentication Update 2.3V</h3>
 
 1. Define middleware functions to login or logout an user.

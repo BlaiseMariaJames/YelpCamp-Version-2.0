@@ -1,6 +1,7 @@
-// REQUIRING MONGOOSE AND CAMPGROUND MODEL
+// REQUIRING MONGOOSE, USER AND CAMPGROUND MODEL
 const mongoose = require("mongoose");
-const Campground = require("../../models/Campground Model.js");
+const User = require("../../models/Mongoose Models/User Model.js");
+const Campground = require("../../models/Mongoose Models/Campground Model.js");
 
 // REQUIRING DATA
 const cities = require("./Cities.js");
@@ -35,7 +36,20 @@ async function createProgressBar(i) {
 async function seedData() {
     // Delete any existing camp.
     await Campground.deleteMany({});
+    // Delete any existing user.
+    await User.deleteMany({});
+    // Create a new user account
+    const newUser = User({
+        username: 'BlaiseMariaJamesPalackeel',
+        email: 'blaisemariajamespalackeel@gmail.com',
+        salt: '94512648c8fecd71a96444521b6cbdbaa89830504ba876f7598878523e35f321',
+        hash: '50df686ad987d8bdfea3cdd965f8c15eecb9dd52251b29405666e93fa8f48ea7b0da8d6198eb872dadd3646bb1b86fa1e63c6206f0862a56c8036139b9f2c89d921fd983460682bfe4124cc29c4517e0d1f154fe7556cbc15342e7bed40c24135b1e15523b404f3a88c8f79a1d7c64823909d487369b75298653ef48f4ca39631fb2ea30155398f6296ba7833a3753e8939a58eabacbb3b0f57dfe9a9f6102e08736c07335f87d22080ae2a3f350fe09027d4bab3387c39350e9e83669143e9de7496bd2a8268add24a695817bc4d6d58d5474e02d50f37ce55d6aaa38740f478d55acdbeb2b923e8fc976b1ebdffd42a7c9b0ffb78b0d7be4a4491f93b4acb78f9fabd9cf9291dc8d89b2a44a7ffe855aee414e0433e5d8563d3d5ad77b7ac9d5e5ff66eaa59cf033a1a8972ad056c9c5b365879456f1fcbeaa9fd71deff7558703e4df55b06d9888d7ac6997f2fcb3b9c37b07368a6c25b0ddfc8d4196e45f246eb9ac95713f9e9f0e0468e94fceefb6332b8dd7180aef63f317663a4b4040b5f0f1ab0433101ce6f05dfb119a90c5481d513967ab35fe149e14687ec3c9c4d835e4ba5b053834db353bec1ce1d178649cf3395e1900ac3c004559b8fbc74d22a1bdfe4092c4de59d39611719dcd81d12e3e966c4180de5ed88b63d90d3244bac91b83ea5c87cfba5693c0c04490f42919b747fb7184d43264655f5c2c294c'
+    });
+    await newUser.save();
     for (let i = 0; i < 50; i++) {
+        // Assign same author.
+        const oldAuthor = await User.findOne({ username: 'BlaiseMariaJamesPalackeel' });
+        const author = oldAuthor._id.toString();
         // Select a random title.
         const title = `${findRandom(descriptors)} ${findRandom(places)}`;
         // Select random images (One for now).
@@ -48,7 +62,7 @@ async function seedData() {
         // Random description
         const description = 'An awesome place awaits you...';
         // Creating new camp
-        const camp = new Campground({ title, imageURL, price, location, description });
+        const camp = new Campground({ author, title, imageURL, price, location, description });
         await camp.save()
             .then(async () => {
                 // CREATE PROGRESS BAR

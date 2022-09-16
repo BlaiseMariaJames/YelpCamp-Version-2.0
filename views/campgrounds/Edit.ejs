@@ -13,6 +13,11 @@
                                 readonly>
                         </div>
                         <div class="mb-3">
+                            <label for="author" class="form-label">Author Id : </label>
+                            <input type="text" class="form-control" name="campground[author]" id="author"
+                                value="<%=campground.author._id%>" readonly>
+                        </div>
+                        <div class="mb-3">
                             <label for="title" class="form-label">Campground Title<span style="color: red;">*</span> :
                             </label>
                             <input type="text" class="form-control" name="campground[title]" id="title"

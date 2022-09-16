@@ -1,5 +1,6 @@
-// REQUIRING MONGOOSE
+// REQUIRING MONGOOSE AND OBJECT ID
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 // STORING SCHEMA OBJECT INTO A VARIABLE
 const Schema = mongoose.Schema;
@@ -9,6 +10,11 @@ const Review = require("./Review Model");
 
 // DEFINING CAMPGROUND SCHEMA
 const CampgroundSchema = new Schema({
+    author: {
+        type: ObjectId,
+        ref: 'User',
+        required: [true, "The field 'author' is mandatory"]
+    },
     title: {
         type: String,
         required: [true, "The field 'title' is mandatory"]
