@@ -11,6 +11,9 @@ const ApplicationError = require("../utilities/Application Error Handler Class.j
 // REQUIRING WRAPPER FUNCTION TO HANDLE ASYNC ERRORS
 const handleAsyncErrors = require("../utilities/Async Error Handling Middleware Function.js");
 
+// REQUIRING MIDDLEWARE FUNCTION TO CHECK IF NO USER IS LOGGED IN 
+const isNotLoggedIn = require("../utilities/Check If Not Logged In Middleware Function.js");
+
 // REQUIRING CAMPGROUND MODEL AND SCHEMA
 const Campground = require("../models/Mongoose Models/Campground Model.js");
 const CampgroundSchema = require("../models/Joi Models/Campground Model.js");
@@ -20,12 +23,12 @@ const CampgroundSchema = require("../models/Joi Models/Campground Model.js");
 // CREATE OPERATION ROUTES
 
 // New --> Form to create a new campground.
-router.get('/new', (request, response) => {
+router.get('/new', isNotLoggedIn, (request, response) => {
     response.render('campgrounds/New', { title: "New Campground" });
 });
 
 // Create --> Creates new campground on server.
-router.post('/', handleAsyncErrors(async (request, response, next) => {
+router.post('/', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     let { campground } = request.body;
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
@@ -46,7 +49,7 @@ router.post('/', handleAsyncErrors(async (request, response, next) => {
 // READ OPERATION ROUTES
 
 // Show --> Details for one specific campground.
-router.get('/:id', handleAsyncErrors(async (request, response, next) => {
+router.get('/:id', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     const { id } = request.params;
     // ERROR HANDLED : Campground not found due to invalid Campground ID. 
     if (!ObjectID.isValid(id)) {
@@ -75,7 +78,7 @@ router.get('/', handleAsyncErrors(async (request, response, next) => {
 // UPDATE OPERATION ROUTES
 
 // Edit --> Form to edit a campground.
-router.get('/:id/edit', handleAsyncErrors(async (request, response, next) => {
+router.get('/:id/edit', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     const { id } = request.params;
     // ERROR HANDLED : Campground not found due to invalid Campground ID. 
     if (!ObjectID.isValid(id)) {
@@ -90,7 +93,7 @@ router.get('/:id/edit', handleAsyncErrors(async (request, response, next) => {
 }));
 
 // Update --> Updates a campground on server.
-router.patch('/', handleAsyncErrors(async (request, response, next) => {
+router.patch('/', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     let { id, campground } = request.body;
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
@@ -113,7 +116,7 @@ router.patch('/', handleAsyncErrors(async (request, response, next) => {
 // DELETE OPERATIONS ROUTES
 
 // Remove --> Form to remove a campground.
-router.get('/:id/remove', handleAsyncErrors(async (request, response, next) => {
+router.get('/:id/remove', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     const { id } = request.params;
     // ERROR HANDLED : Campground not found due to invalid Campground ID. 
     if (!ObjectID.isValid(id)) {
@@ -128,7 +131,7 @@ router.get('/:id/remove', handleAsyncErrors(async (request, response, next) => {
 }));
 
 // Delete --> Deletes a campground on server.
-router.delete('/', handleAsyncErrors(async (request, response, next) => {
+router.delete('/', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     const { id } = request.body;
     await Campground.findByIdAndDelete(id)
         .then(() => {

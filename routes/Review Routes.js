@@ -10,6 +10,9 @@ const ApplicationError = require("../utilities/Application Error Handler Class.j
 // REQUIRING WRAPPER FUNCTION TO HANDLE ASYNC ERRORS
 const handleAsyncErrors = require("../utilities/Async Error Handling Middleware Function.js");
 
+// REQUIRING MIDDLEWARE FUNCTION TO CHECK IF NO USER IS LOGGED IN 
+const isNotLoggedIn = require("../utilities/Check If Not Logged In Middleware Function.js");
+
 // REQUIRING REVIEW MODEL AND SCHEMA
 const Review = require("../models/Mongoose Models/Review Model.js");
 const ReviewSchema = require("../models/Joi Models/Review Model.js");
@@ -20,7 +23,7 @@ const Campground = require("../models/Mongoose Models/Campground Model.js");
 // RESPONDING TO THE SERVER AT REVIEW MODEL BASED ROUTE
 
 // Create --> Creates new review on server.
-router.post('/', handleAsyncErrors(async (request, response, next) => {
+router.post('/', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     let { campgroundId } = request.params;
     let { review } = request.body;
     const { error } = ReviewSchema.validate(review);
@@ -44,7 +47,7 @@ router.post('/', handleAsyncErrors(async (request, response, next) => {
 }));
 
 // Delete --> Deletes a review on server.
-router.delete('/:reviewId', handleAsyncErrors(async (request, response, next) => {
+router.delete('/:reviewId', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
     const { campgroundId, reviewId } = request.params;
     const campground = await Campground.findByIdAndUpdate(campgroundId, { $pull: { reviews: reviewId } });
     await Review.findByIdAndDelete(reviewId)

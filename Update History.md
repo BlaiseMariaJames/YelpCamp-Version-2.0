@@ -16,6 +16,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Authentication">Authentication</a></li>
 <li><a href="#Restructuring">Restructuring</a></li>
 <li><a href="#ReviewCRUD">Review CRUD</a></li>
 <li><a href="#Validations">Validations</a></li>
@@ -25,6 +26,12 @@
 </ul>
 
 <h2 id="Sep22">September 2022</h2>
+
+<h3 id="Authentication">Authentication Update 2.3V</h3>
+
+1. Define middleware functions to login or logout an user.
+2. Modify routes to add protection by authenticating an user.
+3. Modify Navbar partial to support login, register and logout of an user. 
 
 ### Authentication Update 2.2V
 

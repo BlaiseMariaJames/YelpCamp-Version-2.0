@@ -64,13 +64,6 @@ application.use(print, morgan('tiny'));
 // CONFIGURING FLASH
 application.use(flash());
 
-// DEFINING FLASH MIDDLEWARE TO FLASH SUCCESS AND ERRORS (IF ANY) AT EVERY ROUTE
-application.use((request, response, next) => {
-    response.locals.error = request.flash('error');
-    response.locals.success = request.flash('success');
-    next();
-});
-
 // CONFIGURING PASSPORT
 application.use(passport.initialize());
 application.use(passport.session());
@@ -82,6 +75,14 @@ const User = require("./models/Mongoose Models/User Model.js");
 passport.use(new passportLocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+// DEFINING MIDDLEWARE TO ACCESS THE USER LOGGED IN, FLASH MESSAGES SUCCESS AND ERRORS (IF ANY) AT EVERY ROUTE
+application.use((request, response, next) => {
+    response.locals.currentUser = request.user;
+    response.locals.error = request.flash('error');
+    response.locals.success = request.flash('success');
+    next();
+});
 
 
 
