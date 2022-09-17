@@ -27,6 +27,11 @@
 
 <h2 id="Sep22">September 2022</h2>
 
+### Authorization Update 2.5V
+
+1. Add middleware function to authorize a user to edit or delete a campground.
+2. Modify Campground edit and delete routes to authorize the user by using middlware function.
+
 ### Authorization Update 2.4V
 
 1. Modify Campground routes and views to associate Campground Model to User Model.
