@@ -1,6 +1,7 @@
-// REQUIRING MONGOOSE, USER AND CAMPGROUND MODEL
+// REQUIRING MONGOOSE, USER, REVIEW AND CAMPGROUND MODEL
 const mongoose = require("mongoose");
 const User = require("../../models/Mongoose Models/User Model.js");
+const Review = require("../../models/Mongoose Models/Review Model.js");
 const Campground = require("../../models/Mongoose Models/Campground Model.js");
 
 // REQUIRING DATA
@@ -38,7 +39,9 @@ async function seedData() {
     await Campground.deleteMany({});
     // Delete any existing user.
     await User.deleteMany({});
-    // Create a new user account
+    // Delete any existing review.
+    await Review.deleteMany({});
+    // Create a new user account.
     const newUser = User({
         username: 'BlaiseMariaJamesPalackeel',
         email: 'blaisemariajamespalackeel@gmail.com',
@@ -59,9 +62,9 @@ async function seedData() {
         price -= price % 500;
         // Select a random location.
         const location = `${findRandom(cities).city}, ${findRandom(cities).state}`;
-        // Random description
+        // Random description.
         const description = 'An awesome place awaits you...';
-        // Creating new camp
+        // Creating new camp.
         const camp = new Campground({ author, title, imageURL, price, location, description });
         await camp.save()
             .then(async () => {

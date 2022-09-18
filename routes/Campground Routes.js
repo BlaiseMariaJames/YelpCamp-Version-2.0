@@ -53,13 +53,13 @@ router.post('/', isNotLoggedIn, handleAsyncErrors(async (request, response, next
 // READ OPERATION ROUTES
 
 // Show --> Details for one specific campground.
-router.get('/:id', isNotLoggedIn, handleAsyncErrors(async (request, response, next) => {
+router.get('/:id', handleAsyncErrors(async (request, response, next) => {
     const { id } = request.params;
     // ERROR HANDLED : Campground not found due to invalid Campground ID. 
     if (!ObjectID.isValid(id)) {
         return next(new ApplicationError("Sorry!, Invalid Campground ID. We couldn't find the campground!", 'Invalid Campground ID', 400));
     }
-    const campground = await Campground.findById(id).populate('reviews').populate('author');
+    const campground = await Campground.findById(id).populate({ path: 'reviews', populate: { path: 'author' } }).populate('author');
     if (!campground) {
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));

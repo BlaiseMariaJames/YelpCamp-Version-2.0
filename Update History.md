@@ -16,6 +16,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Authorization">Authorization</a></li>
 <li><a href="#Authentication">Authentication</a></li>
 <li><a href="#Restructuring">Restructuring</a></li>
 <li><a href="#ReviewCRUD">Review CRUD</a></li>
@@ -26,6 +27,12 @@
 </ul>
 
 <h2 id="Sep22">September 2022</h2>
+
+<h3 id="Authorization">Authorization Update 2.6V</h3>
+
+1. Add middleware function to authorize a user to delete a review.
+2. Modify Review joi schema and mongoose schema to associate Review Model to User Model.
+3. Modify Review delete route and Campground Show view to authorize the user by using middlware function. 
 
 ### Authorization Update 2.5V
 

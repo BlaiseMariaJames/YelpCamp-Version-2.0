@@ -56,6 +56,9 @@
                     <div class="card-body">
                         <% for(let review of campground.reviews) { %>
                             <div class="card mb-3">
+                                <div class="card-header">
+                                    <%=review.author.username%>
+                                </div>
                                 <ul class="list-group list-group-flush">
                                     <li class="list-group-item">
                                         <b>Rating:</b>
@@ -63,16 +66,19 @@
                                             <%= (review.rating==1) ? "star" : "stars" %>
                                     </li>
                                     <li class="list-group-item">
+                                        <b>Review:</b>
                                         <%= review.body %>
                                     </li>
                                 </ul>
-                                <div class="card-body">
-                                    <form
-                                        action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
-                                        method="post">
-                                        <button class="card-link btn btn-danger btn-sm">Delete</button>
-                                    </form>
-                                </div>
+                                <% if(currentUser && currentUser.equals(review.author)) { %>
+                                    <div class="card-body">
+                                        <form
+                                            action="/campgrounds/<%=campground._id%>/reviews/<%=review._id%>?_method=DELETE"
+                                            method="post">
+                                            <button class="card-link btn btn-danger btn-sm">Delete</button>
+                                        </form>
+                                    </div>
+                                    <% } %>
                             </div>
                             <% } %>
                     </div>
@@ -82,33 +88,41 @@
                         <div class="card-header">
                             <h4>Leave a Review</h4>
                         </div>
-                        <div class="card-body">
-                            <p style="color: red;" class="mb-2">* Mandatory Fields</p>
-                            <form action="/campgrounds/<%=campground._id%>/reviews" method="post"
-                                class="needs-validation" novalidate>
-                                <div class="mb-3">
-                                    <label for="rating" class="form-label">Rating<span style="color: red;">*</span>
-                                        :
-                                    </label>
-                                    <input class="form-range" type="range" min="1" max="5" step="1"
-                                        name="review[rating]" id="rating">
-                                </div>
-                                <div class="mb-3">
-                                    <label for="body" class="form-label">Review<span style="color: red;">*</span> :
-                                    </label>
-                                    <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"
-                                        placeholder="Give us your feedback" required></textarea>
-                                    <div class="valid-feedback">
-                                        Looks good!
+                        <% if(currentUser) { %>
+                            <div class="card-body">
+                                <p style="color: red;" class="mb-2">* Mandatory Fields</p>
+                                <form action="/campgrounds/<%=campground._id%>/reviews" method="post"
+                                    class="needs-validation" novalidate>
+                                    <div class="mb-3">
+                                        <label for="rating" class="form-label">Rating<span style="color: red;">*</span>
+                                            :
+                                        </label>
+                                        <input class="form-range" type="range" min="1" max="5" step="1"
+                                            name="review[rating]" id="rating">
                                     </div>
-                                    <div class="invalid-feedback">
-                                        Please provide us your feeback.
+                                    <div class="mb-3">
+                                        <label for="body" class="form-label">Review<span style="color: red;">*</span> :
+                                        </label>
+                                        <textarea class="form-control" name="review[body]" id="body" cols="30" rows="3"
+                                            placeholder="Give us your feedback" required></textarea>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please provide us your feeback.
+                                        </div>
                                     </div>
+                                    <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                                    <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+                                </form>
+                            </div>
+                            <% } else { %>
+                                <div class="card-body">
+                                    <h6 class="card-title mb-3">Login or Register to Continue</h6>
+                                    <a class="btn btn-primary btn-sm" href="/login">Login</a>
+                                    <a class="btn btn-success btn-sm" href="/register">Register</a>
                                 </div>
-                                <button type="submit" class="btn btn-success btn-sm">Submit</button>
-                                <button type="reset" class="btn btn-danger btn-sm">Reset</button>
-                            </form>
-                        </div>
+                                <% } %>
                     </div>
         </div>
     </div>
