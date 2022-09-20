@@ -16,6 +16,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Refactoring">Refactoring</a></li>
 <li><a href="#Authorization">Authorization</a></li>
 <li><a href="#Authentication">Authentication</a></li>
 <li><a href="#Restructuring">Restructuring</a></li>
@@ -27,6 +28,10 @@
 </ul>
 
 <h2 id="Sep22">September 2022</h2>
+
+<h3 id="Refactoring">Refactoring Update 2.7V</h3>
+
+1. Add controllers and refactor routes of all models.
 
 <h3 id="Authorization">Authorization Update 2.6V</h3>
 

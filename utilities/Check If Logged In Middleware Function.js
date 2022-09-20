@@ -1,5 +1,5 @@
-// DEFINING MIDDLEWARE FUNCTION TO CHECK IF NO USER IS LOGGED IN
-function checkIfNotLoggedIn(request, response, next) {
+// REQUIRING MIDDLEWARE FUNCTION TO CHECK IF USER IS LOGGED IN 
+function checkIfLoggedIn(request, response, next) {
     if (!request.isAuthenticated()) {
         request.session.returnTo = request.originalUrl;
         request.flash('error', 'Please Login to Continue!');
@@ -8,4 +8,4 @@ function checkIfNotLoggedIn(request, response, next) {
     next();
 }
 
-module.exports = checkIfNotLoggedIn;
+module.exports = checkIfLoggedIn;
