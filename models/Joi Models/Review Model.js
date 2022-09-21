@@ -6,7 +6,7 @@ Joi.objectId = require("joi-objectid")(Joi);
 const ReviewSchema = Joi.object({
     author: Joi.objectId().required(),
     body: Joi.string().required().label("review"),
-    rating: Joi.number().min(1).max(5).required()
+    rating: Joi.number().min(0).max(5).required()
 });
 
 // EXPORTING REVIEW SCHEMA

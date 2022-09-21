@@ -16,6 +16,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Star-Rating">Star-Rating</a></li>
 <li><a href="#Refactoring">Refactoring</a></li>
 <li><a href="#Authorization">Authorization</a></li>
 <li><a href="#Authentication">Authentication</a></li>
@@ -29,6 +30,10 @@
 
 <h2 id="Sep22">September 2022</h2>
 
+<h3 id="Star-Rating">Star Rating Update 2.8V</h3>
+
+1. Add star ratings to show view.
+   
 <h3 id="Refactoring">Refactoring Update 2.7V</h3>
 
 1. Add controllers and refactor routes of all models.

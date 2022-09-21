@@ -20,9 +20,9 @@ const ReviewSchema = new Schema({
         type: String,
         validate: {
             validator: function (rating) {
-                return /^[1-5]$/.test(rating);
+                return /^[0-5]$/.test(rating);
             },
-            message: "Rating of the campground has to be a number within the range 1-5"
+            message: "Rating of the campground has to be a number within the range 0-5"
         },
         required: [true, "The rating of a review cannot be empty"]
     }
