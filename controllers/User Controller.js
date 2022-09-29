@@ -1,9 +1,9 @@
-// REQUIRING APPLICATION ERROR HANDLER CLASS 
-const ApplicationError = require("../utilities/Application Error Handler Class.js");
-
 // REQUIRING USER MODEL AND SCHEMA
 const User = require("../models/Mongoose Models/User Model.js");
 const UserSchema = require("../models/Joi Models/User Model.js");
+
+// REQUIRING APPLICATION ERROR HANDLER CLASS 
+const ApplicationError = require("../utilities/Error Handling/Application Error Handler Class.js");
 
 // Register --> Form to register a new user.
 module.exports.renderRegisterForm = (request, response) => {

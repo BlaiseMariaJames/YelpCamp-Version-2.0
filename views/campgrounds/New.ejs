@@ -17,11 +17,15 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">Enter Campground Image URL (Optional) : </label>
-                    <input type="text" class="form-control" name="campground[imageURL]" id="image"
-                        placeholder="Enter campground image url">
+                    <label for="location" class="form-label">Enter Campground Location<span style="color: red;">*</span>
+                        : </label>
+                    <input type="text" class="form-control" name="campground[location]" id="location"
+                        placeholder="Enter campground location" required>
                     <div class="valid-feedback">
                         Looks good!
+                    </div>
+                    <div class="invalid-feedback">
+                        Please provide a valid location.
                     </div>
                 </div>
                 <div class="mb-3">
@@ -40,15 +44,11 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="location" class="form-label">Enter Campground Location<span style="color: red;">*</span>
-                        : </label>
-                    <input type="text" class="form-control" name="campground[location]" id="location"
-                        placeholder="Enter campground location" required>
+                    <label for="image" class="form-label">Enter Campground Image URL (Optional) : </label>
+                    <input type="text" class="form-control" name="campground[imageURL]" id="image"
+                        placeholder="Enter campground image url">
                     <div class="valid-feedback">
                         Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Please provide a valid location.
                     </div>
                 </div>
                 <div class="mb-3">

@@ -9,13 +9,13 @@ const router = express.Router();
 const User = require("../controllers/User Controller");
 
 // REQUIRING WRAPPER FUNCTION TO HANDLE ASYNC ERRORS
-const handleAsyncErrors = require("../utilities/Async Error Handling Middleware Function.js");
+const handleAsyncErrors = require("../utilities/Error Handling/Async Error Handling Middleware Function.js");
 
 // REQUIRING MIDDLEWARE FUNCTION TO CHECK IF ANY USER IS ALREADY LOGGED IN 
-const isAlreadyLoggedIn = require("../utilities/Check If Already Logged In Middleware Function.js");
+const isAlreadyLoggedIn = require("../utilities/Authentication/Check If Already Logged In.js");
 
 // REQUIRING MIDDLEWARE FUNCTION TO CHECK IF ANY USER IS ALREADY LOGGED OUT
-const isAlreadyLoggedOut = require("../utilities/Check If Already Logged Out Middleware Function.js");
+const isAlreadyLoggedOut = require("../utilities/Authentication/Check If Already Logged Out.js");
 
 // RESPONDING TO THE SERVER AT USER MODEL BASED ROUTE
 

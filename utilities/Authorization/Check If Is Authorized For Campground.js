@@ -1,12 +1,12 @@
 // REQUIRING CAMPGROUND MODEL AND OBJECT ID
-const Campground = require("../models/Mongoose Models/Campground Model.js");
+const Campground = require("../../models/Mongoose Models/Campground Model.js");
 const ObjectID = require("mongoose").Types.ObjectId;
 
 // REQUIRING APPLICATION ERROR HANDLER CLASS 
-const ApplicationError = require("../utilities/Application Error Handler Class.js");
+const ApplicationError = require("../../utilities/Error Handling/Application Error Handler Class.js");
 
 // REQUIRING WRAPPER FUNCTION TO HANDLE ASYNC ERRORS
-const handleAsyncErrors = require("../utilities/Async Error Handling Middleware Function.js");
+const handleAsyncErrors = require("../../utilities/Error Handling/Async Error Handling Middleware Function.js");
 
 // DEFINING MIDDLEWARE FUNCTION TO CHECK IF CAMPGROUND ID IS VALID, CAMPGROUND EXISTS AND CURRENT USER IS AUTHORIZED TO EDIT OR DELETE THAT CAMPGROUND
 const isAuthorized = handleAsyncErrors(async (request, response, next) => {

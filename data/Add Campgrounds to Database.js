@@ -1,8 +1,8 @@
 // REQUIRING MONGOOSE, USER, REVIEW AND CAMPGROUND MODEL
 const mongoose = require("mongoose");
-const User = require("../../models/Mongoose Models/User Model.js");
-const Review = require("../../models/Mongoose Models/Review Model.js");
-const Campground = require("../../models/Mongoose Models/Campground Model.js");
+const User = require("../models/Mongoose Models/User Model.js");
+const Review = require("../models/Mongoose Models/Review Model.js");
+const Campground = require("../models/Mongoose Models/Campground Model.js");
 
 // REQUIRING DATA
 const cities = require("./Cities.js");

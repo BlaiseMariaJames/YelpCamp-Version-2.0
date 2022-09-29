@@ -1,8 +1,8 @@
 // REQUIRING REVIEW MODEL
-const Review = require("../models/Mongoose Models/Review Model.js");
+const Review = require("../../models/Mongoose Models/Review Model.js");
 
 // REQUIRING WRAPPER FUNCTION TO HANDLE ASYNC ERRORS
-const handleAsyncErrors = require("../utilities/Async Error Handling Middleware Function.js");
+const handleAsyncErrors = require("../../utilities/Error Handling/Async Error Handling Middleware Function.js");
 
 // DEFINING MIDDLEWARE FUNCTION TO CHECK IF CURRENT USER IS AUTHORIZED TO EDIT OR DELETE A REVIEW
 const isAuthorized = handleAsyncErrors(async (request, response, next) => {

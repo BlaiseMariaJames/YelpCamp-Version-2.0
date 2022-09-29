@@ -8,13 +8,13 @@ const router = express.Router();
 const Campground = require("../controllers/Campground Controller");
 
 // REQUIRING WRAPPER FUNCTION TO HANDLE ASYNC ERRORS
-const handleAsyncErrors = require("../utilities/Async Error Handling Middleware Function.js");
+const handleAsyncErrors = require("../utilities/Error Handling/Async Error Handling Middleware Function.js");
 
 // REQUIRING MIDDLEWARE FUNCTION TO CHECK IF USER IS LOGGED IN 
-const isLoggedIn = require("../utilities/Check If Logged In Middleware Function.js");
+const isLoggedIn = require("../utilities/Authentication/Check If Logged In.js");
 
 // REQUIRING MIDDLEWARE FUNCTION TO CHECK IF CAMPGROUND ID IS VALID, CAMPGROUND EXISTS AND CURRENT USER IS AUTHORIZED
-const isAuthorized = require("../utilities/Check If Is Authorized To Edit Or Delete Campground.js");
+const isAuthorized = require("../utilities/Authorization/Check If Is Authorized For Campground.js");
 
 // RESPONDING TO THE SERVER AT CAMPGROUND MODEL BASED ROUTE
 

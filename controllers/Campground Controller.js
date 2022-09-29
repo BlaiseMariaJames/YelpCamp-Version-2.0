@@ -1,12 +1,12 @@
-// REQUIRING OBJECT ID
+// REQUIRING OBJECT ID 
 const ObjectID = require("mongoose").Types.ObjectId;
-
-// REQUIRING APPLICATION ERROR HANDLER CLASS 
-const ApplicationError = require("../utilities/Application Error Handler Class.js");
 
 // REQUIRING CAMPGROUND MODEL AND SCHEMA
 const Campground = require("../models/Mongoose Models/Campground Model.js");
 const CampgroundSchema = require("../models/Joi Models/Campground Model.js");
+
+// REQUIRING APPLICATION ERROR HANDLER CLASS 
+const ApplicationError = require("../utilities/Error Handling/Application Error Handler Class.js");
 
 // CREATE OPERATION ROUTES
 

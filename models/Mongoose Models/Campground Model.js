@@ -19,8 +19,9 @@ const CampgroundSchema = new Schema({
         type: String,
         required: [true, "The field 'title' is mandatory"]
     },
-    imageURL: {
-        type: String
+    location: {
+        type: String,
+        required: [true, "The field 'location' is mandatory"]
     },
     price: {
         type: String,
@@ -35,9 +36,8 @@ const CampgroundSchema = new Schema({
     description: {
         type: String
     },
-    location: {
-        type: String,
-        required: [true, "The field 'location' is mandatory"]
+    imageURL: {
+        type: String
     },
     reviews: [
         {

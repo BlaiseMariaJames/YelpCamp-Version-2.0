@@ -1,12 +1,12 @@
-// REQUIRING APPLICATION ERROR HANDLER CLASS 
-const ApplicationError = require("../utilities/Application Error Handler Class.js");
+// REQUIRING CAMPGROUND MODEL
+const Campground = require("../models/Mongoose Models/Campground Model.js");
 
 // REQUIRING REVIEW MODEL AND SCHEMA
 const Review = require("../models/Mongoose Models/Review Model.js");
 const ReviewSchema = require("../models/Joi Models/Review Model.js");
 
-// REQUIRING CAMPGROUND MODEL
-const Campground = require("../models/Mongoose Models/Campground Model.js");
+// REQUIRING APPLICATION ERROR HANDLER CLASS 
+const ApplicationError = require("../utilities/Error Handling/Application Error Handler Class.js");
 
 // Create --> Creates new review on server.
 module.exports.createReview = async (request, response, next) => {

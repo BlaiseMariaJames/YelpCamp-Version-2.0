@@ -6,9 +6,9 @@ Joi.objectId = require("joi-objectid")(Joi);
 const CampgroundSchema = Joi.object({
     author: Joi.objectId().required(),
     title: Joi.string().required(),
-    imageURL: Joi.string().allow(''),
-    price: Joi.number().required().min(0),
     location: Joi.string().required(),
+    price: Joi.number().required().min(0),
+    imageURL: Joi.string().allow(''),
     description: Joi.string().allow('')
 });
 

@@ -16,6 +16,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Revamp">Revamp</a></li>
 <li><a href="#Star-Rating">Star-Rating</a></li>
 <li><a href="#Refactoring">Refactoring</a></li>
 <li><a href="#Authorization">Authorization</a></li>
@@ -30,6 +31,10 @@
 
 <h2 id="Sep22">September 2022</h2>
 
+<h3 id="Revamp">Revamp Update 2.9V (Major Update)</h3>
+
+1. Update all files and folders.
+   
 <h3 id="Star-Rating">Star Rating Update 2.8V</h3>
 
 1. Add star ratings to show view.

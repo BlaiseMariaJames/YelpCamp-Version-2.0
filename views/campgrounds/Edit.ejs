@@ -30,13 +30,17 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="imageURL" class="form-label">Campground Image URL (Optional) : </label>
-                            <input type="text" class="form-control" name="campground[imageURL]" id="imageURL"
-                                placeholder="Enter campground image url" <% if(campground.imageURL) { %>
-                            value="<%=campground.imageURL%>"<%}%>>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
+                            <label for="location" class="form-label">Campground Location<span
+                                    style="color: red;">*</span> :
+                            </label>
+                            <input type="text" class="form-control" name="campground[location]" id="location"
+                                placeholder="Enter campground location" value="<%=campground.location%>" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid location.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="price" class="form-label">Campground Price<span style="color: red;">*</span> :
@@ -54,17 +58,13 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="location" class="form-label">Campground Location<span
-                                    style="color: red;">*</span> :
-                            </label>
-                            <input type="text" class="form-control" name="campground[location]" id="location"
-                                placeholder="Enter campground location" value="<%=campground.location%>" required>
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Please provide a valid location.
-                            </div>
+                            <label for="imageURL" class="form-label">Campground Image URL (Optional) : </label>
+                            <input type="text" class="form-control" name="campground[imageURL]" id="imageURL"
+                                placeholder="Enter campground image url" <% if(campground.imageURL) { %>
+                            value="<%=campground.imageURL%>"<%}%>>
+                                    <div class="valid-feedback">
+                                        Looks good!
+                                    </div>
                         </div>
                         <div class="mb-3">
                             <label for="description" class="form-label">Campground Description (Optional) :

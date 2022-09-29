@@ -33,7 +33,7 @@ application.use(express.static('public'));
 application.set('public', path.join(__dirname, '/public'));
 
 // REQUIRING APPLICATION ERROR HANDLER CLASS 
-const ApplicationError = require("./utilities/Application Error Handler Class.js");
+const ApplicationError = require("./utilities/Error Handling/Application Error Handler Class");
 
 
 
