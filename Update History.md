@@ -31,6 +31,11 @@
 </ul>
 
 <h2 id="Oct22">October 2022</h2>
+
+### Image Upload Update 3.1V
+
+1. Update Index view and Add Campgrounds to Database file.
+2. Update Show view to display multiple images using Bootstrap 5 carousel.
   
 ### Image Upload Update 3.0V
 

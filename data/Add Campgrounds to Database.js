@@ -11,9 +11,6 @@ const { descriptors, places } = require("./Places.js");
 // DEFINING FIND RANDOM FUNCTION
 const findRandom = array => array[Math.floor(Math.random() * array.length)];
 
-// DEFINING GET IMAGE URL FUNCTION FROM UNSPLASH API
-const getImageURL = () => `https://source.unsplash.com/collection/483251`;
-
 // DEFINING WAIT FUNCTION
 async function wait(ms) {
     return new Promise(res => setTimeout(res, ms))
@@ -55,8 +52,45 @@ async function seedData() {
         const author = oldAuthor._id.toString();
         // Select a random title.
         const title = `${findRandom(descriptors)} ${findRandom(places)}`;
-        // Select random images (One for now).
-        const imageURL = getImageURL();
+        // Select images
+        const images = [
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662496/YelpCamp%20Related%20Media/kuujmyxmhgqidqxdiryw.avif',
+                filename: 'YelpCamp Related Media/kuujmyxmhgqidqxdiryw'
+            },
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662496/YelpCamp%20Related%20Media/kdp1b460l3i3umhktc1z.avif',
+                filename: 'YelpCamp Related Media/kdp1b460l3i3umhktc1z'
+            },
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662495/YelpCamp%20Related%20Media/fldbpy2bf0ijnoyrdkfl.avif',
+                filename: 'YelpCamp Related Media/fldbpy2bf0ijnoyrdkfl'
+            },
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662496/YelpCamp%20Related%20Media/fyacoqbovnlxsyxivpr7.avif',
+                filename: 'YelpCamp Related Media/fyacoqbovnlxsyxivpr7'
+            },
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662496/YelpCamp%20Related%20Media/emcdhae4bqbs2wkiiuvg.avif',
+                filename: 'YelpCamp Related Media/emcdhae4bqbs2wkiiuvg'
+            },
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662496/YelpCamp%20Related%20Media/lte6vytweasjqgwvyoxj.avif',
+                filename: 'YelpCamp Related Media/lte6vytweasjqgwvyoxj'
+            },
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662495/YelpCamp%20Related%20Media/uv7ukkqtwaomlzykphhx.avif',
+                filename: 'YelpCamp Related Media/uv7ukkqtwaomlzykphhx'
+            },
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662496/YelpCamp%20Related%20Media/txrqbyy0d027ebxstwpc.avif',
+                filename: 'YelpCamp Related Media/txrqbyy0d027ebxstwpc'
+            },
+            {
+                url: 'https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675662496/YelpCamp%20Related%20Media/sc9d7ilh1pks18ncjupn.avif',
+                filename: 'YelpCamp Related Media/sc9d7ilh1pks18ncjupn'
+            }
+        ];
         // Select a random price.
         let price = Math.floor(Math.random() * 10000) + 2001;
         price -= price % 500;
@@ -65,7 +99,7 @@ async function seedData() {
         // Random description.
         const description = 'An awesome place awaits you...';
         // Creating new camp.
-        const camp = new Campground({ author, title, imageURL, price, location, description });
+        const camp = new Campground({ author, title, images, price, location, description });
         await camp.save()
             .then(async () => {
                 // CREATE PROGRESS BAR
