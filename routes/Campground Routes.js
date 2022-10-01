@@ -1,5 +1,10 @@
-// REQUIRING EXPRESS
+// REQUIRING EXPRESS AND CLOUDINARY STORAGE
 const express = require("express");
+const { storage } = require("../utilities/Cloudinary/Cloudinary Configuration.js");
+
+// MULTER CONFIGURATION
+const multer = require("multer");
+const upload = multer({ storage });
 
 // CREATING ROUTER INSTANCE
 const router = express.Router();
@@ -22,7 +27,7 @@ router.get('/new', isLoggedIn, Campground.renderNewForm);
 
 router.route('/')
     .get(handleAsyncErrors(Campground.allCampgrounds))
-    .post(isLoggedIn, handleAsyncErrors(Campground.createCampground))
+    .post(isLoggedIn, upload.array('campground[images]'), handleAsyncErrors(Campground.createCampground))
     .patch(isLoggedIn, isAuthorized, handleAsyncErrors(Campground.updateCampground))
     .delete(isLoggedIn, isAuthorized, handleAsyncErrors(Campground.deleteCampground));
 

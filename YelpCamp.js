@@ -12,6 +12,11 @@ const session = require("express-session");
 const methodOverride = require("method-override");
 const passportLocalStrategy = require("passport-local");
 
+// ACCESS .ENV VARIABLES IF NOT IN "PRODUCTION MODE" BY REQUIRING DOTENV
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 // STARTING THE SERVER
 let portNumber = 8888;
 const application = express();

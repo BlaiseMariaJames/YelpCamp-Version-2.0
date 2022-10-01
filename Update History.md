@@ -9,6 +9,7 @@
 #### By Month:
 
 <ul>
+<li><a href="#Oct22">October 2022</a></li>
 <li><a href="#Sep22">September 2022</a></li>
 <li><a href="#Aug22">August 2022</a></li>
 </ul>
@@ -29,12 +30,20 @@
 <li><a href="#Initial">Initial</a></li>
 </ul>
 
+<h2 id="Oct22">October 2022</h2>
+  
+### Image Upload Update 3.0V
+
+1. Install dotenv node module, create .env file to store confidential data.
+2. Install node modules multer and cloudinary, and configure them to support image upload.
+3. Update new view, create route and campground model to support image upload using cloudinary.
+
 <h2 id="Sep22">September 2022</h2>
 
 <h3 id="Revamp">Revamp Update 2.9V (Major Update)</h3>
 
 1. Update all files and folders.
-   
+
 <h3 id="Star-Rating">Star Rating Update 2.8V</h3>
 
 1. Add star ratings to show view.

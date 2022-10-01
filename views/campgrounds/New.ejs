@@ -3,7 +3,7 @@
         <h1 class="text-center">Create a new campground</h1>
         <div class="col-6 offset-3">
             <p style="color: red;" class="mb-2 mt-2">* Mandatory Fields</p>
-            <form action="/campgrounds" method="post" class="needs-validation" novalidate>
+            <form action="/campgrounds" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="title" class="form-label">Enter Campground Title<span style="color: red;">*</span> :
                     </label>
@@ -44,9 +44,9 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="image" class="form-label">Enter Campground Image URL (Optional) : </label>
-                    <input type="text" class="form-control" name="campground[imageURL]" id="image"
-                        placeholder="Enter campground image url">
+                    <label for="images" class="form-label">Upload Campground Images (Optional) : </label>
+                    <input type="file" class="form-control" name="campground[images]" id="images"
+                        accept="image/avif, image/gif, image/jpg, image/jpeg, image/png, image/webp" multiple>
                     <div class="valid-feedback">
                         Looks good!
                     </div>

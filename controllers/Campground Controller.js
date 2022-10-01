@@ -19,6 +19,7 @@ module.exports.renderNewForm = (request, response) => {
 module.exports.createCampground = async (request, response, next) => {
     let { campground } = request.body;
     campground.author = request.user._id.toString();
+    campground.images = request.files.map(file => ({ url: file.path, filename: file.filename }));
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');

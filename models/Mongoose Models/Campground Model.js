@@ -36,9 +36,17 @@ const CampgroundSchema = new Schema({
     description: {
         type: String
     },
-    imageURL: {
-        type: String
-    },
+    images: [{
+        _id: { _id: false },
+        url: {
+            type: String,
+            required: [true, "The field 'image url' is mandatory"]
+        },
+        filename: {
+            type: String,
+            required: [true, "The field 'image filename' is mandatory"]
+        }
+    }],
     reviews: [
         {
             type: Schema.Types.ObjectId,
