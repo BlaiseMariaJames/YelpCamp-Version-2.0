@@ -9,7 +9,10 @@
                 <div class="row">
                     <div class="col-md-4">
                         <% if(campground.images[0]) { %>
-                            <img src="<%=campground.images[0].url%> " alt="Campground Image" class="img-fluid">
+                            <a href="<%=campground.images[0].url%>" title="Click to view Image">
+                                <img src="<%=campground.images[0].cardImage%>" alt="Campground Image"
+                                    class="img-fluid h-100 w-100">
+                            </a>
                             <% } else {%>
                                 <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675496482/YelpCamp%20Related%20Media/No_Image_Available_onn3wa.webp"
                                     alt="No Image Available" class="img-fluid">
@@ -37,6 +40,8 @@
                             </div>
                             <a href="/campgrounds/<%=campground._id%>" class="card-link btn btn-primary btn-sm">View</a>
                             <% if(currentUser && currentUser.equals(campground.author)) { %>
+                                <a href="/campgrounds/<%=campground._id%>/manage"
+                                    class="card-link btn btn-info btn-sm">Manage</a>
                                 <a href="/campgrounds/<%=campground._id%>/edit"
                                     class="card-link btn btn-warning btn-sm">Edit</a>
                                 <a href="/campgrounds/<%=campground._id%>/remove"

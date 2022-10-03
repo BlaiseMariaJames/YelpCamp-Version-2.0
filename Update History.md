@@ -17,6 +17,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Image-Upload">Image-Upload</a></li>
 <li><a href="#Revamp">Revamp</a></li>
 <li><a href="#Star-Rating">Star-Rating</a></li>
 <li><a href="#Refactoring">Refactoring</a></li>
@@ -31,6 +32,14 @@
 </ul>
 
 <h2 id="Oct22">October 2022</h2>
+
+<h3 id="Image-Upload">Image Upload Update 3.2V (Major Update)</h3>
+
+1. Modify all views to support media queries.
+2. Add Manage view and Redesign route to manage camground images. 
+3. Modify Show and Index views to support managing of campground images.
+4. Modify Edit and Remove views to update or delete campground (except for images).
+5. Modify Campground Schema to support Image Schema virtual properties 'cardImage' and 'thumbnail'.
 
 ### Image Upload Update 3.1V
 

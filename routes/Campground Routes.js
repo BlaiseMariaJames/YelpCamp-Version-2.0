@@ -23,18 +23,17 @@ const isAuthorized = require("../utilities/Authorization/Check If Is Authorized 
 
 // RESPONDING TO THE SERVER AT CAMPGROUND MODEL BASED ROUTE
 
-router.get('/new', isLoggedIn, Campground.renderNewForm);
-
 router.route('/')
     .get(handleAsyncErrors(Campground.allCampgrounds))
     .post(isLoggedIn, upload.array('campground[images]'), handleAsyncErrors(Campground.createCampground))
+    .put(isLoggedIn, upload.array('campground[images]'), isAuthorized, handleAsyncErrors(Campground.redesignCampground))
     .patch(isLoggedIn, isAuthorized, handleAsyncErrors(Campground.updateCampground))
     .delete(isLoggedIn, isAuthorized, handleAsyncErrors(Campground.deleteCampground));
 
+router.get('/new', isLoggedIn, Campground.renderNewForm);
 router.get('/:id', handleAsyncErrors(Campground.showCampground));
-
+router.get('/:id/manage', isLoggedIn, isAuthorized, handleAsyncErrors(Campground.renderManageForm));
 router.get('/:id/edit', isLoggedIn, isAuthorized, handleAsyncErrors(Campground.renderEditForm));
-
 router.get('/:id/remove', isLoggedIn, isAuthorized, handleAsyncErrors(Campground.renderRemoveForm));
 
 // EXPORTING ROUTER INSTANCE

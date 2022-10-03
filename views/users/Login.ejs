@@ -1,10 +1,10 @@
 <% layout('/layouts/BoilerPlate') %>
     <div class="row">
         <h1 class="text-center">Login to Continue</h1>
-        <div class="col-6 offset-3">
-            <p style="color: red;" class="mt-2">* Mandatory Fields</p>
-            <form action="/login" method="post" class="needs-validation" novalidate>
-                <div class="mb-3">
+        <div class="col-lg-6 offset-lg-3">
+            <p style="color: red;" class="mt-5">* Mandatory Fields</p>
+            <form action="/login" method="post" class="needs-validation d-inline" novalidate>
+                <div class="mb-4">
                     <label for="username" class="form-label">Enter Username<span style="color: red;">*</span> :
                     </label>
                     <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username"
@@ -16,7 +16,7 @@
                         Please provide a valid username.
                     </div>
                 </div>
-                <div class="mb-3">
+                <div class="mb-4">
                     <label for="password" class="form-label">Enter Password<span style="color: red;">*</span> :
                     </label>
                     <input type="password" class="form-control" name="password" id="password"
@@ -28,9 +28,10 @@
                         Please provide a valid password.
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm">Login</button>
-                <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+                <button type="submit" class="btn btn-success btn-sm mt-2">Login</button>
+                <button type="reset" class="btn btn-danger btn-sm mt-2">Reset</button>
             </form>
-            <a href="/campgrounds" class="btn btn-secondary btn-sm mt-3">Go Back</a>
+            <a href="/register" class="btn btn-primary btn-sm mt-2">Register</a>
+            <a href="/campgrounds" class="btn btn-secondary btn-sm mt-2">Go Back</a>
         </div>
     </div>

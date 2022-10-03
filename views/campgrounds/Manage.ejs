@@ -1,0 +1,91 @@
+<% layout('/layouts/BoilerPlate') %>
+    <div class="row">
+        <h1 class="text-center">Manage campground images</h1>
+        <div class="col-lg-6 offset-lg-3">
+            <form action="/campgrounds?_method=PUT" method="post" class="needs-validation d-inline mt-2" novalidate
+                enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="id" class="form-label">Registration Id : </label>
+                    <input type="text" class="form-control" name="id" id="id" value="<%=campground._id%>" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="author" class="form-label">Author Id : </label>
+                    <input type="text" class="form-control" name="campground[author]" id="author"
+                        value="<%=campground.author._id%>" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="form-label">Campground Title : </label>
+                    <input type="text" class="form-control" name="campground[title]" id="title"
+                        placeholder="Enter campground title" value="<%=campground.title%>" readonly>
+                </div>
+                <div class="mb-3">
+                    <label for="images" class="form-label">Select And Delete Campground Images : </label>
+                    <% if(campground.images.length> 0) { %>
+                        <div class="card p-1">
+                            <% campground.images.forEach(function(image, index) { %>
+                                <% if(index % 3===0) { %>
+                                    <div class="d-flex flex-row justify-content-center">
+                                        <% if(campground.images[index]) { %>
+                                            <div class="card-header bg-light border rounded w-50"
+                                                style="margin: 5px; cursor: pointer;">
+                                                <input type="checkbox" name="deleteCampgroundImages[]"
+                                                    class="form-check-input"
+                                                    value="<%=campground.images[index].filename%>">
+                                                <a href="<%=campground.images[index].url%>" title="Click to view Image">
+                                                    <img src="<%=campground.images[index].thumbnail%>"
+                                                        class="img-thumbnail" alt="">
+                                                </a>
+                                            </div>
+                                            <% } %>
+                                                <% if(campground.images[index+1]) { %>
+                                                    <div class="card-header bg-light border rounded w-50"
+                                                        style="margin: 5px; cursor: pointer;">
+                                                        <input type="checkbox" name="deleteCampgroundImages[]"
+                                                            class="form-check-input"
+                                                            value="<%=campground.images[index+1].filename%>">
+                                                        <a href="<%=campground.images[index+1].url%>"
+                                                            title="Click to view Image">
+                                                            <img src="<%=campground.images[index+1].thumbnail%>"
+                                                                class="img-thumbnail" alt="">
+                                                        </a>
+                                                    </div>
+                                                    <% } %>
+                                                        <% if(campground.images[index+2]) { %>
+                                                            <div class="card-header bg-light border rounded w-50"
+                                                                style="margin: 5px; cursor: pointer;">
+                                                                <input type="checkbox" name="deleteCampgroundImages[]"
+                                                                    class="form-check-input"
+                                                                    value="<%=campground.images[index+2].filename%>">
+                                                                <a href="<%=campground.images[index+2].url%>"
+                                                                    title="Click to view Image">
+                                                                    <img src="<%=campground.images[index+2].thumbnail%>"
+                                                                        class="img-thumbnail" alt="">
+                                                                </a>
+                                                            </div>
+                                                            <% } %>
+                                    </div>
+                                    <% } %>
+                                        <% }); %>
+                        </div>
+                        <% } else { %>
+                            <input type="text" class="form-control" name="" id="" value="This campground has no images."
+                                readonly>
+                            <% } %>
+                </div>
+                <div class="mb-3">
+                    <label for="images" class="form-label">Add Some More Campground Images : </label>
+                    <input type="file" class="form-control" name="campground[images]" id="images"
+                        accept="image/avif, image/gif, image/jpg, image/jpeg, image/png, image/webp" multiple>
+                    <div class="valid-feedback">
+                        Looks good!
+                    </div>
+                </div>
+                <div>
+                    <label for="submit" class="form-label mb-3">To edit, click on submit</label>
+                </div>
+                <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+            </form>
+            <a href="/campgrounds/<%=campground._id%>" class="btn btn-secondary btn-sm">Discard Changes</a>
+        </div>
+    </div>

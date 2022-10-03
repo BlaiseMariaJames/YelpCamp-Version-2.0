@@ -1,12 +1,36 @@
-// REQUIRING MONGOOSE AND OBJECT ID
+// REQUIRING MONGOOSE, OBJECT ID AND CLOUDINARY
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
+const { cloudinary } = require("../../utilities/Cloudinary/Cloudinary Configuration");
 
 // STORING SCHEMA OBJECT INTO A VARIABLE
 const Schema = mongoose.Schema;
 
 // REQUIRING MODELS ASSOCIATED WITH CAMPGROUND
 const Review = require("./Review Model");
+
+// DEFINING IMAGE SCHEMA
+const ImageSchema = new Schema({
+    _id: { _id: false },
+    url: {
+        type: String,
+        required: [true, "The field 'image url' is mandatory"]
+    },
+    filename: {
+        type: String,
+        required: [true, "The field 'image filename' is mandatory"]
+    }
+});
+
+// DEFINING VIRTUAL FUNCTION TO SET VIRTUAL PROPERTY 'THUMBNAIL' FOR AN IMAGE
+ImageSchema.virtual('thumbnail').get(function () {
+    return this.url.replace('/upload', '/upload/w_300,h_300');
+});
+
+// DEFINING VIRTUAL FUNCTION TO SET VIRTUAL PROPERTY 'CARDIMAGE' FOR AN IMAGE
+ImageSchema.virtual('cardImage').get(function () {
+    return this.url.replace('/upload', '/upload/w_500,h_500');
+});
 
 // DEFINING CAMPGROUND SCHEMA
 const CampgroundSchema = new Schema({
@@ -36,17 +60,7 @@ const CampgroundSchema = new Schema({
     description: {
         type: String
     },
-    images: [{
-        _id: { _id: false },
-        url: {
-            type: String,
-            required: [true, "The field 'image url' is mandatory"]
-        },
-        filename: {
-            type: String,
-            required: [true, "The field 'image filename' is mandatory"]
-        }
-    }],
+    images: [ImageSchema],
     reviews: [
         {
             type: Schema.Types.ObjectId,
@@ -59,13 +73,21 @@ const CampgroundSchema = new Schema({
 
 // DEFINING POST-MIDDLEWARE-FUNCTION AFTER DELETING A CAMPGROUND
 CampgroundSchema.post('findOneAndDelete', async function (campground) {
-    // Check for items of associated model. In this case, reviews.
+    // Check for reviews associated to Campground.
     if (campground.reviews.length > 0) {
-        // Delete all items inside associated model.
+        // Delete all reviews associated to Campground.
         await Review.deleteMany({
-            // Delete every item of associated model, whose id belongs to Campground. 
+            // Delete every review, whose id belongs to Campground. 
             _id: { $in: campground.reviews }
         });
+    }
+    // Check for images associated to Campground.
+    if (campground.images.length > 0) {
+        // Delete all images associated to Campground.
+        for (let file of campground.images) {
+            // Delete every image, whose id belongs to Campground. 
+            cloudinary.uploader.destroy(file.filename);
+        }
     }
     // Continue the same procedure for rest of the associated models.
 });

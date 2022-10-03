@@ -1,49 +1,74 @@
 <% layout('/layouts/BoilerPlate') %>
     <div class="row">
         <h1 class="text-center">Remove a campground</h1>
-        <div class="col-6 offset-3">
+        <div class="col-lg-6 offset-lg-3">
             <form action="/campgrounds?_method=DELETE" method="post" class="d-inline">
-                <% if(campground.imageURL) { %>
-                    <img src="<%=campground.imageURL%> " alt="Campground Image" class="img-fluid mb-3 mt-3">
-                    <% } %>
-                        <div class="mb-3">
-                            <label for="id" class="form-label">Registration Id : </label>
-                            <input type="text" class="form-control" name="id" id="id" value="<%=campground._id%>"
-                                readonly>
+                <% if(campground.images.length> 0) { %>
+                    <div id="campgroundCarousel" class="carousel slide mt-2 mb-3" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <% campground.images.forEach((image, index)=> { %>
+                                <div class="carousel-item <%= (index === 0) ? 'active' : '' %>" data-bs-interval="5000">
+                                    <a href="<%=image.url%>"><img src="<%=image.cardImage%>" alt=""
+                                            class="d-block w-100" title="Click to view Image"
+                                            style="cursor: pointer;"></a>
+                                </div>
+                                <% }); %>
                         </div>
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Campground Title : </label>
-                            <input type="text" class="form-control" name="title" id="title"
-                                value="<%=campground.title%>" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="location" class="form-label">Campground Location : </label>
-                            <input type="text" class="form-control" name="location" id="location"
-                                value="<%=campground.location%>" readonly>
-                        </div>
-                        <div class=" mb-3">
-                            <label for="price" class="form-label">Campground Price : </label>
-                            <div class="input-group">
-                                <span class="input-group-text">Rs. </span>
-                                <input type="text" class="form-control" name="price" id="price"
-                                    value="<%=campground.price%>/-" readonly>
+                        <% if(campground.images.length> 1) { %>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#campgroundCarousel"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#campgroundCarousel"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                            <% } %>
+                    </div>
+                    <% } else {%>
+                        <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675496482/YelpCamp%20Related%20Media/No_Image_Available_onn3wa.webp"
+                            alt="No Image Available" class="img-fluid mt-2">
+                        <% } %>
+                            <div class="mb-3">
+                                <label for="id" class="form-label">Registration Id : </label>
+                                <input type="text" class="form-control" name="id" id="id" value="<%=campground._id%>"
+                                    readonly>
                             </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="imageURL" class="form-label">Campground Image URL : </label>
-                            <input type="text" class="form-control" name="imageURL" id="imageURL"
-                                value="<%=campground.imageURL ? campground.imageURL : 'None' %>" readonly>
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Campground Description : </label>
-                            <textarea class="form-control" name="description" id="description" cols="30" rows="3"
-                                readonly><%= campground.description ? campground.description : 'None' %></textarea>
-                        </div>
-                        <div>
-                            <label for="submit" class="form-label mb-3">To remove, click on submit</label>
-                        </div>
-                        <button type="submit" id="submit" class="btn btn-danger btn-sm">Submit</button>
+                            <div class="mb-3">
+                                <label for="author" class="form-label">Author Id : </label>
+                                <input type="text" class="form-control" name="campground[author]" id="author"
+                                    value="<%=campground.author._id%>" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="title" class="form-label">Campground Title : </label>
+                                <input type="text" class="form-control" name="title" id="title"
+                                    value="<%=campground.title%>" readonly>
+                            </div>
+                            <div class="mb-3">
+                                <label for="location" class="form-label">Campground Location : </label>
+                                <input type="text" class="form-control" name="location" id="location"
+                                    value="<%=campground.location%>" readonly>
+                            </div>
+                            <div class=" mb-3">
+                                <label for="price" class="form-label">Campground Price : </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rs. </span>
+                                    <input type="text" class="form-control" name="price" id="price"
+                                        value="<%=campground.price%>/-" readonly>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Campground Description : </label>
+                                <textarea class="form-control" name="description" id="description" cols="30" rows="3"
+                                    readonly><%= campground.description ? campground.description : 'None' %></textarea>
+                            </div>
+                            <div>
+                                <label for="submit" class="form-label mb-3">To remove, click on submit</label>
+                            </div>
+                            <button type="submit" id="submit" class="btn btn-danger btn-sm">Submit</button>
             </form>
-            <a href="/campgrounds" class="btn btn-secondary btn-sm">Go Back</a>
+            <a href="/campgrounds/<%=campground._id%>" class="btn btn-secondary btn-sm">Go Back</a>
         </div>
     </div>

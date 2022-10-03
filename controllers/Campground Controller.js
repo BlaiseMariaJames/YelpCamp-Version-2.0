@@ -1,5 +1,6 @@
-// REQUIRING OBJECT ID 
+// REQUIRING OBJECT ID AND CLOUDINARY 
 const ObjectID = require("mongoose").Types.ObjectId;
+const { cloudinary } = require("../utilities/Cloudinary/Cloudinary Configuration");
 
 // REQUIRING CAMPGROUND MODEL AND SCHEMA
 const Campground = require("../models/Mongoose Models/Campground Model.js");
@@ -7,6 +8,9 @@ const CampgroundSchema = require("../models/Joi Models/Campground Model.js");
 
 // REQUIRING APPLICATION ERROR HANDLER CLASS 
 const ApplicationError = require("../utilities/Error Handling/Application Error Handler Class.js");
+
+// REQUIRING FUNCTION TO DELETE CAMPGROUND IMAGES FROM CLOUDINARY (IF IN CASE OF ANY ERROR WHILE UPLOADING)
+const deleteCampgroundImages = require("../utilities/Cloudinary/Delete Cloudinary Images");
 
 // CREATE OPERATION ROUTES
 
@@ -23,7 +27,11 @@ module.exports.createCampground = async (request, response, next) => {
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
-        // Below two lines of code will redirect to the same page and make user aware of errors.
+        if (request.files) {
+            // delete uploaded cloudinary images.
+            deleteCampgroundImages(request.files);
+        }
+        // Below two lines of code will redirect to the same page and make user aware of errors. 
         request.flash('error', `Cannot create campground, ${errorMessage}.`);
         response.status(400).redirect('/campgrounds/new');
         // Use below code to redirect to Error Page and make user aware of errors.
@@ -68,7 +76,7 @@ module.exports.allCampgrounds = async (request, response, next) => {
 // UPDATE OPERATION ROUTES
 
 // Edit --> Form to edit a campground.
-module.exports.renderEditForm = async (request, response, next) => {
+module.exports.renderEditForm = async (request, response) => {
     const { id } = request.params;
     const campground = await Campground.findById(id).populate('author');
     response.render('campgrounds/Edit', { title: "Edit Campground", campground });
@@ -81,7 +89,6 @@ module.exports.updateCampground = async (request, response, next) => {
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
         // Below two lines of code will redirect to the same page and make user aware of errors.
-        campground._id = id;
         request.flash('error', `Cannot edit campground, ${errorMessage}.`);
         response.status(400).redirect(`/campgrounds/${id}/edit`);
         // Use below code to redirect to Error Page and make user aware of errors.
@@ -95,10 +102,36 @@ module.exports.updateCampground = async (request, response, next) => {
     }
 }
 
+// Manage --> Form to manage campground images.
+module.exports.renderManageForm = async (request, response) => {
+    const { id } = request.params;
+    const campground = await Campground.findById(id).populate('author');
+    response.render('campgrounds/Manage', { title: "Manage Campground Images", campground });
+}
+
+// Redesign --> Manages campground images on server.
+module.exports.redesignCampground = async (request, response) => {
+    let { id } = request.body;
+    const oldCampground = await Campground.findById(id);
+    // Pushing images.
+    const campgroundImages = request.files.map(file => ({ url: file.path, filename: file.filename }));
+    oldCampground.images.push(...campgroundImages);
+    await oldCampground.save();
+    // Deleting images.
+    if (request.body.deleteCampgroundImages) {
+        for (let filename of request.body.deleteCampgroundImages) {
+            cloudinary.uploader.destroy(filename);
+        }
+        await oldCampground.updateOne({ $pull: { images: { filename: { $in: request.body.deleteCampgroundImages } } } });
+    }
+    request.flash('success', 'Successfully edited the Campground!');
+    response.redirect(`/campgrounds/${oldCampground._id}`);
+}
+
 // DELETE OPERATIONS ROUTES
 
 // Remove --> Form to remove a campground.
-module.exports.renderRemoveForm = async (request, response, next) => {
+module.exports.renderRemoveForm = async (request, response) => {
     const { id } = request.params;
     const campground = await Campground.findById(id);
     response.render('campgrounds/Remove', { title: "Remove Campground", campground });

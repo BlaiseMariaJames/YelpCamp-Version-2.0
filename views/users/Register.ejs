@@ -1,9 +1,9 @@
 <% layout('/layouts/BoilerPlate') %>
     <div class="row">
         <h1 class="text-center">Create a new account</h1>
-        <div class="col-6 offset-3">
-            <p style="color: red;" class="mt-2">* Mandatory Fields</p>
-            <form action="/register" method="post" class="needs-validation" novalidate>
+        <div class="col-lg-6 offset-lg-3">
+            <p style="color: red;" class="mt-4">* Mandatory Fields</p>
+            <form action="/register" method="post" class="needs-validation d-inline" novalidate>
                 <div class="mb-3">
                     <label for="username" class="form-label">Enter Username<span style="color: red;">*</span> :
                     </label>
@@ -36,9 +36,10 @@
                         Please provide a valid password.
                     </div>
                 </div>
-                <button type="submit" class="btn btn-success btn-sm">Register</button>
-                <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+                <button type="submit" class="btn btn-success btn-sm mt-2">Register</button>
+                <button type="reset" class="btn btn-danger btn-sm mt-2">Reset</button>
             </form>
-            <a href="/campgrounds" class="btn btn-secondary btn-sm mt-3">Go Back</a>
+            <a href="/login" class="btn btn-primary btn-sm mt-2">Login</a>
+            <a href="/campgrounds" class="btn btn-secondary btn-sm mt-2">Go Back</a>
         </div>
     </div>
