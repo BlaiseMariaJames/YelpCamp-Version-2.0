@@ -47,6 +47,21 @@ const CampgroundSchema = new Schema({
         type: String,
         required: [true, "The field 'location' is mandatory"]
     },
+    accurateLocation: {
+        type: String,
+        required: [true, "The field 'accurate location' is mandatory to be selected"]
+    },
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            required: [true, "The field 'type' of geometry is mandatory"]
+        },
+        coordinates: {
+            type: [Number],
+            required: [true, "The field 'co-ordinates' of geometry is mandatory"]
+        }
+    },
     price: {
         type: String,
         validate: {

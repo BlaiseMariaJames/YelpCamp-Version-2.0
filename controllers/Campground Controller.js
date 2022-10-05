@@ -2,6 +2,11 @@
 const ObjectID = require("mongoose").Types.ObjectId;
 const { cloudinary } = require("../utilities/Cloudinary/Cloudinary Configuration");
 
+// CONFIGURING MAPBOX GEOCODING
+const mapboxGeoCoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const mapboxToken = process.env.MAPBOX_TOKEN;
+const geoCoder = mapboxGeoCoding({ accessToken: mapboxToken });
+
 // REQUIRING CAMPGROUND MODEL AND SCHEMA
 const Campground = require("../models/Mongoose Models/Campground Model.js");
 const CampgroundSchema = require("../models/Joi Models/Campground Model.js");
@@ -16,7 +21,7 @@ const deleteCampgroundImages = require("../utilities/Cloudinary/Delete Cloudinar
 
 // New --> Form to create a new campground.
 module.exports.renderNewForm = (request, response) => {
-    response.render('campgrounds/New', { title: "New Campground" });
+    response.render('campgrounds/New', { title: "New Campground", places: "", campground: "" });
 }
 
 // Create --> Creates new campground on server.
@@ -24,6 +29,17 @@ module.exports.createCampground = async (request, response, next) => {
     let { campground } = request.body;
     campground.author = request.user._id.toString();
     campground.images = request.files.map(file => ({ url: file.path, filename: file.filename }));
+    const geoData = await geoCoder.forwardGeocode({
+        query: campground.location
+    }).send();
+    if (!campground.accurateLocation) {
+        return response.render('campgrounds/New', { title: "New Campground", places: geoData.body.features, campground });
+    } else {
+        campground.location = campground.accurateLocation;
+        campground.geometry = geoData.body.features.find(function (place) {
+            return place.place_name === campground.accurateLocation;
+        }).geometry;
+    }
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
@@ -79,12 +95,25 @@ module.exports.allCampgrounds = async (request, response, next) => {
 module.exports.renderEditForm = async (request, response) => {
     const { id } = request.params;
     const campground = await Campground.findById(id).populate('author');
-    response.render('campgrounds/Edit', { title: "Edit Campground", campground });
+    response.render('campgrounds/Edit', { title: "Edit Campground", places: "", campground });
 }
 
 // Update --> Updates a campground on server.
 module.exports.updateCampground = async (request, response, next) => {
     let { id, campground } = request.body;
+    const oldCampground = await Campground.findById(id);
+    const geoData = await geoCoder.forwardGeocode({
+        query: campground.location
+    }).send();
+    if (!campground.accurateLocation) {
+        Object.assign(oldCampground, campground);
+        return response.render('campgrounds/Edit', { title: "Edit Campground", places: geoData.body.features, campground: oldCampground });
+    } else {
+        campground.location = campground.accurateLocation;
+        campground.geometry = geoData.body.features.find(function (place) {
+            return place.place_name === campground.accurateLocation;
+        }).geometry;
+    }
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
@@ -94,11 +123,10 @@ module.exports.updateCampground = async (request, response, next) => {
         // Use below code to redirect to Error Page and make user aware of errors.
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
-        const newCampground = await Campground.findById(id);
-        Object.assign(newCampground, campground);
-        await newCampground.save();
+        Object.assign(oldCampground, campground);
+        await oldCampground.save();
         request.flash('success', 'Successfully edited the Campground!');
-        response.redirect(`/campgrounds/${newCampground._id}`);
+        response.redirect(`/campgrounds/${oldCampground._id}`);
     }
 }
 

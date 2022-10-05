@@ -33,6 +33,12 @@
 
 <h2 id="Oct22">October 2022</h2>
 
+### Map Upload Update 3.3V
+
+1. Install Map-Box node module and modify Campground Model to support geo-coding.
+2. Update New view and Create route to store coordinates of a campground location.
+3. Update Edit view and Update route to edit coordinates of a campground location.
+
 <h3 id="Image-Upload">Image Upload Update 3.2V (Major Update)</h3>
 
 1. Modify all views to support media queries.

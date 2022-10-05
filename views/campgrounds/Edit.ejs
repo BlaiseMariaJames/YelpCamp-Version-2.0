@@ -42,7 +42,7 @@
                                 <input type="text" class="form-control" name="campground[author]" id="author"
                                     value="<%=campground.author._id%>" readonly>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 <%=(places)?'d-none':''%>">
                                 <label for="title" class="form-label">Campground Title<span style="color: red;">*</span>
                                     :
                                 </label>
@@ -55,7 +55,7 @@
                                     Please provide a valid title.
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 <%=(places)?'d-none':''%>">
                                 <label for="location" class="form-label">Campground Location<span
                                         style="color: red;">*</span> :
                                 </label>
@@ -68,7 +68,7 @@
                                     Please provide a valid location.
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 <%=(places)?'d-none':''%>">
                                 <label for="price" class="form-label">Campground Price<span style="color: red;">*</span>
                                     :
                                 </label>
@@ -84,7 +84,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 <%=(places)?'':'d-none'%>">
+                                <label for="accurateLocation" class="form-label">Select the Location that best
+                                    suits your Campground<span style="color: red;">*</span> : </label>
+                                <select class="form-select" name="campground[accurateLocation]" id="accurateLocation">
+                                    <% for(let place of places) { %>
+                                        <option value="<%=place.place_name%>">
+                                            <%=place.place_name%>
+                                        </option>
+                                        <% } %>
+                                </select>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please select a valid location.
+                                </div>
+                            </div>
+                            <div class="mb-3 <%=(places)?'':'d-none'%>">
                                 <label for="description" class="form-label">Campground Description (Optional) :
                                 </label>
                                 <textarea class="form-control" name="campground[description]" id="description" cols="30"
@@ -94,10 +111,12 @@
                                     Looks good!
                                 </div>
                             </div>
-                            <div>
+                            <div <%=(places)?'':'class=d-none'%>>
                                 <label for="submit" class="form-label mb-3">To edit, click on submit</label>
                             </div>
-                            <button type="submit" class="btn btn-success btn-sm">Submit</button>
+                            <button type="submit" class="btn btn-success btn-sm">
+                                <%=(places) ? 'Submit' : 'Find Location' %>
+                            </button>
                             <button type="reset" class="btn btn-danger btn-sm">Reset</button>
             </form>
             <a href="/campgrounds/<%=campground._id%>" class="btn btn-secondary btn-sm">Discard Changes</a>

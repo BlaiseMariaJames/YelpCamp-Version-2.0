@@ -7,6 +7,11 @@ const CampgroundSchema = Joi.object({
     author: Joi.objectId().required(),
     title: Joi.string().required(),
     location: Joi.string().required(),
+    accurateLocation: Joi.string().required(),
+    geometry: Joi.object().keys({
+        type: Joi.string().valid('Point').required(),
+        coordinates: Joi.array().items(Joi.number()).required()
+    }).required(),
     price: Joi.number().required().min(0),
     images: Joi.array().items(Joi.object({
         url: Joi.string().required(),
