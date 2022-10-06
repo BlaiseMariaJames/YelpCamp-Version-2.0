@@ -97,6 +97,7 @@
                 <% } %>
         </div>
         <div class="col-lg-6">
+            <div id='map' style="height:400px;width:100%;" class="mb-3"></div>
             <div class="card mb-3">
                 <div class="card-header">
                     <h4>Leave a Review</h4>
@@ -172,3 +173,8 @@
                 <% } %>
         </div>
     </div>
+    <script>
+        let mapboxToken = `<%-process.env.MAPBOX_TOKEN%>`;
+        let campground = `<%-JSON.stringify(campground)%>`;
+    </script>
+    <script src="/JS/Campground Map.js"></script>

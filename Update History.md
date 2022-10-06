@@ -33,6 +33,11 @@
 
 <h2 id="Oct22">October 2022</h2>
 
+### Map Upload Update 3.4V
+
+1. Add campground map to Show view.
+2. Modify Add Campgrounds to Database file to support maps and images upload. 
+
 ### Map Upload Update 3.3V
 
 1. Install Map-Box node module and modify Campground Model to support geo-coding.
