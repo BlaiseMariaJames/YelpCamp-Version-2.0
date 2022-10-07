@@ -17,6 +17,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Map-Upload">Map-Upload</a></li>
 <li><a href="#Image-Upload">Image-Upload</a></li>
 <li><a href="#Revamp">Revamp</a></li>
 <li><a href="#Star-Rating">Star-Rating</a></li>
@@ -32,6 +33,11 @@
 </ul>
 
 <h2 id="Oct22">October 2022</h2>
+
+<h3 id="Map-Upload">Map Upload Update 3.5V</h3>
+
+1. Add cluster map to Index view.
+2. Modify Campground Model to add virtual property 'popUpMarkup'.
 
 ### Map Upload Update 3.4V
 

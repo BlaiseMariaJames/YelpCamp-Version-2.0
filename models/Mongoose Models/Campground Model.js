@@ -32,6 +32,12 @@ ImageSchema.virtual('cardImage').get(function () {
     return this.url.replace('/upload', '/upload/w_500,h_500');
 });
 
+// DEFINING CAMPGROUND SCHEMA OPTIONS
+const options = {
+    // WHEN CONVERTED TO JSON, ADD VIRTUAL PROPERTIES TO THE RESULT
+    toJSON: { virtuals: true }
+};
+
 // DEFINING CAMPGROUND SCHEMA
 const CampgroundSchema = new Schema({
     author: {
@@ -84,6 +90,11 @@ const CampgroundSchema = new Schema({
             required: false
         }
     ]
+}, options);
+
+// DEFINING VIRTUAL FUNCTION TO SET VIRTUAL PROPERTY OBJECT 'PROPERTIES' WITH PROPERTY 'POPUPMARKUP' FOR A CAMPGROUND
+CampgroundSchema.virtual('properties.popUpMarkup').get(function () {
+    return `<div style='margin-top:10px;text-align:center;' class='card'><div class='card-header'><a href='/campgrounds/${this._id}' style='text-decoration:none;cursor:pointer;' title='View Campground'><h5>${this.title}</h5></a></div><div class='card-body'><p class='card-text text-muted'>${this.location}</p></div></div>`;
 });
 
 // DEFINING POST-MIDDLEWARE-FUNCTION AFTER DELETING A CAMPGROUND

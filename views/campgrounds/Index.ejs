@@ -1,6 +1,7 @@
 <% layout('/layouts/BoilerPlate') %>
-    <h1>All Campgrounds</h1>
     <% if(!errorMessage) { %>
+        <div id="map" style="height: 500px;width: 100%;" class="mb-3"></div>
+        <h1>All Campgrounds</h1>
         <a href="/" class="btn btn-secondary btn-sm">Go Home</a>
         <a href="/campgrounds/new" class="btn btn-success btn-sm">New</a>
         <br><br>
@@ -52,7 +53,13 @@
                 </div>
             </div>
             <% } %>
+                <script>
+                    let mapboxToken = `<%-process.env.MAPBOX_TOKEN%>`;
+                    let campgrounds = `<%-JSON.stringify(campgrounds)%>`
+                </script>
+                <script src="/JS/Cluster Map.js"></script>
                 <% } else { %>
+                    <h1>All Campgrounds</h1>
                     <p>
                         <%= errorMessage %>
                     </p>
