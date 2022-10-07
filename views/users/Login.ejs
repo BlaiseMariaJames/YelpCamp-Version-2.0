@@ -1,37 +1,47 @@
 <% layout('/layouts/BoilerPlate') %>
-    <div class="row">
-        <h1 class="text-center">Login to Continue</h1>
-        <div class="col-lg-6 offset-lg-3">
-            <p style="color: red;" class="mt-5">* Mandatory Fields</p>
-            <form action="/login" method="post" class="needs-validation d-inline" novalidate>
-                <div class="mb-4">
-                    <label for="username" class="form-label">Enter Username<span style="color: red;">*</span> :
-                    </label>
-                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username"
-                        required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Please provide a valid username.
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="card shadow">
+                    <img src="https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1267&q=80"
+                        alt="" class="card-img-top" />
+                    <div class="card-body">
+                        <h3 class="card-title">Login to Continue</h3>
+                        <p style="color: red;" class="mb-3 mt-4">* Mandatory Fields</p>
+                        <form action="/login" method="post" class="needs-validation" novalidate>
+                            <div class="mt-3">
+                                <label for="username" class="form-label">Enter Username<span
+                                        style="color: red;">*</span>
+                                    : </label>
+                                <input type="text" class="form-control" name="username" id="username" autofocus
+                                    placeholder="Enter Username" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid username.
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <label for="password" class="form-label">Enter Password<span
+                                        style="color: red;">*</span>
+                                    : </label>
+                                <input type="password" class="form-control" name="password" id="password"
+                                    placeholder="Enter Password" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid password.
+                                </div>
+                            </div>
+                            <div class="d-grid mt-3 gap-2">
+                                <button type="submit" class="btn btn-success">Login</button>
+                                <a href="/register" class="btn btn-primary">Create new account</a>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <label for="password" class="form-label">Enter Password<span style="color: red;">*</span> :
-                    </label>
-                    <input type="password" class="form-control" name="password" id="password"
-                        placeholder="Enter Password" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Please provide a valid password.
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-success btn-sm mt-2">Login</button>
-                <button type="reset" class="btn btn-danger btn-sm mt-2">Reset</button>
-            </form>
-            <a href="/register" class="btn btn-primary btn-sm mt-2">Register</a>
-            <a href="/campgrounds" class="btn btn-secondary btn-sm mt-2">Go Back</a>
+            </div>
         </div>
     </div>

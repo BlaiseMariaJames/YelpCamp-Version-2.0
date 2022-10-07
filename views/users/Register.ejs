@@ -1,45 +1,58 @@
 <% layout('/layouts/BoilerPlate') %>
-    <div class="row">
-        <h1 class="text-center">Create a new account</h1>
-        <div class="col-lg-6 offset-lg-3">
-            <p style="color: red;" class="mt-4">* Mandatory Fields</p>
-            <form action="/register" method="post" class="needs-validation d-inline" novalidate>
-                <div class="mb-3">
-                    <label for="username" class="form-label">Enter Username<span style="color: red;">*</span> :
-                    </label>
-                    <input type="text" class="form-control" name="username" id="username" placeholder="Enter Username"
-                        required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Please provide a valid username.
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="row">
+            <div class="col-lg-6 offset-lg-3">
+                <div class="card shadow">
+                    <img src="https://images.unsplash.com/photo-1533873984035-25970ab07461?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1267&q=80"
+                        alt="" class="card-img-top" />
+                    <div class="card-body">
+                        <h3 class="card-title">Create a new account</h3>
+                        <p class="mb-3 mt-4" style="color: red;">* Mandatory Fields</p>
+                        <form action="/register" method="post" class="needs-validation" novalidate>
+                            <div class="mt-3">
+                                <label for="username" class="form-label">Enter Username<span
+                                        style="color: red;">*</span>
+                                    : </label>
+                                <input type="text" class="form-control" name="username" id="username"
+                                    placeholder="Enter Username" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid username.
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <label for="email" class="form-label">Enter Email<span style="color: red;">*</span> :
+                                </label>
+                                <input type="email" class="form-control" name="email" id="email"
+                                    placeholder="Enter Email" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid email.
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <label for="password" class="form-label">Enter Password<span
+                                        style="color: red;">*</span>
+                                    : </label>
+                                <input type="password" class="form-control" name="password" id="password"
+                                    placeholder="Enter Password" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid password.
+                                </div>
+                            </div>
+                            <div class="d-grid mt-3">
+                                <button type="submit" class="btn btn-success">Register</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="email" class="form-label">Enter Email<span style="color: red;">*</span> :
-                    </label>
-                    <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Enter Password<span style="color: red;">*</span> :
-                    </label>
-                    <input type="password" class="form-control" name="password" id="password"
-                        placeholder="Enter Password" required>
-                    <div class="valid-feedback">
-                        Looks good!
-                    </div>
-                    <div class="invalid-feedback">
-                        Please provide a valid password.
-                    </div>
-                </div>
-                <button type="submit" class="btn btn-success btn-sm mt-2">Register</button>
-                <button type="reset" class="btn btn-danger btn-sm mt-2">Reset</button>
-            </form>
-            <a href="/login" class="btn btn-primary btn-sm mt-2">Login</a>
-            <a href="/campgrounds" class="btn btn-secondary btn-sm mt-2">Go Back</a>
+            </div>
         </div>
     </div>

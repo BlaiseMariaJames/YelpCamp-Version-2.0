@@ -34,6 +34,10 @@
 
 <h2 id="Oct22">October 2022</h2>
 
+### Styles CleanUp Update 3.6V
+
+1. Style Home, Login and Register view.
+
 <h3 id="Map-Upload">Map Upload Update 3.5V</h3>
 
 1. Add cluster map to Index view.
