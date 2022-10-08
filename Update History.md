@@ -17,6 +17,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Security">Security</a></li>
 <li><a href="#Styles-CleanUp">Styles-CleanUp</a></li>
 <li><a href="#Map-Upload">Map-Upload</a></li>
 <li><a href="#Image-Upload">Image-Upload</a></li>
@@ -34,6 +35,12 @@
 </ul>
 
 <h2 id="Oct22">October 2022</h2>
+
+<h3 id="Security">Security Update 3.8V (Major Update)</h3>
+
+1. Install express-mongo-sanitize to avade Mongo Injection.
+2. Modify views, install and configure helmet node module to secure YelpCamp by setting various HTTP headers.
+3. Modify models and extend joi to support HTML sanitization using sanitize-html node module to prevent Cross Site Scripting (XSS).
 
 <h3 id="Styles-CleanUp">Styles CleanUp Update 3.7V</h3>
 

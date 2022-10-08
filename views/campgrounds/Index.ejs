@@ -12,11 +12,11 @@
                         <% if(campground.images[0]) { %>
                             <a href="<%=campground.images[0].url%>" title="Click to view Image">
                                 <img src="<%=campground.images[0].cardImage%>" alt="Campground Image"
-                                    class="img-fluid h-100 w-100">
+                                    class="img-fluid h-100 w-100" crossorigin>
                             </a>
                             <% } else {%>
                                 <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675496482/YelpCamp%20Related%20Media/No_Image_Available_onn3wa.webp"
-                                    alt="No Image Available" class="img-fluid">
+                                    alt="No Image Available" class="img-fluid" crossorigin>
                                 <% } %>
                     </div>
                     <div class="col-md-8">

@@ -1,5 +1,10 @@
 // STAGE 1: SETTING THE APPLICATION //
 
+// ACCESS .ENV VARIABLES IF NOT IN "PRODUCTION MODE" BY REQUIRING DOTENV
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
 // REQUIRING NODE MODULES
 const path = require("path");
 const morgan = require("morgan");
@@ -10,12 +15,8 @@ const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
 const methodOverride = require("method-override");
+const mongoSanitize = require("express-mongo-sanitize");
 const passportLocalStrategy = require("passport-local");
-
-// ACCESS .ENV VARIABLES IF NOT IN "PRODUCTION MODE" BY REQUIRING DOTENV
-if (process.env.NODE_ENV !== "production") {
-    require("dotenv").config();
-}
 
 // STARTING THE SERVER
 let portNumber = 8888;
@@ -44,16 +45,23 @@ const ApplicationError = require("./utilities/Error Handling/Application Error H
 
 // STAGE 2: CONFIGURATION OF MIDDLEWARES //
 
+// REQUIRING SESSION CREDENTIALS
+const { SESSION_NAME, SESSION_SECRET } = process.env;
+
 // CONFIGURING SESSIONS
 const sessionConfig = {
-    secret: "tobedetermined",
+    name: SESSION_NAME,
+    secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
+        // Only through https.
+        // secure: true,
+        // Only through http.
         httpOnly: true,
-        // Expire within a week
+        // Expire within a week.
         expires: Date.now() + (1000 * 60 * 60 * 24 * 7),
-        // Expire within a week
+        // Expire within a week.
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
@@ -68,6 +76,13 @@ application.use(print, morgan('tiny'));
 
 // CONFIGURING FLASH
 application.use(flash());
+
+// CONFIGURING HELMET
+const helmet = require("./utilities/Security/Helmet Configuration");
+application.use(helmet);
+
+// CONFIGURING EXPRESS MONGOOSE SANITIZE
+application.use(mongoSanitize());
 
 // CONFIGURING PASSPORT
 application.use(passport.initialize());
@@ -112,7 +127,7 @@ databaseConnection.once("open", async () => {
     // LISTENING TO THE SERVER
     application.listen(portNumber, () => {
         console.log("\nStarting the server...");
-        console.log(`Listening at the port ${portNumber}!`);
+        console.log(`Serving at http://localhost:${portNumber}`);
     });
 });
 
