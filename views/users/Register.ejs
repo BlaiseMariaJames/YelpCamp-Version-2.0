@@ -7,11 +7,10 @@
                         alt="" class="card-img-top" />
                     <div class="card-body">
                         <h3 class="card-title">Create a new account</h3>
-                        <p class="mb-3 mt-4" style="color: red;">* Mandatory Fields</p>
+                        <p class="mb-3 mt-4 mandatory">* Mandatory Fields</p>
                         <form action="/register" method="post" class="needs-validation" novalidate>
                             <div class="mt-3">
-                                <label for="username" class="form-label">Enter Username<span
-                                        style="color: red;">*</span>
+                                <label for="username" class="form-label">Enter Username<span class="mandatory">*</span>
                                     : </label>
                                 <input type="text" class="form-control" name="username" id="username"
                                     placeholder="Enter Username" required>
@@ -23,7 +22,7 @@
                                 </div>
                             </div>
                             <div class="mt-3">
-                                <label for="email" class="form-label">Enter Email<span style="color: red;">*</span> :
+                                <label for="email" class="form-label">Enter Email<span class="mandatory">*</span> :
                                 </label>
                                 <input type="email" class="form-control" name="email" id="email"
                                     placeholder="Enter Email" required>
@@ -35,8 +34,7 @@
                                 </div>
                             </div>
                             <div class="mt-3">
-                                <label for="password" class="form-label">Enter Password<span
-                                        style="color: red;">*</span>
+                                <label for="password" class="form-label">Enter Password<span class="mandatory">*</span>
                                     : </label>
                                 <input type="password" class="form-control" name="password" id="password"
                                     placeholder="Enter Password" required>

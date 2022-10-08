@@ -9,8 +9,7 @@
                             <% campground.images.forEach((image, index)=> { %>
                                 <div class="carousel-item <%= (index === 0) ? 'active' : '' %>" data-bs-interval="5000">
                                     <a href="<%=image.url%>"><img src="<%=image.cardImage%>" alt=""
-                                            class="d-block w-100" title="Click to view Image"
-                                            style="cursor: pointer;"></a>
+                                            class="d-block w-100 pointer" title="Click to view Image"></a>
                                 </div>
                                 <% }); %>
                         </div>
@@ -31,7 +30,7 @@
                         <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675496482/YelpCamp%20Related%20Media/No_Image_Available_onn3wa.webp"
                             alt="No Image Available" class="img-fluid mt-2">
                         <% } %>
-                            <p style="color: red;" class="mb-2 mt-2">* Mandatory Fields</p>
+                            <p class="mb-2 mt-2 mandatory">* Mandatory Fields</p>
                             <div class="mb-3">
                                 <label for="id" class="form-label">Registration Id : </label>
                                 <input type="text" class="form-control" name="id" id="id" value="<%=campground._id%>"
@@ -43,7 +42,7 @@
                                     value="<%=campground.author._id%>" readonly>
                             </div>
                             <div class="mb-3 <%=(places)?'d-none':''%>">
-                                <label for="title" class="form-label">Campground Title<span style="color: red;">*</span>
+                                <label for="title" class="form-label">Campground Title<span class="mandatory">*</span>
                                     :
                                 </label>
                                 <input type="text" class="form-control" name="campground[title]" id="title"
@@ -57,7 +56,7 @@
                             </div>
                             <div class="mb-3 <%=(places)?'d-none':''%>">
                                 <label for="location" class="form-label">Campground Location<span
-                                        style="color: red;">*</span> :
+                                        class="mandatory">*</span> :
                                 </label>
                                 <input type="text" class="form-control" name="campground[location]" id="location"
                                     placeholder="Enter campground location" value="<%=campground.location%>" required>
@@ -69,7 +68,7 @@
                                 </div>
                             </div>
                             <div class="mb-3 <%=(places)?'d-none':''%>">
-                                <label for="price" class="form-label">Campground Price<span style="color: red;">*</span>
+                                <label for="price" class="form-label">Campground Price<span class="mandatory">*</span>
                                     :
                                 </label>
                                 <div class="input-group">
@@ -86,7 +85,7 @@
                             </div>
                             <div class="mb-3 <%=(places)?'':'d-none'%>">
                                 <label for="accurateLocation" class="form-label">Select the Location that best
-                                    suits your Campground<span style="color: red;">*</span> : </label>
+                                    suits your Campground<span class="mandatory">*</span> : </label>
                                 <select class="form-select" name="campground[accurateLocation]" id="accurateLocation">
                                     <% for(let place of places) { %>
                                         <option value="<%=place.place_name%>">

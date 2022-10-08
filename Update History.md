@@ -17,6 +17,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Styles-CleanUp">Styles-CleanUp</a></li>
 <li><a href="#Map-Upload">Map-Upload</a></li>
 <li><a href="#Image-Upload">Image-Upload</a></li>
 <li><a href="#Revamp">Revamp</a></li>
@@ -33,6 +34,10 @@
 </ul>
 
 <h2 id="Oct22">October 2022</h2>
+
+<h3 id="Styles-CleanUp">Styles CleanUp Update 3.7V</h3>
+
+1. Remove inline styles from all files and add controls to map.
 
 ### Styles CleanUp Update 3.6V
 

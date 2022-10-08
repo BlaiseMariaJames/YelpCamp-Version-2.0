@@ -26,8 +26,7 @@
                                 <% if(index % 3===0) { %>
                                     <div class="d-flex flex-row justify-content-center">
                                         <% if(campground.images[index]) { %>
-                                            <div class="card-header bg-light border rounded w-50"
-                                                style="margin: 5px; cursor: pointer;">
+                                            <div class="card-header deleteImage bg-light border rounded w-50">
                                                 <input type="checkbox" name="deleteCampgroundImages[]"
                                                     class="form-check-input"
                                                     value="<%=campground.images[index].filename%>">
@@ -38,8 +37,7 @@
                                             </div>
                                             <% } %>
                                                 <% if(campground.images[index+1]) { %>
-                                                    <div class="card-header bg-light border rounded w-50"
-                                                        style="margin: 5px; cursor: pointer;">
+                                                    <div class="card-header deleteImage bg-light border rounded w-50">
                                                         <input type="checkbox" name="deleteCampgroundImages[]"
                                                             class="form-check-input"
                                                             value="<%=campground.images[index+1].filename%>">
@@ -51,8 +49,8 @@
                                                     </div>
                                                     <% } %>
                                                         <% if(campground.images[index+2]) { %>
-                                                            <div class="card-header bg-light border rounded w-50"
-                                                                style="margin: 5px; cursor: pointer;">
+                                                            <div
+                                                                class="card-header deleteImage bg-light border rounded w-50">
                                                                 <input type="checkbox" name="deleteCampgroundImages[]"
                                                                     class="form-check-input"
                                                                     value="<%=campground.images[index+2].filename%>">

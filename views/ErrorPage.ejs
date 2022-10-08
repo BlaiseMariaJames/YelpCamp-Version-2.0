@@ -1,6 +1,6 @@
 <% layout('/layouts/BoilerPlate') %>
     <div class="row">
-        <div class="col-lg-6 offset-lg-3">
+        <div class="col-md-6 offset-md-3 d-flex justify-content-center align-items-center">
             <div class="alert alert-danger" role="alert">
                 <h1 class="alert-heading">Error <%= error.statusCode %>
                 </h1>
@@ -11,6 +11,9 @@
                 <p><b><i>
                             <%= error.description %>
                         </i></b></p>
+                <p class="<%=(process.env.NODE_ENV!==" production")?'errorTrace':'d-none'%>">
+                    <%=error.stack%>
+                </p>
                 <a href="/campgrounds" class="btn btn-secondary btn-sm">Go Back</a>
             </div>
         </div>

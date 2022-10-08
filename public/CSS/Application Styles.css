@@ -1,0 +1,47 @@
+.popup {
+    margin-top: 10px;
+    text-align: center;
+}
+
+.popup a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+#clusterMap {
+    width: 100%;
+    height: 500px;
+}
+
+#campgroundMap {
+    width: 100%;
+    height: 400px;
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.mandatory {
+    color: red;
+}
+
+.deleteImage {
+    margin: 5px;
+    cursor: pointer;
+}
+
+.review {
+    text-align: justify;
+    text-justify: inter-word;
+}
+
+.errorTrace {
+    font-size: 2.25vw;
+}
+
+@media screen and (min-width : 768px) {
+    .errorTrace {
+        font-size: 1vmax;
+    }
+}

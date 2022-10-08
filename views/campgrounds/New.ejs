@@ -2,11 +2,11 @@
     <div class="row">
         <h1 class="text-center">Create a new campground</h1>
         <div class="col-lg-6 offset-lg-3">
-            <p style="color: red;" class="mb-3 mt-4">* Mandatory Fields</p>
+            <p class="mb-3 mt-4 mandatory">* Mandatory Fields</p>
             <form action="/campgrounds" method="post" class="needs-validation d-inline" novalidate
                 enctype="multipart/form-data">
                 <div class="mb-<%=(places)?'3 d-none':'4'%>">
-                    <label for="title" class="form-label">Enter Campground Title<span style="color: red;">*</span> :
+                    <label for="title" class="form-label">Enter Campground Title<span class="mandatory">*</span> :
                     </label>
                     <input type="text" class="form-control" name="campground[title]" id="title"
                         placeholder="Enter campground title" value="<%= (campground.title) ? campground.title : ''%>"
@@ -19,7 +19,7 @@
                     </div>
                 </div>
                 <div class="mb-4 <%=(places)?'d-none':''%>">
-                    <label for="location" class="form-label">Enter Campground Location<span style="color: red;">*</span>
+                    <label for="location" class="form-label">Enter Campground Location<span class="mandatory">*</span>
                         : </label>
                     <input type="text" class="form-control" name="campground[location]" id="location"
                         placeholder="Enter campground location"
@@ -32,7 +32,7 @@
                     </div>
                 </div>
                 <div class="mb-<%=(places)?'3 d-none':'4'%>">
-                    <label for="price" class="form-label">Enter Campground Price<span style="color: red;">*</span> :
+                    <label for="price" class="form-label">Enter Campground Price<span class="mandatory">*</span> :
                     </label>
                     <div class="input-group">
                         <span class="input-group-text">Rupees </span>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="mb-<%=(places)?'3':'4 d-none'%>">
                     <label for="accurateLocation" class="form-label">Select the Location that best suits your
-                        Campground<span style="color: red;">*</span> : </label>
+                        Campground<span class="mandatory">*</span> : </label>
                     <select class="form-select" name="campground[accurateLocation]" id="accurateLocation">
                         <% for(let place of places) { %>
                             <option value="<%=place.place_name%>">

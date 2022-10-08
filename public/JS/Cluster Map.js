@@ -3,9 +3,9 @@ mapboxgl.accessToken = mapboxToken;
 campgrounds = JSON.parse(campgrounds);
 campgrounds = { features: campgrounds };
 
-// MAPBOX CAMPGROUND MAP
+// MAPBOX CLUSTER MAP
 const map = new mapboxgl.Map({
-    container: 'map',
+    container: 'clusterMap',
     style: 'mapbox://styles/mapbox/dark-v11',
     center: [-99.5917, 37.6699],
     zoom: 3
@@ -153,3 +153,6 @@ map.on('load', () => {
         map.getCanvas().style.cursor = '';
     });
 });
+
+// ADD ZOOM AND ROTATION CONTROLS TO CLUSTER MAP
+map.addControl(new mapboxgl.NavigationControl());

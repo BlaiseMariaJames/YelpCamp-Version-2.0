@@ -94,7 +94,7 @@ const CampgroundSchema = new Schema({
 
 // DEFINING VIRTUAL FUNCTION TO SET VIRTUAL PROPERTY OBJECT 'PROPERTIES' WITH PROPERTY 'POPUPMARKUP' FOR A CAMPGROUND
 CampgroundSchema.virtual('properties.popUpMarkup').get(function () {
-    return `<div style='margin-top:10px;text-align:center;' class='card'><div class='card-header'><a href='/campgrounds/${this._id}' style='text-decoration:none;cursor:pointer;' title='View Campground'><h5>${this.title}</h5></a></div><div class='card-body'><p class='card-text text-muted'>${this.location}</p></div></div>`;
+    return `<div class='card popup'><div class='card-header'><a href='/campgrounds/${this._id}' title='View Campground'><h5>${this.title}</h5></a></div><div class='card-body'><p class='card-text text-muted'>${this.location}</p></div></div>`;
 });
 
 // DEFINING POST-MIDDLEWARE-FUNCTION AFTER DELETING A CAMPGROUND
