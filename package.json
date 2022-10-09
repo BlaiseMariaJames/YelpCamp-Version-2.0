@@ -4,7 +4,8 @@
   "description": "A Full-Stack Project inspired from Colt Steele's The Web Developer Bootcamp on Udemy.",
   "main": "YelpCamp.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node YelpCamp.js"
   },
   "author": "Blaise Maria James",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "@mapbox/mapbox-sdk": "^0.15.0",
     "cloudinary": "^1.33.0",
     "connect-flash": "^0.1.1",
+    "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
     "ejs-mate": "^4.0.0",

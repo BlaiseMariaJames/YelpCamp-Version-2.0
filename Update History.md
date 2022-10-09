@@ -17,6 +17,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Deployment">Deployment</a></li>
 <li><a href="#Security">Security</a></li>
 <li><a href="#Styles-CleanUp">Styles-CleanUp</a></li>
 <li><a href="#Map-Upload">Map-Upload</a></li>
@@ -35,6 +36,10 @@
 </ul>
 
 <h2 id="Oct22">October 2022</h2>
+
+<h3 id="Deployment">Deployment Update 3.9V</h3>
+
+1. Install connect-mongo to create MongoStore to replace MemoryStore.
 
 <h3 id="Security">Security Update 3.8V (Major Update)</h3>
 

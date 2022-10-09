@@ -14,6 +14,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const flash = require("connect-flash");
 const session = require("express-session");
+const MongoStore = require('connect-mongo');
 const methodOverride = require("method-override");
 const mongoSanitize = require("express-mongo-sanitize");
 const passportLocalStrategy = require("passport-local");
@@ -45,18 +46,37 @@ const ApplicationError = require("./utilities/Error Handling/Application Error H
 
 // STAGE 2: CONFIGURATION OF MIDDLEWARES //
 
+// REQUIRING DATABASE URL
+const dbURL = process.env.ATLAS_DATABASE_URL || 'mongodb://localhost:27017/yelpcamp';
+
 // REQUIRING SESSION CREDENTIALS
-const { SESSION_NAME, SESSION_SECRET } = process.env;
+const { SESSION_NAME = "newSession", SESSION_SECRET = "ColtIsGreat!", SESSION_SECURE = false } = process.env;
+
+// CONFIGURING SESSION STORE
+const mongoDBStore = MongoStore.create({
+    mongoUrl: dbURL,
+    // Update after 24 hours if no changes.
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: SESSION_SECRET
+    }
+});
+
+// If failed.
+mongoDBStore.on("error", function (error) {
+    console.log("Session Store Error!", error);
+});
 
 // CONFIGURING SESSIONS
 const sessionConfig = {
     name: SESSION_NAME,
+    store: mongoDBStore,
     secret: SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: {
         // Only through https.
-        // secure: true,
+        secure: SESSION_SECURE,
         // Only through http.
         httpOnly: true,
         // Expire within a week.
@@ -110,7 +130,7 @@ application.use((request, response, next) => {
 
 // CONNECTING TO MONGO DATABASE USING MONGOOSE
 mongoose.set("strictQuery", false);
-mongoose.connect("mongodb://localhost:27017/campgrounds", {
+mongoose.connect(dbURL, {
     // PASSING REQUIRED OPTIONS TO AVOID DEPRECIATION WARNINGS IN FUTURE
     useNewUrlParser: true,
     useUnifiedTopology: true
