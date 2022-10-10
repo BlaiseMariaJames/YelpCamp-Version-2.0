@@ -76,7 +76,7 @@ const sessionConfig = {
     saveUninitialized: true,
     cookie: {
         // Only through https.
-        secure: SESSION_SECURE,
+        secure: (SESSION_SECURE === 'true'),
         // Only through http.
         httpOnly: true,
         // Expire within a week.

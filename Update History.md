@@ -6,6 +6,12 @@
 
 ## Quick Glance
 
+#### By Version:
+
+<ul>
+<li><a href="#Colt">Colt Steele</a></li>
+</ul>
+
 #### By Month:
 
 <ul>
@@ -17,6 +23,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Seed-Database">Seed Database</a></li>
 <li><a href="#Deployment">Deployment</a></li>
 <li><a href="#Security">Security</a></li>
 <li><a href="#Styles-CleanUp">Styles-CleanUp</a></li>
@@ -37,6 +44,19 @@
 
 <h2 id="Oct22">October 2022</h2>
 
+<hr>
+
+<h3 id="Colt">Colt Steele's Version</h3>
+
+<p>Colt Steele's Version ends here...</p>
+
+<hr>  
+
+<h3 id="Seed-Database">Seed Database Update 4.0V</h3>
+
+1. Install readline-sync to improve interactivity while seeding data.
+2. Modify Add Campgrounds to Database file to improve interactivity with user. 
+   
 <h3 id="Deployment">Deployment Update 3.9V</h3>
 
 1. Install connect-mongo to create MongoStore to replace MemoryStore.
