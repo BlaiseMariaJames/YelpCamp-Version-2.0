@@ -6,12 +6,6 @@
 
 ## Quick Glance
 
-#### By Version:
-
-<ul>
-<li><a href="#Colt">Colt Steele</a></li>
-</ul>
-
 #### By Month:
 
 <ul>
@@ -23,6 +17,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Final">Final</a></li>
 <li><a href="#Seed-Database">Seed Database</a></li>
 <li><a href="#Deployment">Deployment</a></li>
 <li><a href="#Security">Security</a></li>
@@ -44,13 +39,9 @@
 
 <h2 id="Oct22">October 2022</h2>
 
-<hr>
+<h3 id="Final">Final Commit</h3>
 
-<h3 id="Colt">Colt Steele's Version</h3>
-
-<p>Colt Steele's Version ends here...</p>
-
-<hr>  
+1. Update Github README markdown file.
 
 <h3 id="Seed-Database">Seed Database Update 4.0V</h3>
 
