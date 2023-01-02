@@ -1,11 +1,11 @@
 {
   "name": "yelpcamp-project",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "A Full-Stack Project inspired from Colt Steele's The Web Developer Bootcamp on Udemy.",
-  "main": "YelpCamp.js",
+  "main": "YelpCamp 2.0.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node YelpCamp.js"
+    "start": "nodemon YelpCamp 2.0.js"
   },
   "author": "Blaise Maria James",
   "license": "ISC",

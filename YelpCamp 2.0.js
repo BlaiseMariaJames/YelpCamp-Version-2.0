@@ -40,7 +40,7 @@ application.use(express.static('public'));
 application.set('public', path.join(__dirname, '/public'));
 
 // REQUIRING APPLICATION ERROR HANDLER CLASS 
-const ApplicationError = require("./utilities/Error Handling/Application Error Handler Class");
+const ApplicationError = require("./utilities/Error Handling/Application Error Handler Class.js");
 
 
 
@@ -98,7 +98,7 @@ application.use(print, morgan('tiny'));
 application.use(flash());
 
 // CONFIGURING HELMET
-const helmet = require("./utilities/Security/Helmet Configuration");
+const helmet = require("./utilities/Security/Helmet Configuration.js");
 application.use(helmet);
 
 // CONFIGURING EXPRESS MONGOOSE SANITIZE
@@ -158,19 +158,19 @@ databaseConnection.once("open", async () => {
 // CAMPGROUND MODEL BASED ROUTES
 
 // REQUIRING CAMPGROUND ROUTES HANDLER
-const campgroundRouteHandler = require("./routes/Campground Routes");
+const campgroundRouteHandler = require("./routes/Campground Routes.js");
 application.use('/campgrounds', campgroundRouteHandler);
 
 // USER MODEL BASED ROUTES
 
 // REQUIRING USER ROUTES HANDLER
-const userRouteHandler = require("./routes/User Routes");
+const userRouteHandler = require("./routes/User Routes.js");
 application.use('/', userRouteHandler);
 
 // REVIEW MODEL BASED ROUTES
 
 // REQUIRING REVIEW ROUTES HANDLER
-const reviewRouteHandler = require("./routes/Review Routes");
+const reviewRouteHandler = require("./routes/Review Routes.js");
 application.use('/campgrounds/:campgroundId/reviews', reviewRouteHandler);
 
 // OTHER ROUTES
