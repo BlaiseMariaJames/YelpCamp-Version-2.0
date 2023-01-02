@@ -25,9 +25,16 @@ const User = require("../models/Mongoose Models/User Model.js");
 const Review = require("../models/Mongoose Models/Review Model.js");
 const Campground = require("../models/Mongoose Models/Campground Model.js");
 
-// REQUIRING DATA
+// REQUIRING DATA AND SCHEMA
 const cities = require("./Cities.js");
 const { descriptors, places } = require("./Places.js");
+const campCategories = {
+    typeOf: ["rv", "tent", "backcountry", "cabin"],
+    location: ["beach", "desert", "forest", "mountain", "lakefront"],
+    amenity: ["family", "economic", "luxury", "pet-friendly"],
+    activity: ["adventure", "educational", "hunting", "festival"]
+};
+const UserSchema = require("../models/Joi Models/User Model.js");
 
 // DEFINING FIND RANDOM FUNCTION
 const findRandom = array => array[Math.floor(Math.random() * array.length)];
@@ -50,7 +57,7 @@ const uploadSampleCampgroundImages = async () => {
 }
 
 // DEFINING SEED DATA FUNCTION
-async function seedData() {
+async function seedData(username, email) {
 
     // STEP 1: DELETING EXISTING DATA //
 
@@ -73,25 +80,34 @@ async function seedData() {
     // Delete any existing review.
     console.log("Deleting existing reviews...");
     await Review.deleteMany({});
-    console.log("Existing data deleted successfully!");
-
+    console.log("\nExisting data deleted successfully!");
+    readline.question("\nPress any key to continue...");
+    console.clear();
+    console.log("\nProceeding...");
+    
     // STEP 2: CREATING DATA //
-
+    
     // Create a new user account.
-    console.log("\nCreating User with username 'Unknown' and password 'coltisgreat'...");
+    console.log(`\nCreating User...\n\nusername: ${username}\nemail: ${email}\npassword: 'coltisgreat'\n\nNOTE: Your default password is 'coltisgreat' you can change it anytime in the webpage...`);
+    console.log("\nUser data inserted successfully!");
+    readline.question("\nPress any key to continue...");
+    console.clear();
+    console.log("\nProceeding...");
     const newUser = User({
-        username: 'Unknown',
-        email: 'Unknown@gmail.com',
+        username, email, 
         salt: 'b70e6a9f24b279d2097371b8d39657af041cdb48c5ff61ba5ba5775cdba33843',
         hash: '3067162b122490dfa8aaa3cb41a42e31c1e6be3f5853dc834570ba6fe8f4451b0dec026af486f3098b10517a0a96b14bce0063fb0799d1da5ae2364c0156096aae9df0ceecd76cf401cb7614dfe86e245860518ae7958f433a11e9ff5365fc89ef1f96bb144da388d69211ee42576710f285b4142f6a120cd2d93c1ef3c8e5476428533307226a90f3967c776d00404a443a3c96770c446fb4ec0833dbd68bb6cbd22a94044c85bf7e18781b895b831914116d160366f26fbc47d3e7c089b186768c543e6396951ae40b6e25f605432b40bbd771473f8277d05d3c70961af25f8d0e90e16d8cf70fda799ae1ce04f0fa329979a8b6e27ebef37cfdf109156f2336cb91b931a2d9ffb2101d8bed7e3ac0f42cacabf2dcfcced050295785be28e0eb3929a32e64a5d3fb2b25cfbbdb656a9da6caf6d5ad981ad2c135959f1fe2a3de0ed3899bb84417243b6424060ce853853d41e1250189566457ef1a79ebcbfa586db7ca2b77a10e586e5fdca84a39a712a763bc3922234b3a150a2c7563e4b91d78977ef73250d0c5b81e537a30a2ad275c8bd9b63aefcdd894e6ab80be7b487080ed22266e3962215f1e7563319bb381ab92143a334b2487399ff1f9788132f78c120b64dd7f9274c25170aa2349d8ebfb46f9a99fb5396ed3bb8868ad6557111b5649387d6fcdba40315e253ec1bd42bc1c8f5e0ed1bb389a15e92e03a921'
     });
     await newUser.save();
+
+    // Creating Campgrounds.
+    console.log("\nCreating Campgrounds...");
     const num = parseInt(readline.question("\nEnter the number of campgrounds you wish to seed (Each campground may take upto 8-10 seconds) : "));
     if (num && num > 0) {
         console.log(`\nSeeding ${num} Campgrounds, this may take several minutes...\n`);
         for (let i = 1; i <= num; i++) {
             // Assign same author.
-            const oldAuthor = await User.findOne({ username: 'Unknown' });
+            const oldAuthor = await User.findOne({ username });
             const author = oldAuthor._id.toString();
             // Select a random title.
             const title = `${findRandom(descriptors)} ${findRandom(places)}`;
@@ -117,14 +133,21 @@ async function seedData() {
             }
             // Random description.
             const description = 'An awesome place awaits you...';
+            // Random categories.
+            const categories = {};
+            for (const [key, value] of Object.entries(campCategories)) {
+                categories[key] = findRandom(value);
+            }
+            // Campground suggested on.
+            const addedOn = new Date();
             // Creating new camp.
             console.log(`Seeding Campground ${i} into database...`);
-            const camp = new Campground({ author, title, images, price, location, accurateLocation: location, geometry, description });
+            const camp = new Campground({ author, title, images, price, location, accurateLocation: location, geometry, description, categories, addedOn });         
             await camp.save();
         }
-        console.log("Data inserted successfully!");
+        console.log("\nData inserted successfully!");
     } else {
-        console.log("No data was inserted!");
+        console.log("\nNo data was inserted!");
     }
 };
 
@@ -151,8 +174,24 @@ databaseConnection.once("open", async () => {
     const permission = readline.question(`\nAre you really sure to continue? Type 'yes' to continue...\nNote: If you are running this file for the very first time, type 'yes'\n\nType Here: `);
     if (permission.toLowerCase() === "yes") {
         console.clear();
+        console.log("\nProceeding...\n\nRequesting User details - The campgrounds created will be registered under the following user details...");
+        let username = readline.question("\nEnter username: ");
+        let email = readline.question("\nEnter email: ");
+        let validateUser = {username, email, password: "password"};
+        let { error } = UserSchema.validate(validateUser);
+        // IF ANY SCHEMATIC ERROR
+        while (error) {
+            let errorMessage = error.details.map(error => error.message).join(',');
+            console.log(`\nCannot create user account, ${errorMessage}.`);
+            console.log("\nTrying again....");
+            username = readline.question("\nEnter username: ");
+            email = readline.question("\nEnter email: ");
+            validateUser = {username, email, password: "password"};
+            error = UserSchema.validate(validateUser).error;
+        }
+        console.clear();
         console.log("\nProceeding...\n");
-        await seedData()
+        await seedData(username, email)
             .then(() => {
                 console.log("\nDisconnecting from the database...");
                 mongoose.connection.close();

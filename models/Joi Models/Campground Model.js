@@ -21,7 +21,14 @@ const CampgroundSchema = Joi.object({
         url: Joi.string().required().escapeHTML(),
         filename: Joi.string().required().escapeHTML()
     }).allow('')),
-    description: Joi.string().allow('').escapeHTML()
+    categories: Joi.object({
+        typeOf: Joi.string().required().escapeHTML(),
+        location: Joi.string().required().escapeHTML(),
+        amenity: Joi.string().required().escapeHTML(),
+        activity: Joi.string().required().escapeHTML()
+    }).required(),
+    description: Joi.string().allow('').escapeHTML(),
+    addedOn: Joi.date().required()
 });
 
 // EXPORTING CAMPGROUND SCHEMA

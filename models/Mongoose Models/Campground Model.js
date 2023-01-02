@@ -32,6 +32,34 @@ ImageSchema.virtual('cardImage').get(function () {
     return this.url.replace('/upload', '/upload/w_500,h_500');
 });
 
+// DEFINING CATEGORY SCHEMA
+const CategorySchema = new Schema({
+    typeOf: {
+        type: String,
+        required: true,
+        default: "none",
+        enum: ['rv', 'tent', 'backcountry', 'cabin', 'none']
+    },
+    location: {
+        type: String,
+        required: true,
+        default: "none",
+        enum: ['beach', 'desert', 'forest', 'mountain', 'lakefront', 'none']
+    },
+    amenity: {
+        type: String,
+        required: true,
+        default: "none",
+        enum: ['family', 'luxury', 'economic', 'pet-friendly', 'none']
+    },
+    activity: {
+        type: String,
+        required: true,
+        default: "none",
+        enum: ['adventure', 'educational', 'hunting', 'festival', 'none']
+    }
+});
+
 // DEFINING CAMPGROUND SCHEMA OPTIONS
 const options = {
     // WHEN CONVERTED TO JSON, ADD VIRTUAL PROPERTIES TO THE RESULT
@@ -80,6 +108,14 @@ const CampgroundSchema = new Schema({
     },
     description: {
         type: String
+    },
+    categories: {
+        type: CategorySchema,
+        required: [true, "The field 'categories' is mandatory"]
+    },
+    addedOn: {
+        type: Date,
+        required: [true, "The field 'addedOn' is mandatory"]
     },
     images: [ImageSchema],
     reviews: [

@@ -80,12 +80,26 @@ module.exports.showCampground = async (request, response, next) => {
 // Index --> Display all campgrounds.
 module.exports.allCampgrounds = async (request, response, next) => {
     let errorMessage = "";
-    let campgrounds = await Campground.find({}).populate('author');
-    if (campgrounds.length > 0) {
-        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, errorMessage });
+    let { page, limit } = (request.query);
+    page = page ? parseInt(page) : 1;
+    limit = limit ? parseInt(limit) : 12;
+    const startIndex = (page - 1) * limit, endIndex = page * limit;
+    const allCampgrounds = await Campground.find({}).populate('author').sort({ addedOn: -1 });
+    let campgrounds = {};
+    campgrounds = {
+        results: (allCampgrounds).slice(startIndex, endIndex), page, limit
+    }
+    if (allCampgrounds.length > 0) {
+        // CAMPGROUNDS EXISTS
+        if (campgrounds.results.length > 0) {
+            response.render('campgrounds/Index', { title: "All Campgrounds", total: allCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, errorMessage });
+        } else {
+            // ERROR HANDLED: CURRENT PAGE HAS NO CAMPGROUNDS
+            return next(new ApplicationError("I don't know that path!", 'Page Not Found', 404));
+        }
     } else {
         errorMessage = "No campgrounds are currently available.";
-        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds, errorMessage });
+        response.render('campgrounds/Index', { title: "All Campgrounds", campgrounds: campgrounds.results, errorMessage });
     }
 }
 

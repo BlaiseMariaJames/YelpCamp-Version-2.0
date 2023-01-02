@@ -9,14 +9,14 @@
 #### By Version:
 
 <ul>
-<li><a href="#Colt">Colt Steele</a></li>
+<li><a href="#Colt">Colt Steele (Yelpcamp v1)</a></li>
 </ul>
 
 #### By Month:
 
 <ul>
 <li><a href="#Jan23">January 2023</a></li>
-<li><a href="#Oct22">October 2022</a></li>
+<li><a href="#Oct22">October 2022 (Yelpcamp v1)</a></li>
 <li><a href="#Sep22">September 2022</a></li>
 <li><a href="#Aug22">August 2022</a></li>
 </ul>
@@ -24,15 +24,16 @@
 #### By Type:
 
 <ul>
+<li><a href="#Categories-Pagination">Categories & Pagination</a></li>
 <li><a href="#Initial-v2">Initial v2</a></li>
 <li><a href="#Seed-Database">Seed Database (Yelpcamp v1)</a></li>
 <li><a href="#Deployment">Deployment</a></li>
 <li><a href="#Security">Security</a></li>
-<li><a href="#Styles-CleanUp">Styles-CleanUp</a></li>
-<li><a href="#Map-Upload">Map-Upload</a></li>
-<li><a href="#Image-Upload">Image-Upload</a></li>
+<li><a href="#Styles-CleanUp">Styles CleanUp</a></li>
+<li><a href="#Map-Upload">Map Upload</a></li>
+<li><a href="#Image-Upload">Image Upload</a></li>
 <li><a href="#Revamp">Revamp</a></li>
-<li><a href="#Star-Rating">Star-Rating</a></li>
+<li><a href="#Star-Rating">Star Rating</a></li>
 <li><a href="#Refactoring">Refactoring</a></li>
 <li><a href="#Authorization">Authorization</a></li>
 <li><a href="#Authentication">Authentication</a></li>
@@ -46,6 +47,12 @@
 
 <h2 id="Jan23">January 2023</h2>
 
+<h3 id="Categories-Pagination">Categories & Pagination Update 2.0.1V</h3>
+
+1. Modify Joi and Campground Models to support categories.
+2. Modify Add Campgrounds to Database file to improve interactivity with user. 
+3. Modify Index view, BoilerPlate layout, Campground controller to support categories and pagination.
+
 <h3 id="Initial-v2">Initial Commit - Yelpcamp v2</h3>
 
 1. Modify README.md, package.json and Update History.
@@ -53,7 +60,7 @@
 
 <hr>
 
-<h3 id="Colt">Colt Steele's Version</h3>
+<h3 id="Colt">Yelpcamp v1 - Colt Steele's Version</h3>
 
 <p>Colt Steele's Version ends here...</p>
 

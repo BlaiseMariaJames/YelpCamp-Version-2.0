@@ -1,0 +1,73 @@
+/* Index Page - All Campgrounds Page Styles */
+
+/* Each Campground Styles */
+#view {
+    width: 100%;
+    border: none;
+    border-radius: 20px;
+    transition: all 0.2s;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+#view:hover {
+    transform: scale(1.015);
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+#view img {
+    border-radius: 20px;
+}
+
+@media (min-width: 450px) {
+    #view {
+        width: 45%;
+    }
+}
+
+@media (min-width: 830px) {
+    #view {
+        width: 30%;
+    }
+}
+
+/* Page Header Styles */
+.page-header {
+    margin: 5px 0;
+    font-size: 1.5em;
+    text-align: center;
+    font-weight: normal;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Pagination Styles */
+#pagination {
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+
+#pagination li {
+    display: inline
+}
+
+#pagination li a {
+    color: #000;
+    padding: 5px 10px;
+    display: inline-block;
+    text-decoration: none;
+}
+
+#pagination li a {
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    -webkit-transition: background-color 0.3s;
+}
+
+#pagination li a.active {
+    color: #fff;
+    background-color: #343a40;
+}
+
+#pagination li a:hover:not(.active) {
+    background-color: #ddd;
+}
