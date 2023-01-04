@@ -22,10 +22,10 @@ const CampgroundSchema = Joi.object({
         filename: Joi.string().required().escapeHTML()
     }).allow('')),
     categories: Joi.object({
-        typeOf: Joi.string().required().escapeHTML(),
-        location: Joi.string().required().escapeHTML(),
-        amenity: Joi.string().required().escapeHTML(),
-        activity: Joi.string().required().escapeHTML()
+        typeOf: Joi.string().required().valid('rv', 'tent', 'backcountry', 'cabin').escapeHTML(),
+        location: Joi.string().required().valid('beach', 'desert', 'forest', 'mountain', 'lakefront').escapeHTML(),
+        amenity: Joi.string().required().valid('family', 'luxury', 'economic', 'pet-friendly').escapeHTML(),
+        activity: Joi.string().required().valid('adventure', 'educational', 'hunting', 'festival').escapeHTML()
     }).required(),
     description: Joi.string().allow('').escapeHTML(),
     addedOn: Joi.date().required()

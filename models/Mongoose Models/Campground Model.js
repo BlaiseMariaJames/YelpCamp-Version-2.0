@@ -37,26 +37,26 @@ const CategorySchema = new Schema({
     typeOf: {
         type: String,
         required: true,
-        default: "none",
-        enum: ['rv', 'tent', 'backcountry', 'cabin', 'none']
+        default: "rv",
+        enum: ['rv', 'tent', 'backcountry', 'cabin']
     },
     location: {
         type: String,
         required: true,
-        default: "none",
-        enum: ['beach', 'desert', 'forest', 'mountain', 'lakefront', 'none']
+        default: "beach",
+        enum: ['beach', 'desert', 'forest', 'mountain', 'lakefront']
     },
     amenity: {
         type: String,
         required: true,
-        default: "none",
-        enum: ['family', 'luxury', 'economic', 'pet-friendly', 'none']
+        default: "family",
+        enum: ['family', 'luxury', 'economic', 'pet-friendly']
     },
     activity: {
         type: String,
         required: true,
-        default: "none",
-        enum: ['adventure', 'educational', 'hunting', 'festival', 'none']
+        default: "adventure",
+        enum: ['adventure', 'educational', 'hunting', 'festival']
     }
 });
 

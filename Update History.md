@@ -47,7 +47,11 @@
 
 <h2 id="Jan23">January 2023</h2>
 
-<h3 id="Categories-Pagination">Categories & Pagination Update 2.0.1V</h3>
+<h3 id="Categories-Pagination">Categories & Pagination Update 2.0.2V</h3>
+
+1. Modify Index view and Campground controller to support categories and pagination.
+   
+### Categories & Pagination Update 2.0.1V
 
 1. Modify Joi and Campground Models to support categories.
 2. Modify Add Campgrounds to Database file to improve interactivity with user. 
