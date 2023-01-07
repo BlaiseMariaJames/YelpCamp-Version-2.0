@@ -31,6 +31,7 @@ router.route('/')
     .delete(isLoggedIn, isAuthorized, handleAsyncErrors(Campground.deleteCampground));
 
 router.get('/new', isLoggedIn, Campground.renderNewForm);
+router.get('/categories', handleAsyncErrors(Campground.categoriseCampgrounds));
 router.get('/:id', handleAsyncErrors(Campground.showCampground));
 router.get('/:id/manage', isLoggedIn, isAuthorized, handleAsyncErrors(Campground.renderManageForm));
 router.get('/:id/edit', isLoggedIn, isAuthorized, handleAsyncErrors(Campground.renderEditForm));

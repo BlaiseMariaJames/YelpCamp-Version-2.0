@@ -1,7 +1,7 @@
 /* Index Page - All Campgrounds Page Styles */
 
 /* Each Campground Styles */
-#view {
+.view {
     flex: auto;
     width: 100%;
     border: none;
@@ -10,23 +10,23 @@
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
-#view:hover {
+.view:hover {
     transform: scale(1.015);
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
-#view img {
+.view img {
     border-radius: 20px;
 }
 
 @media (min-width: 450px) {
-    #view {
+    .view {
         width: 45%;
     }
 }
 
 @media (min-width: 830px) {
-    #view {
+    .view {
         width: 30%;
     }
 }

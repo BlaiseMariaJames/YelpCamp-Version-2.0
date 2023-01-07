@@ -7,8 +7,19 @@
         <div class="collapse navbar-collapse" id="navbar">
             <div class="navbar-nav">
                 <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/campgrounds">All Camps</a>
-                <a class="nav-link" href="/campgrounds/new">Add Campground</a>
+                <a class="nav-link" href="/campgrounds">All Campgrounds</a>
+                <a class="nav-link" href="/campgrounds/new">Add Campgrounds</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">Categories</a>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="/campgrounds/categories?category=Types">Campground Types</a></li>
+                        <li><a class="dropdown-item" href="/campgrounds/categories?category=Locations">Campground Locations</a></li>
+                        <li><a class="dropdown-item" href="/campgrounds/categories?category=Amenities">Campground Amenities</a></li>
+                        <li><a class="dropdown-item" href="/campgrounds/categories?category=Activities">Campground Activities</a>
+                        </li>
+                    </ul>
+                </li>
             </div>
             <div class="navbar-nav ms-auto">
                 <% if(!currentUser) { %>

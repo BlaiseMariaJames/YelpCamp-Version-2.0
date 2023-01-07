@@ -79,13 +79,15 @@ module.exports.showCampground = async (request, response, next) => {
 
 // Index --> Display all campgrounds.
 module.exports.allCampgrounds = async (request, response, next) => {
-    let errorMessage = "";
-    let { page, limit, category } = (request.query);
+    let { page, limit, select, find } = (request.query);
     page = page ? parseInt(page) : 1;
     limit = limit ? parseInt(limit) : 12;
-    category = category ? category : "Latest";
+    select = select ? select : "all";
+    find = find ? find : "premier";
+    let error = false, title = "", selectedCampgrounds = {}, campgrounds = { page, limit, select, find };
     const startIndex = (page - 1) * limit, endIndex = page * limit;
-    const allCategories = ["Latest", "Premier", "Types", "Locations", "Amentities", "Activities"];
+    const allFinds = ['premier', 'latest'];
+    const allSelects = ['all', 'rv', 'tent', 'backcountry', 'cabin', 'beach', 'desert', 'forest', 'mountain', 'lakefront', 'family', 'luxury', 'economic', 'pet-friendly', 'adventure', 'educational', 'hunting', 'festival'];
     const dbCategories = {
         Types: {
             key: "typeOf",
@@ -95,7 +97,7 @@ module.exports.allCampgrounds = async (request, response, next) => {
             key: "location",
             values: ['beach', 'desert', 'forest', 'mountain', 'lakefront']
         },
-        Amentities: {
+        Amenities: {
             key: "amenity",
             values: ['family', 'luxury', 'economic', 'pet-friendly']
         },
@@ -104,58 +106,83 @@ module.exports.allCampgrounds = async (request, response, next) => {
             values: ['adventure', 'educational', 'hunting', 'festival']
         }
     };
-    let allCampgrounds = await Campground.find({});
-    let total = allCampgrounds.length;
-    if (total > 0) {
-        // THERE IS ATLEAST ONE CAMPGROUND
-        let length = 0;
-        let campgrounds = { page, category, limit };
-        campgrounds.results = [];
-        if (category === "Latest") {
-            // FETCH LATEST CAMPGROUNDS
-            const resultCampgrounds = {};
-            resultCampgrounds.heading = "";
-            const latestCampgrounds = await Campground.find({}).populate('author').sort({ addedOn: -1 });
-            // MODIFY MAP TO HAVE SPECIFIC CAMPGROUNDS
-            resultCampgrounds.content = (latestCampgrounds).slice(startIndex, endIndex);
-            allCampgrounds = resultCampgrounds.content;
-            length = allCampgrounds.length;
-            campgrounds.results.push(resultCampgrounds);
-        } else if (category === "Premier") {
-            // FETCH PREMIER CAMPGROUNDS
-            const resultCampgrounds = {};
-            resultCampgrounds.heading = "";
-            const premierCampgrounds = await Campground.find({}).populate('author').sort({ addedOn: -1 });
-            // MODIFY MAP TO HAVE SPECIFIC CAMPGROUNDS
-            resultCampgrounds.content = (premierCampgrounds).slice(startIndex, endIndex);
-            allCampgrounds = resultCampgrounds.content;
-            length = allCampgrounds.length;
-            campgrounds.results.push(resultCampgrounds);
-        } else if (!((Object.keys(dbCategories)).includes(category))) {
-            // ERROR HANDLED: CATEGORY DOESN'T EXISTS
-            return next(new ApplicationError("Sorry!, Invalid Category. We couldn't find the campgrounds!!", 'Invalid Category', 400));
-        } else {
-            // FETCH CAMPGROUNDS BASED ON LINK
-            let { key, values } = dbCategories[category];
-            for (let value of values) {
-                const query = {};
-                query[`categories.${key}`] = value;
-                const resultCampgrounds = {};
-                resultCampgrounds.heading = (value + " based campgrounds").toUpperCase();
-                resultCampgrounds.content = await Campground.find(query).populate('author');
-                campgrounds.results.push(resultCampgrounds);
-            }
-            length = campgrounds.results.length;
-        }
-        if (length > 0) {
-            response.render('campgrounds/Index', { title: `All Campgrounds | ${category}`, total, current: campgrounds, campgrounds: allCampgrounds, campgroundResults: campgrounds.results, categories: allCategories, errorMessage });
-        } else {
-            // ERROR HANDLED: CURRENT PAGE HAS NO CAMPGROUNDS
-            return next(new ApplicationError("I don't know that path!", 'Page Not Found', 404));
-        }
+    if (!allSelects.includes(select) || !allFinds.includes(find)) {
+        // ERROR HANDLED: CATEGORY DOESN'T EXISTS
+        return next(new ApplicationError("Sorry!, Invalid Category. We couldn't find the campgrounds!!", 'Invalid Category', 400));
     } else {
-        errorMessage = "No campgrounds are currently available.";
-        response.render('campgrounds/Index', { title: "All Campgrounds", errorMessage });
+        // FETCH CAMPGROUNDS BASED ON SELECT
+        campgrounds.results = [];
+        if (select === "all") {
+            title = "All Campgrounds";
+            selectedCampgrounds = await Campground.find({}).populate('author');
+            campgrounds.results = selectedCampgrounds.slice(startIndex, endIndex);
+        } else {
+            title = `${select} Based Campgrounds`.toUpperCase();
+            for (category in dbCategories) {
+                const { key, values } = dbCategories[category];
+                for (let value of values) {
+                    if (select === value) {
+                        const query = {};
+                        query[`categories.${key}`] = value;
+                        selectedCampgrounds = await Campground.find(query).populate('author');
+                        campgrounds.results = selectedCampgrounds.slice(startIndex, endIndex);
+                    }
+                }
+            }
+        }
+    }
+    if (campgrounds.results.length) {
+        response.render('campgrounds/Index', { title, total: selectedCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, error });
+    } else {
+        error = true;
+        response.render('campgrounds/Index', { title: "No Campgrounds", error });
+    }
+}
+
+// Categories --> Display specific campgrounds.
+module.exports.categoriseCampgrounds = async (request, response, next) => {
+    let campgrounds = {};
+    const { category } = request.query;
+    const dbCategories = {
+        Types: {
+            key: "typeOf",
+            values: ['rv', 'tent', 'backcountry', 'cabin']
+        },
+        Locations: {
+            key: "location",
+            values: ['beach', 'desert', 'forest', 'mountain', 'lakefront']
+        },
+        Amenities: {
+            key: "amenity",
+            values: ['family', 'luxury', 'economic', 'pet-friendly']
+        },
+        Activities: {
+            key: "activity",
+            values: ['adventure', 'educational', 'hunting', 'festival']
+        }
+    };
+    if (!((Object.keys(dbCategories)).includes(category))) {
+        // ERROR HANDLED: CATEGORY DOESN'T EXISTS
+        return next(new ApplicationError("Sorry!, Invalid Category. We couldn't find the campgrounds!!", 'Invalid Category', 400));
+    } else {
+        // FETCH CAMPGROUNDS BASED ON CATEGORY
+        let { key, values } = dbCategories[category];
+        campgrounds.results = [];
+        for (let value of values) {
+            const query = {};
+            query[`categories.${key}`] = value;
+            const resultCampgrounds = {};
+            resultCampgrounds.select = value;
+            resultCampgrounds.heading = (value + " based campgrounds").toUpperCase();
+            resultCampgrounds.content = await Campground.find(query).populate('author');
+            resultCampgrounds.length = resultCampgrounds.content.length;
+            campgrounds.results.push(resultCampgrounds);
+        }
+    }
+    if (campgrounds.results.length) {
+        response.render('campgrounds/Categories', { title: `Campground ${category}`, campgroundResults: campgrounds.results });
+    } else {
+        response.render('campgrounds/NotFound', { title: "No Campgrounds" });
     }
 }
 
