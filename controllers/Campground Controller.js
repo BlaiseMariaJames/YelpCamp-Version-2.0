@@ -17,11 +17,35 @@ const ApplicationError = require("../utilities/Error Handling/Application Error 
 // REQUIRING FUNCTION TO DELETE CAMPGROUND IMAGES FROM CLOUDINARY (IF IN CASE OF ANY ERROR WHILE UPLOADING)
 const deleteCampgroundImages = require("../utilities/Cloudinary/Delete Cloudinary Images");
 
+// REQUIRING VARIOUS AVAILABLE CAMPGROUND CATEGORIES DEFINED IN THE DATABASE
+const dbCategories = {
+    Types: {
+        key: "typeOf",
+        formLabel: "Type",
+        values: ['rv', 'tent', 'backcountry', 'cabin']
+    },
+    Locations: {
+        key: "location",
+        formLabel: "Location Type",
+        values: ['beach', 'desert', 'forest', 'mountain', 'lakefront']
+    },
+    Amenities: {
+        key: "amenity",
+        formLabel: "Amenity",
+        values: ['family', 'luxury', 'economic', 'pet-friendly']
+    },
+    Activities: {
+        key: "activity",
+        formLabel: "Activity",
+        values: ['adventure', 'educational', 'hunting', 'festival']
+    }
+};
+
 // CREATE OPERATION ROUTES
 
 // New --> Form to create a new campground.
 module.exports.renderNewForm = (request, response) => {
-    response.render('campgrounds/New', { title: "New Campground", places: "", campground: "" });
+    response.render('campgrounds/New', { title: "New Campground", categories: dbCategories, category: false, places: "", campground: "" });
 }
 
 // Create --> Creates new campground on server.
@@ -33,13 +57,20 @@ module.exports.createCampground = async (request, response, next) => {
         query: campground.location
     }).send();
     if (!campground.accurateLocation) {
-        return response.render('campgrounds/New', { title: "New Campground", places: geoData.body.features, campground });
+        // Find accurate location of campground. (Second Page)
+        return response.render('campgrounds/New', { title: "New Campground", categories: dbCategories, category: false, places: geoData.body.features, campground });
     } else {
         campground.location = campground.accurateLocation;
         campground.geometry = geoData.body.features.find(function (place) {
             return place.place_name === campground.accurateLocation;
         }).geometry;
     }
+    if (!campground.categories) {
+        // Find campground categories. (Third Page)
+        return response.render('campgrounds/New', { title: "New Campground", categories: dbCategories, category: true, places: geoData.body.features, campground });
+    }
+    // Campground added on...
+    campground.addedOn = new Date();
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
@@ -74,7 +105,7 @@ module.exports.showCampground = async (request, response, next) => {
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));
     }
-    response.render('campgrounds/Show', { title: campground.title, campground });
+    response.render('campgrounds/Show', { title: campground.title, categories: dbCategories, campground });
 }
 
 // Index --> Display all campgrounds.
@@ -88,24 +119,6 @@ module.exports.allCampgrounds = async (request, response, next) => {
     const startIndex = (page - 1) * limit, endIndex = page * limit;
     const allFinds = ['premier', 'latest'];
     const allSelects = ['all', 'rv', 'tent', 'backcountry', 'cabin', 'beach', 'desert', 'forest', 'mountain', 'lakefront', 'family', 'luxury', 'economic', 'pet-friendly', 'adventure', 'educational', 'hunting', 'festival'];
-    const dbCategories = {
-        Types: {
-            key: "typeOf",
-            values: ['rv', 'tent', 'backcountry', 'cabin']
-        },
-        Locations: {
-            key: "location",
-            values: ['beach', 'desert', 'forest', 'mountain', 'lakefront']
-        },
-        Amenities: {
-            key: "amenity",
-            values: ['family', 'luxury', 'economic', 'pet-friendly']
-        },
-        Activities: {
-            key: "activity",
-            values: ['adventure', 'educational', 'hunting', 'festival']
-        }
-    };
     if (!allSelects.includes(select) || !allFinds.includes(find)) {
         // ERROR HANDLED: CATEGORY DOESN'T EXISTS
         return next(new ApplicationError("Sorry!, Invalid Category. We couldn't find the campgrounds!!", 'Invalid Category', 400));
@@ -143,24 +156,6 @@ module.exports.allCampgrounds = async (request, response, next) => {
 module.exports.categoriseCampgrounds = async (request, response, next) => {
     let campgrounds = {};
     const { category } = request.query;
-    const dbCategories = {
-        Types: {
-            key: "typeOf",
-            values: ['rv', 'tent', 'backcountry', 'cabin']
-        },
-        Locations: {
-            key: "location",
-            values: ['beach', 'desert', 'forest', 'mountain', 'lakefront']
-        },
-        Amenities: {
-            key: "amenity",
-            values: ['family', 'luxury', 'economic', 'pet-friendly']
-        },
-        Activities: {
-            key: "activity",
-            values: ['adventure', 'educational', 'hunting', 'festival']
-        }
-    };
     if (!((Object.keys(dbCategories)).includes(category))) {
         // ERROR HANDLED: CATEGORY DOESN'T EXISTS
         return next(new ApplicationError("Sorry!, Invalid Category. We couldn't find the campgrounds!!", 'Invalid Category', 400));
@@ -192,7 +187,7 @@ module.exports.categoriseCampgrounds = async (request, response, next) => {
 module.exports.renderEditForm = async (request, response) => {
     const { id } = request.params;
     const campground = await Campground.findById(id).populate('author');
-    response.render('campgrounds/Edit', { title: "Edit Campground", places: "", campground });
+    response.render('campgrounds/Edit', { title: "Edit Campground", categories: dbCategories, category: false, places: "", campground });
 }
 
 // Update --> Updates a campground on server.
@@ -203,14 +198,21 @@ module.exports.updateCampground = async (request, response, next) => {
         query: campground.location
     }).send();
     if (!campground.accurateLocation) {
+        // Find accurate location of campground. (Second Page)
         Object.assign(oldCampground, campground);
-        return response.render('campgrounds/Edit', { title: "Edit Campground", places: geoData.body.features, campground: oldCampground });
-    } else {
+        return response.render('campgrounds/Edit', { title: "Edit Campground", categories: dbCategories, category: false, places: geoData.body.features, campground: oldCampground });
+    } else if (!campground.categories) {
         campground.location = campground.accurateLocation;
         campground.geometry = geoData.body.features.find(function (place) {
             return place.place_name === campground.accurateLocation;
         }).geometry;
+        // Find campground categories. (Third Page)
+        Object.assign(oldCampground, campground);
+        return response.render('campgrounds/Edit', { title: "Edit Campground", categories: dbCategories, category: true, places: geoData.body.features, campground: oldCampground });
     }
+    // Campground added on...
+    campground.addedOn = oldCampground.addedOn;
+    campground.geometry = oldCampground.geometry;
     const { error } = CampgroundSchema.validate(campground);
     if (error) {
         let errorMessage = error.details.map(error => error.message).join(',');
@@ -221,6 +223,7 @@ module.exports.updateCampground = async (request, response, next) => {
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
         Object.assign(oldCampground, campground);
+        Object.assign(oldCampground.categories, campground.categories);
         await oldCampground.save();
         request.flash('success', 'Successfully edited the Campground!');
         response.redirect(`/campgrounds/${oldCampground._id}`);
@@ -259,7 +262,7 @@ module.exports.redesignCampground = async (request, response) => {
 module.exports.renderRemoveForm = async (request, response) => {
     const { id } = request.params;
     const campground = await Campground.findById(id);
-    response.render('campgrounds/Remove', { title: "Remove Campground", campground });
+    response.render('campgrounds/Remove', { title: "Remove Campground", categories: dbCategories, campground });
 }
 
 // Delete --> Deletes a campground on server.

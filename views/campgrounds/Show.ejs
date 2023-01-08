@@ -37,6 +37,11 @@
                                 <p class="card-text text-muted">
                                     <%=campground.location %>
                                 </p>
+                                <% for(let category in categories) { %>
+                                    <span class="badge text-bg-dark">
+                                        <%=campground.categories[categories[category].key]%>
+                                    </span>
+                                    <% } %>
                             </div>
                             <ul class="list-group list-group-flush">
                                 <li class="list-group-item">
@@ -54,31 +59,35 @@
                                     <b>About:</b>
                                     <%= (campground.description) ? campground.description : "None" %>
                                 </li>
+                                <li class="list-group-item">
+                                    <b>Created on:</b>
+                                    <%=campground.addedOn.toLocaleString()%>
+                                </li>
                             </ul>
                             <% if(currentUser && currentUser.equals(campground.author)) { %>
-                                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                                <nav class="navbar navbar-expand-lg navbar-light bg-white">
                                     <div class="container-fluid">
                                         <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                                             data-bs-target="#options">&darr;</button>
                                         <div class="collapse navbar-collapse" id="options">
                                             <div class="navbar-nav">
                                                 <div class="mt-3 me-3">
-                                                    <a class="nav-link btn btn-secondary btn-sm"
+                                                    <a class="nav-link border border-dark-subtle rounded-2 btn btn-outline-secondary btn-sm"
                                                         href="/campgrounds"><b>Go
                                                             Back</b></a>
                                                 </div>
                                                 <div class="mt-3 me-3">
-                                                    <a class="nav-link btn btn-info btn-sm"
+                                                    <a class="nav-link border border-dark-subtle rounded-2 btn btn-outline-info btn-sm"
                                                         href="/campgrounds/<%=campground._id%>/manage"><b>Manage
                                                             Photos</b></a>
                                                 </div>
                                                 <div class="mt-3 me-3">
-                                                    <a class="nav-link btn btn-warning btn-sm"
+                                                    <a class="nav-link border border-dark-subtle rounded-2 btn btn-outline-warning btn-sm"
                                                         href="/campgrounds/<%=campground._id%>/edit"><b>Edit
                                                             Campground</b></a>
                                                 </div>
                                                 <div class="mt-3 me-3">
-                                                    <a class="nav-link btn btn-danger btn-sm"
+                                                    <a class="nav-link border border-dark-subtle rounded-2 btn btn-outline-danger btn-sm"
                                                         href="/campgrounds/<%=campground._id%>/remove"><b>Delete
                                                             Campground</b></a>
                                                 </div>
@@ -87,9 +96,6 @@
                                     </div>
                                 </nav>
                                 <% } %>
-                                    <% if(!campground.reviews.length) { %>
-                                        <div class="card-footer text-muted">No reviews yet.</div>
-                                        <% } %>
             </div>
             <% if(!(currentUser && currentUser.equals(campground.author))) { %>
                 <a href="/campgrounds" class="card-link btn btn-secondary btn-sm mt-3">Go Back</a>
@@ -149,7 +155,7 @@
                     <div class="card-body">
                         <% for(let review of campground.reviews) { %>
                             <div class="card mb-3">
-                                <div class="card-header d-flex justify-content-between"><b>
+                                <div class="card-header d-flex flex-wrap justify-content-between"><b>
                                         <%=review.author.username%>
                                     </b><span class="starability-result" data-rating="<%= review.rating %>">Rated: <%=
                                             review.rating %> stars</span></div>

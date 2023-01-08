@@ -28,14 +28,14 @@
                     </div>
                     <% } else {%>
                         <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1675496482/YelpCamp%20Related%20Media/No_Image_Available_onn3wa.webp"
-                            alt="No Image Available" class="img-fluid mt-2" crossorigin>
+                            alt="No Image Available" class="img-fluid mt-2 mb-3" crossorigin>
                         <% } %>
-                            <div class="mb-3">
+                            <div class="mb-3 d-none">
                                 <label for="id" class="form-label">Registration Id : </label>
                                 <input type="text" class="form-control" name="id" id="id" value="<%=campground._id%>"
                                     readonly>
                             </div>
-                            <div class="mb-3">
+                            <div class="mb-3 d-none">
                                 <label for="author" class="form-label">Author Id : </label>
                                 <input type="text" class="form-control" name="campground[author]" id="author"
                                     value="<%=campground.author._id%>" readonly>
@@ -63,10 +63,24 @@
                                 <textarea class="form-control" name="description" id="description" cols="30" rows="3"
                                     readonly><%= campground.description ? campground.description : 'None' %></textarea>
                             </div>
-                            <div>
-                                <label for="submit" class="form-label mb-3">To remove, click on submit</label>
-                            </div>
-                            <button type="submit" id="submit" class="btn btn-danger btn-sm">Submit</button>
+                            <% for(let category in categories){ %>
+                                <div class="mb-3">
+                                    <label for="category_<%=categories[category].key%>"
+                                        class="form-label text-capitalize">Campground
+                                        <%=categories[category].formLabel%> :
+                                    </label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control text-capitalize"
+                                            name="campground[categories][<%=categories[category].key%>]"
+                                            id="category_<%=categories[category].key%>"
+                                            value="<%=campground.categories[`${categories[category].key}`]%>" readonly>
+                                    </div>
+                                </div>
+                                <% } %>
+                                    <div>
+                                        <label for="submit" class="form-label mb-3">To remove, click on submit</label>
+                                    </div>
+                                    <button type="submit" id="submit" class="btn btn-danger btn-sm">Submit</button>
             </form>
             <a href="/campgrounds/<%=campground._id%>" class="btn btn-secondary btn-sm">Go Back</a>
         </div>

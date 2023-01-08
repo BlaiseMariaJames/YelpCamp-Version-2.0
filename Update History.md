@@ -47,10 +47,17 @@
 
 <h2 id="Jan23">January 2023</h2>
 
-<h3 id="Categories-Pagination">Categories & Pagination Update 2.0.3V</h3>
+<h3 id="Categories-Pagination">Categories & Pagination Update 2.0.4V (Major Update)</h3>
 
-1. Seperate Category logic from Index.
-2. Create Category view and route to support categories.
+1. Update to Bootstrap v5.3.
+2. Modify New-Create routes and views to support categories.
+3. Modify Edit-Update and Remove - routes and views to support categories.
+4. Modify Show, Index and Categories - routes and views to support categories.
+
+### Categories & Pagination Update 2.0.3V
+
+1. Seperate Categories logic from Index.
+2. Create Categories view and route to support categories.
 3. Modify Index view and Campground controller to support categories and pagination.
 
 ### Categories & Pagination Update 2.0.2V
