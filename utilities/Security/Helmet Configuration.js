@@ -11,9 +11,10 @@ const scriptSrcUrls = [
     "https://api.mapbox.com",
     "https://cdn.jsdelivr.net",
     "https://kit.fontawesome.com",
-    "https://cdnjs.cloudflare.com",
     "https://api.tiles.mapbox.com",
-    "https://stackpath.bootstrapcdn.com"
+    "https://cdnjs.cloudflare.com",
+    "https://ka-f.fontawesome.com",
+    "https://stackpath.bootstrapcdn.com",
 ];
 
 // ACCEPTED STYLE SOURCE URLS (USED FOR THIS PROJECT)
@@ -23,6 +24,7 @@ const styleSrcUrls = [
     "https://use.fontawesome.com",
     "https://api.tiles.mapbox.com",
     "https://fonts.googleapis.com",
+    "https://ka-f.fontawesome.com",
     "https://kit-free.fontawesome.com",
     "https://stackpath.bootstrapcdn.com",
 ];
@@ -32,10 +34,13 @@ const connectSrcUrls = [
     "https://api.mapbox.com",
     "https://events.mapbox.com",
     "https://*.tiles.mapbox.com",
+    "https://ka-f.fontawesome.com",
 ];
 
 // ACCEPTED FONT SOURCE URLS (USED FOR THIS PROJECT)
-const fontSrcUrls = [];
+const fontSrcUrls = [
+    "https://ka-f.fontawesome.com",
+];
 
 // CONFIGURING CONTENT SECURITY POLICY OF HELMET
 router.use(helmet.contentSecurityPolicy({

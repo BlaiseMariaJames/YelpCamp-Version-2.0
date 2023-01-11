@@ -24,6 +24,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Sort-AvgRating">Sort & Average Rating</a></li>
 <li><a href="#Categories-Pagination">Categories & Pagination</a></li>
 <li><a href="#Initial-v2">Initial v2</a></li>
 <li><a href="#Seed-Database">Seed Database (Yelpcamp v1)</a></li>
@@ -46,6 +47,12 @@
 </ul>
 
 <h2 id="Jan23">January 2023</h2>
+
+<h3 id="Sort-AvgRating">Sort & Average Rating Update 2.0.5V</h3>
+
+1. Modify Campground model to support average rating.
+2. Modify Show, Index and categories views to support average rating.
+3. Modify Add camps to database, Campground controller and Helmet Configuration to support font-awesome average star ratings.
 
 <h3 id="Categories-Pagination">Categories & Pagination Update 2.0.4V (Major Update)</h3>
 

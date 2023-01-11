@@ -37,10 +37,21 @@
                                 <p class="card-text text-muted">
                                     <%=campground.location %>
                                 </p>
+                                <div class="card-text mb-3">
+                                    <% for(let i=0; i < 5; i++) { %>
+                                        <% if(i < floorRating) { %>
+                                            <i class="fas fa-star" style="color: #ffd700;"></i>
+                                            <% } else if((campground.avgRating - i)> 0 && (campground.avgRating - i) < 1) { %>
+                                                    <i class="fas fa-star-half-alt" style="color: #ffd700;"></i>
+                                                    <% } else { %>
+                                                        <i class="far fa-star" style="color: #ffd700;"></i>
+                                                        <% } %>
+                                                            <% } %>
+                                                                <%= campground.avgRating %>
+                                                                    (<%= campground.reviews.length %>)
+                                </div>
                                 <% for(let category in categories) { %>
-                                    <span class="badge text-bg-dark">
-                                        <%=campground.categories[categories[category].key]%>
-                                    </span>
+                                    <a href="/campgrounds?select=<%=campground.categories[categories[category].key]%>"><span class="badge text-bg-dark"><%=campground.categories[categories[category].key]%></span></a>
                                     <% } %>
                             </div>
                             <ul class="list-group list-group-flush">

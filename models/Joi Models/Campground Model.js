@@ -28,7 +28,8 @@ const CampgroundSchema = Joi.object({
         activity: Joi.string().required().valid('adventure', 'educational', 'hunting', 'festival').escapeHTML()
     }).required(),
     description: Joi.string().allow('').escapeHTML(),
-    addedOn: Joi.date().required()
+    addedOn: Joi.date().required(),
+    avgRating: Joi.number().required().min(0)
 });
 
 // EXPORTING CAMPGROUND SCHEMA

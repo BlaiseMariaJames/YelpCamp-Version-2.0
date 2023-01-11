@@ -48,48 +48,55 @@ module.exports.renderNewForm = (request, response) => {
     response.render('campgrounds/New', { title: "New Campground", categories: dbCategories, category: false, places: "", campground: "" });
 }
 
-// Create --> Creates new campground on server.
-module.exports.createCampground = async (request, response, next) => {
-    let { campground } = request.body;
-    campground.author = request.user._id.toString();
-    campground.images = request.files.map(file => ({ url: file.path, filename: file.filename }));
-    const geoData = await geoCoder.forwardGeocode({
-        query: campground.location
-    }).send();
-    if (!campground.accurateLocation) {
-        // Find accurate location of campground. (Second Page)
-        return response.render('campgrounds/New', { title: "New Campground", categories: dbCategories, category: false, places: geoData.body.features, campground });
-    } else {
-        campground.location = campground.accurateLocation;
-        campground.geometry = geoData.body.features.find(function (place) {
-            return place.place_name === campground.accurateLocation;
-        }).geometry;
-    }
-    if (!campground.categories) {
-        // Find campground categories. (Third Page)
-        return response.render('campgrounds/New', { title: "New Campground", categories: dbCategories, category: true, places: geoData.body.features, campground });
-    }
-    // Campground added on...
-    campground.addedOn = new Date();
-    const { error } = CampgroundSchema.validate(campground);
-    if (error) {
-        let errorMessage = error.details.map(error => error.message).join(',');
-        if (request.files) {
-            // delete uploaded cloudinary images.
-            deleteCampgroundImages(request.files);
+// Create Campground Route Handler Closure.
+const createCampgroundHandler = () => {
+    let newCampgroundData = {}; // Create a persistent data variable.
+    return async (request, response, next) => {
+        let { campground } = request.body;
+        Object.assign(newCampgroundData, campground);
+        if (!newCampgroundData.accurateLocation) {
+            newCampgroundData.geoData = await geoCoder.forwardGeocode({
+                query: campground.location
+            }).send();
+            // Find accurate location of campground. (Second Page)
+            return response.render('campgrounds/New', { title: "New Campground", categories: dbCategories, category: false, places: newCampgroundData.geoData.body.features, campground });
+        } else if (!newCampgroundData.categories) {
+            // Find campground categories. (Third Page)
+            newCampgroundData.images = request.files.map(file => ({ url: file.path, filename: file.filename }));
+            return response.render('campgrounds/New', { title: "New Campground", categories: dbCategories, category: true, places: newCampgroundData.geoData.body.features, campground });
         }
-        // Below two lines of code will redirect to the same page and make user aware of errors. 
-        request.flash('error', `Cannot create campground, ${errorMessage}.`);
-        response.status(400).redirect('/campgrounds/new');
-        // Use below code to redirect to Error Page and make user aware of errors.
-        // return next(new ApplicationError(errorMessage, "Bad Request", 400));
-    } else {
-        const newCampground = new Campground(campground);
-        await newCampground.save();
-        request.flash('success', 'Successfully created a new Campground!');
-        response.redirect(`/campgrounds/${newCampground._id}`);
-    }
-}
+        newCampgroundData.author = request.user._id.toString();
+        newCampgroundData.location = newCampgroundData.accurateLocation;
+        newCampgroundData.geometry = newCampgroundData.geoData.body.features.find(function (place) {
+            return place.place_name === newCampgroundData.accurateLocation;
+        }).geometry;
+        newCampgroundData.addedOn = new Date();
+        newCampgroundData.avgRating = 0;
+        delete newCampgroundData.geoData; // Delete geodata from the persistent data variable.
+        const { error } = CampgroundSchema.validate(newCampgroundData);
+        if (error) {
+            let errorMessage = error.details.map(error => error.message).join(',');
+            if (request.files) {
+                // delete uploaded cloudinary images.
+                deleteCampgroundImages(request.files);
+            }
+            // Below two lines of code will redirect to the same page and make the user aware of errors.
+            request.flash('error', `Cannot create campground, ${errorMessage}.`);
+            response.status(400).redirect('/campgrounds/new');
+            // Use below code to redirect to Error Page and make the user aware of errors.
+            // return next(new ApplicationError(errorMessage, "Bad Request", 400));
+        } else {
+            const newCampground = new Campground(newCampgroundData);
+            newCampgroundData = {}; // Delete the persistent data variable.
+            await newCampground.save();
+            request.flash('success', 'Successfully created a new Campground!');
+            response.redirect(`/campgrounds/${newCampground._id}`);
+        }
+    };
+};
+
+// Create --> Creates new campground on server.
+module.exports.createCampground = createCampgroundHandler();
 
 // READ OPERATION ROUTES
 
@@ -101,11 +108,12 @@ module.exports.showCampground = async (request, response, next) => {
         return next(new ApplicationError("Sorry!, Invalid Campground ID. We couldn't find the campground!", 'Invalid Campground ID', 400));
     }
     const campground = await Campground.findById(id).populate({ path: 'reviews', populate: { path: 'author' } }).populate('author');
+    const floorRating = campground.calculateAvgRating();
     if (!campground) {
         // ERROR HANDLED : Campground not found.
         return next(new ApplicationError("Sorry!, We couldn't find the campground!", 'Campground Not Found', 404));
     }
-    response.render('campgrounds/Show', { title: campground.title, categories: dbCategories, campground });
+    response.render('campgrounds/Show', { title: campground.title, floorRating, number: campground.reviews.length, categories: dbCategories, campground });
 }
 
 // Index --> Display all campgrounds.
@@ -190,45 +198,55 @@ module.exports.renderEditForm = async (request, response) => {
     response.render('campgrounds/Edit', { title: "Edit Campground", categories: dbCategories, category: false, places: "", campground });
 }
 
-// Update --> Updates a campground on server.
-module.exports.updateCampground = async (request, response, next) => {
-    let { id, campground } = request.body;
-    const oldCampground = await Campground.findById(id);
-    const geoData = await geoCoder.forwardGeocode({
-        query: campground.location
-    }).send();
-    if (!campground.accurateLocation) {
-        // Find accurate location of campground. (Second Page)
-        Object.assign(oldCampground, campground);
-        return response.render('campgrounds/Edit', { title: "Edit Campground", categories: dbCategories, category: false, places: geoData.body.features, campground: oldCampground });
-    } else if (!campground.categories) {
-        campground.location = campground.accurateLocation;
-        campground.geometry = geoData.body.features.find(function (place) {
-            return place.place_name === campground.accurateLocation;
+// Update Campground Route Handler Closure.
+const updateCampgroundHandler = () => {
+    let editCampgroundData = {}; // Create a persistent data variable.
+    return async (request, response, next) => {
+        let { id, campground } = request.body;
+        let oldCampground = await Campground.findById(id);
+        Object.assign(editCampgroundData, campground);
+        if (!editCampgroundData.accurateLocation) {
+            editCampgroundData.geoData = await geoCoder.forwardGeocode({
+                query: campground.location
+            }).send();
+            // Find accurate location of campground. (Second Page)
+            return response.render('campgrounds/Edit', { title: "Edit Campground", categories: dbCategories, category: false, places: editCampgroundData.geoData.body.features, campground: oldCampground });
+        } else if (!editCampgroundData.categories) {
+            // Find campground categories. (Third Page)
+            return response.render('campgrounds/Edit', { title: "Edit Campground", categories: dbCategories, category: true, places: editCampgroundData.geoData.body.features, campground: oldCampground });
+        }
+        editCampgroundData.location = editCampgroundData.accurateLocation;
+        editCampgroundData.geometry = editCampgroundData.geoData.body.features.find(function (place) {
+            return place.place_name === editCampgroundData.accurateLocation;
         }).geometry;
-        // Find campground categories. (Third Page)
-        Object.assign(oldCampground, campground);
-        return response.render('campgrounds/Edit', { title: "Edit Campground", categories: dbCategories, category: true, places: geoData.body.features, campground: oldCampground });
-    }
-    // Campground added on...
-    campground.addedOn = oldCampground.addedOn;
-    campground.geometry = oldCampground.geometry;
-    const { error } = CampgroundSchema.validate(campground);
-    if (error) {
-        let errorMessage = error.details.map(error => error.message).join(',');
-        // Below two lines of code will redirect to the same page and make user aware of errors.
-        request.flash('error', `Cannot edit campground, ${errorMessage}.`);
-        response.status(400).redirect(`/campgrounds/${id}/edit`);
-        // Use below code to redirect to Error Page and make user aware of errors.
-        // return next(new ApplicationError(errorMessage, "Bad Request", 400));
-    } else {
-        Object.assign(oldCampground, campground);
-        Object.assign(oldCampground.categories, campground.categories);
-        await oldCampground.save();
-        request.flash('success', 'Successfully edited the Campground!');
-        response.redirect(`/campgrounds/${oldCampground._id}`);
-    }
-}
+        // Copy unchanged properties from oldCampground to editCampgroundData.
+        let oldCampgroundObj = oldCampground.toObject();
+        delete editCampgroundData.geoData;  // Delete geodata from the persistent data variable.
+        Object.assign(oldCampgroundObj, editCampgroundData);
+        let { author, images, addedOn, avgRating } = oldCampgroundObj;
+        editCampgroundData.author = author;
+        editCampgroundData.images = images;
+        editCampgroundData.addedOn = addedOn;
+        editCampgroundData.avgRating = avgRating;
+        const { error } = CampgroundSchema.validate(editCampgroundData);
+        if (error) {
+            let errorMessage = error.details.map(error => error.message).join(',');
+            // Below two lines of code will redirect to the same page and make user aware of errors.
+            request.flash('error', `Cannot edit campground, ${errorMessage}.`);
+            response.status(400).redirect(`/campgrounds/${id}/edit`);
+            // Use below code to redirect to Error Page and make user aware of errors.
+            // return next(new ApplicationError(errorMessage, "Bad Request", 400));
+        } else {
+            await Campground.updateOne({ _id: id }, oldCampgroundObj);
+            editCampgroundData = {}; // Delete the persistent data variable.
+            request.flash('success', 'Successfully edited the Campground!');
+            response.redirect(`/campgrounds/${oldCampground._id}`);
+        }
+    };
+};
+
+// Update --> Updates a campground on server.
+module.exports.updateCampground = updateCampgroundHandler();
 
 // Manage --> Form to manage campground images.
 module.exports.renderManageForm = async (request, response) => {

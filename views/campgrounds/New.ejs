@@ -8,7 +8,7 @@
                     <% let secondPage=(!category && places); %>
                         <% let thirdPage=(places && category); %>
                             <% let percentageFinished=(firstPage) ? 33 : ((secondPage) ? 66 : 100) %>
-                            <div class="progress mt-3 mb-3" role="progressbar" aria-valuenow="<%=percentageFinished%>"
+                            <div class="progress mt-3 mb-3" role="progressbar" aria-valuenow="<%=percentageFinished%>" 
                                 aria-valuemin="0" aria-valuemax="100">
                                 <div class="progress-bar overflow-visible text-dark progress-bar-striped progress-bar-animated p-1"
                                     style="width: <%=percentageFinished%>%">
@@ -16,131 +16,133 @@
                                 </div>
                             </div>
                                 <p class="mb-2 mt-2 mandatory">* Mandatory Fields</p>
-                                <div class="mb-4 <%=(firstPage)?'':'d-none'%>">
-                                    <label for="title" class="form-label">Enter Campground Title<span
-                                            class="mandatory">*</span> :
-                                    </label>
-                                    <input type="text" class="form-control" name="campground[title]" id="title"
-                                        placeholder="Enter campground title"
-                                        value="<%= (campground.title) ? campground.title : ''%>" required>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Please provide a valid title.
-                                    </div>
-                                </div>
-                                <div class="mb-4 <%=(firstPage)?'':'d-none'%>">
-                                    <label for="location" class="form-label">Enter Campground Location<span
-                                            class="mandatory">*</span>
-                                        : </label>
-                                    <input type="text" class="form-control" name="campground[location]" id="location"
-                                        placeholder="Enter campground location"
-                                        value="<%= (campground.location) ? campground.location : ''%>" required>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                    <div class="invalid-feedback">
-                                        Please provide a valid location.
-                                    </div>
-                                </div>
-                                <div class="mb-4 <%=(firstPage)?'':'d-none'%>">
-                                    <label for="price" class="form-label">Enter Campground Price<span
-                                            class="mandatory">*</span> :
-                                    </label>
-                                    <div class="input-group">
-                                        <span class="input-group-text">Rupees </span>
-                                        <input type="text" class="form-control" name="campground[price]" id="price"
-                                            placeholder="0" value="<%= (campground.price) ? campground.price : ''%>"
-                                            required>
+                                <% if(firstPage) { %>
+                                    <div class="mb-4 <%=(firstPage)?'':'d-none'%>">
+                                        <label for="title" class="form-label">Enter Campground Title<span
+                                                class="mandatory">*</span> :
+                                        </label>
+                                        <input type="text" class="form-control" name="campground[title]" id="title"
+                                            placeholder="Enter campground title"
+                                            value="<%= (campground.title) ? campground.title : ''%>" required>
                                         <div class="valid-feedback">
                                             Looks good!
                                         </div>
                                         <div class="invalid-feedback">
-                                            Please provide a valid price.
+                                            Please provide a valid title.
                                         </div>
                                     </div>
-                                </div>
-                                <div class="mb-4 <%=(secondPage)?'':'d-none'%>">
-                                    <label for="accurateLocation" class="form-label">Select the Location that best suits
-                                        your
-                                        Campground<span class="mandatory">*</span> : </label>
-                                    <select class="form-select" name="campground[accurateLocation]"
-                                        id="accurateLocation">
-                                        <% for(let place of places) { %>
-                                            <option value="<%=place.place_name%>">
-                                                <%=place.place_name%>
-                                            </option>
-                                            <% } %>
-                                    </select>
-                                    <div class="valid-feedback">
-                                        Looks good!
+                                    <div class="mb-4 <%=(firstPage)?'':'d-none'%>">
+                                        <label for="location" class="form-label">Enter Campground Location<span
+                                                class="mandatory">*</span>
+                                            : </label>
+                                        <input type="text" class="form-control" name="campground[location]"
+                                            id="location" placeholder="Enter campground location"
+                                            value="<%= (campground.location) ? campground.location : ''%>" required>
+                                        <div class="valid-feedback">
+                                            Looks good!
+                                        </div>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid location.
+                                        </div>
                                     </div>
-                                    <div class="invalid-feedback">
-                                        Please select a valid location.
+                                    <div class="mb-4 <%=(firstPage)?'':'d-none'%>">
+                                        <label for="price" class="form-label">Enter Campground Price<span
+                                                class="mandatory">*</span> :
+                                        </label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">Rupees </span>
+                                            <input type="text" class="form-control" name="campground[price]" id="price"
+                                                placeholder="0" value="<%= (campground.price) ? campground.price : ''%>"
+                                                required>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please provide a valid price.
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="mb-4 <%=(secondPage)?'':'d-none'%>">
-                                    <label for="images" class="form-label">Upload Campground Images (Optional) :
-                                    </label>
-                                    <input type="file" class="form-control" name="campground[images]" id="images"
-                                        accept="image/avif, image/gif, image/jpg, image/jpeg, image/png, image/webp"
-                                        multiple>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                </div>
-                                <div class="mb-4 <%=(secondPage)?'':'d-none'%>">
-                                    <label for="description" class="form-label">Enter Campground Description
-                                        (Optional) :
-                                    </label>
-                                    <textarea class="form-control" name="campground[description]" id="description"
-                                        cols="30" rows="3" placeholder="Enter campground description"></textarea>
-                                    <div class="valid-feedback">
-                                        Looks good!
-                                    </div>
-                                </div>
-                                <% if(thirdPage) { %>
-                                    <% for(let category in categories){ %>
-                                        <div class="mb-4 <%=(thirdPage)?'':'d-none'%>">
-                                            <label class="form-label">Select Campground
-                                                <%=categories[category].formLabel%>
-                                                    <span class="mandatory">*</span> :
-                                            </label>
-                                            <br>
-                                            <% for(let value of categories[category].values) { %>
-                                                <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio"
-                                                        name="campground[categories][<%=categories[category].key%>]"
-                                                        id="category_<%=categories[category].key%>_<%=value%>"
-                                                        value="<%=value%>" 
-                                                        <% if(value===categories[category].values[0]) { %>
-                                                    checked
+                                    <% } else if(secondPage) { %>
+                                        <div class="mb-4 <%=(secondPage)?'':'d-none'%>">
+                                            <label for="accurateLocation" class="form-label">Select the Location that best suits your Campground<span class="mandatory">*</span> : </label>
+                                            <select class="form-select" name="campground[accurateLocation]"
+                                                id="accurateLocation">
+                                                <% for(let place of places) { %>
+                                                    <option value="<%=place.place_name%>">
+                                                        <%=place.place_name%>
+                                                    </option>
                                                     <% } %>
-                                                        >
-                                                        <label class="form-check-label text-capitalize"
-                                                            for="category_<%=categories[category].key%>_<%=value%>">
-                                                            <%=value%>
-                                                        </label>
+                                            </select>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                            <div class="invalid-feedback">
+                                                Please select a valid location.
+                                            </div>
+                                        </div>
+                                        <div class="mb-4 <%=(secondPage)?'':'d-none'%>">
+                                            <label for="images" class="form-label">Upload Campground Images (Optional) :
+                                            </label>
+                                            <input type="file" class="form-control" name="campground[images]"
+                                                id="images"
+                                                accept="image/avif, image/gif, image/jpg, image/jpeg, image/png, image/webp"
+                                                multiple>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <div class="mb-4 <%=(secondPage)?'':'d-none'%>">
+                                            <label for="description" class="form-label">Enter Campground Description
+                                                (Optional) :
+                                            </label>
+                                            <textarea class="form-control" name="campground[description]"
+                                                id="description" cols="30" rows="3"
+                                                placeholder="Enter campground description"></textarea>
+                                            <div class="valid-feedback">
+                                                Looks good!
+                                            </div>
+                                        </div>
+                                        <% } else if(thirdPage) { %>
+                                            <% for(let category in categories){ %>
+                                                <div class="mb-4 <%=(thirdPage)?'':'d-none'%>">
+                                                    <label class="form-label">Select Campground
+                                                        <%=categories[category].formLabel%>
+                                                            <span class="mandatory">*</span> :
+                                                    </label>
+                                                    <br>
+                                                    <% for(let value of categories[category].values) { %>
+                                                        <div class="form-check form-check-inline">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="campground[categories][<%=categories[category].key%>]"
+                                                                id="category_<%=categories[category].key%>_<%=value%>"
+                                                                value="<%=value%>" 
+                                                                <% if(value===categories[category].values[0]) { %>
+                                                            checked
+                                                            <% } %>
+                                                                >
+                                                                <label class="form-check-label text-capitalize"
+                                                                    for="category_<%=categories[category].key%>_<%=value%>">
+                                                                    <%=value%>
+                                                                </label>
+                                                        </div>
+                                                        <% } %>
                                                 </div>
                                                 <% } %>
-                                        </div>
-                                        <% } %>
-                                            <% } %>
-                                                <div <%=(thirdPage)?'':'class=d-none'%>>
-                                                    <label class="form-label mb-3">To create, click
-                                                        on submit</label>
-                                                </div>
-                                                <button type="submit" class="btn btn-success btn-sm">
-                                                    <% if(thirdPage) { %>
-                                                        Submit
-                                                        <% } else if(secondPage) { %>
-                                                            Continue
-                                                            <% } else { %>
-                                                                Find Location
-                                                                <% } %>
-                                                </button>
-                                                <button type="reset" class="btn btn-danger btn-sm">Reset</button>
+                                                    <% } %>
+                                                        <div <%=(thirdPage)?'':'class=d-none'%>>
+                                                            <label class="form-label mb-3">To create, click
+                                                                on submit</label>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-success btn-sm">
+                                                            <% if(thirdPage) { %>
+                                                                Submit
+                                                                <% } else if(secondPage) { %>
+                                                                    Continue
+                                                                    <% } else { %>
+                                                                        Find Location
+                                                                        <% } %>
+                                                        </button>
+                                                        <button type="reset" class="btn btn-danger btn-sm">Reset</button>
             </form>
             <a href="/campgrounds" class="btn btn-secondary btn-sm">Go Back</a>
         </div>

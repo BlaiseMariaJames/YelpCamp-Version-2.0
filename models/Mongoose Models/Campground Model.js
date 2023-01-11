@@ -125,7 +125,11 @@ const CampgroundSchema = new Schema({
             // A campground may or may not have any reviews.
             required: false
         }
-    ]
+    ],
+    avgRating: {
+        type: Number,
+        default: 0
+    }
 }, options);
 
 // DEFINING VIRTUAL FUNCTION TO SET VIRTUAL PROPERTY OBJECT 'PROPERTIES' WITH PROPERTY 'POPUPMARKUP' FOR A CAMPGROUND
@@ -153,6 +157,19 @@ CampgroundSchema.post('findOneAndDelete', async function (campground) {
     }
     // Continue the same procedure for rest of the associated models.
 });
+
+// DEFINING CAMPGROUND INSTANCE METHOD TO FIND AVERAGE RATING OF A SPECIFIC CAMPGROUND
+CampgroundSchema.methods.calculateAvgRating = function () {
+    const totalReviews = this.reviews.length;
+    if (totalReviews > 0) {
+        const ratingsTotal = this.reviews.reduce((sum, review) => sum + parseInt(review.rating), 0);
+        this.avgRating = Math.round((ratingsTotal / totalReviews) * 10) / 10;
+    } else {
+        this.avgRating = 0;
+    }
+    this.save();
+    return Math.floor(this.avgRating);
+};
 
 // DEFINING CAMPGROUND MODEL
 const Campground = mongoose.model('Campground', CampgroundSchema);

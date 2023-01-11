@@ -6,8 +6,8 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#categories">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="categories">
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <div class="collapse navbar-collapse border-bottom" id="categories">
+          <ul class="navbar-nav me-auto">
             <% let navItems=["Premier", "Latest" ]; %>
               <% for(let navItem of navItems) { %>
                 <% if(navItem.toLowerCase()===current.find) { %>
@@ -35,15 +35,20 @@
     </nav>
     <div class="d-flex flex-row flex-wrap justify-content-evenly gap-4">
       <% for (let campground of campgrounds) { %>
-        <% let campgroundBackgroundImageURL=(campground.images.length> 0) ? (campground.images[0].url).substr(0, 49) + "o_30/" + (campground.images[0].url).substr(49) : "" %>
+        <% let campgroundBackgroundImageURL=(campground.images.length> 0) ? (campground.images[0].url).substr(0, 49) + "/o_35/" + (campground.images[0].url).substr(49) : "" %>
           <div class="card mb-5 view"
             style="background-image: url(<%=campgroundBackgroundImageURL%>); background-size: cover;">
             <div class="col d-flex flex-column justify-content-between">
               <div class="row">
                 <div class="card-body px-4">
-                  <h1 class="card-title">
-                    <%=campground.title%>
-                  </h1>
+                  <div class="card-head d-flex align-items-center">
+                    <h1 class="card-title">
+                      <%=campground.title%>
+                    </h1>
+                    <h4 class="ms-auto"><i class="fa-solid fa-flip fa-star" style="color: #ffd700;"></i>
+                      <%= campground.avgRating %> (<%= campground.reviews.length %>)
+                    </h4>
+                  </div>
                   <div class="card-text">
                     <small class="text-muted">
                       <%=campground.location%>

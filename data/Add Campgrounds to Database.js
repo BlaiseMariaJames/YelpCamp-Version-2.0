@@ -140,9 +140,11 @@ async function seedData(username, email) {
             }
             // Campground suggested on.
             const addedOn = new Date();
+            // Default average campground rating
+            const avgRating = 0;
             // Creating new camp.
             console.log(`Seeding Campground ${i} into database...`);
-            const camp = new Campground({ author, title, images, price, location, accurateLocation: location, geometry, description, categories, addedOn });         
+            const camp = new Campground({ author, title, images, price, location, accurateLocation: location, geometry, description, categories, addedOn, avgRating });         
             await camp.save();
         }
         console.log("\nData inserted successfully!");
