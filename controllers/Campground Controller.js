@@ -118,42 +118,57 @@ module.exports.showCampground = async (request, response, next) => {
 
 // Index --> Display all campgrounds.
 module.exports.allCampgrounds = async (request, response, next) => {
-    let { page, limit, select, find } = (request.query);
+    let { page, limit, select } = request.query;
     page = page ? parseInt(page) : 1;
     limit = limit ? parseInt(limit) : 12;
     select = select ? select : "all";
-    find = find ? find : "premier";
-    let error = false, title = "", selectedCampgrounds = {}, campgrounds = { page, limit, select, find };
+    let error = false, title = "", allCampgrounds = {}, campgrounds = { page, limit, select, results: {} };
     const startIndex = (page - 1) * limit, endIndex = page * limit;
-    const allFinds = ['premier', 'latest'];
+    const options = {
+        "Latest": { sortBy: "latest", sortFunction: (a, b) => b.addedOn - a.addedOn },
+        "Earliest": { sortBy: "earliest", sortFunction: (a, b) => a.addedOn - b.addedOn },
+        "Top Rated": { sortBy: "top-rated", sortFunction: (a, b) => b.avgRating - a.avgRating },
+        "Premium": { sortBy: "premium", sortFunction: (a, b) => b.price - a.price },
+        "Economic": { sortBy: "economic", sortFunction: (a, b) => a.price - b.price },
+        "Title [A-Z]": { sortBy: "title-asc", sortFunction: (a, b) => a.title.localeCompare(b.title) },
+        "Title [Z-A]": { sortBy: "title-desc", sortFunction: (a, b) => b.title.localeCompare(a.title) },
+        "Location [A-Z]": { sortBy: "location-asc", sortFunction: (a, b) => a.location.localeCompare(b.location) },
+        "Location [Z-A]": { sortBy: "location-desc", sortFunction: (a, b) => b.location.localeCompare(a.location) }
+    };
     const allSelects = ['all', 'rv', 'tent', 'backcountry', 'cabin', 'beach', 'desert', 'forest', 'mountain', 'lakefront', 'family', 'luxury', 'economic', 'pet-friendly', 'adventure', 'educational', 'hunting', 'festival'];
-    if (!allSelects.includes(select) || !allFinds.includes(find)) {
+    if (!allSelects.includes(select)) {
         // ERROR HANDLED: CATEGORY DOESN'T EXISTS
         return next(new ApplicationError("Sorry!, Invalid Category. We couldn't find the campgrounds!!", 'Invalid Category', 400));
     } else {
-        // FETCH CAMPGROUNDS BASED ON SELECT
-        campgrounds.results = [];
-        if (select === "all") {
-            title = "All Campgrounds";
-            selectedCampgrounds = await Campground.find({}).populate('author');
-            campgrounds.results = selectedCampgrounds.slice(startIndex, endIndex);
-        } else {
-            title = `${select} Based Campgrounds`.toUpperCase();
-            for (category in dbCategories) {
-                const { key, values } = dbCategories[category];
-                for (let value of values) {
-                    if (select === value) {
-                        const query = {};
-                        query[`categories.${key}`] = value;
-                        selectedCampgrounds = await Campground.find(query).populate('author');
-                        campgrounds.results = selectedCampgrounds.slice(startIndex, endIndex);
+        // FETCH CAMPGROUNDS FOR ALL SELECTS
+        for (let option in options) {
+            let paginatedCampgrounds = [];
+            const { sortBy, sortFunction } = options[option];
+            if (select === "all") {
+                title = "All Campgrounds";
+                allCampgrounds[sortBy] = await Campground.find({}).sort([["addedOn", -1]]).populate('author');
+                paginatedCampgrounds = allCampgrounds[sortBy].slice(startIndex, endIndex);
+            } else {
+                title = `${select} Based Campgrounds`.toUpperCase();
+                for (const category in dbCategories) {
+                    const { key, values } = dbCategories[category];
+                    for (const value of values) {
+                        if (select === value) {
+                            const query = {};
+                            query[`categories.${key}`] = value;
+                            allCampgrounds[sortBy] = await Campground.find(query).populate('author');
+                            paginatedCampgrounds = allCampgrounds[sortBy].slice(startIndex, endIndex);
+                        }
                     }
                 }
             }
+            // Sort the paginated campgrounds using Arrays.sort
+            paginatedCampgrounds.sort(sortFunction);
+            campgrounds.results[sortBy] = paginatedCampgrounds;
         }
     }
-    if (campgrounds.results.length) {
-        response.render('campgrounds/Index', { title, total: selectedCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, error });
+    if (campgrounds.results.latest.length) {
+        response.render('campgrounds/Index', { title, total: allCampgrounds.latest.length, current: campgrounds, campgrounds: campgrounds.results, error });
     } else {
         error = true;
         response.render('campgrounds/Index', { title: "No Campgrounds", error });

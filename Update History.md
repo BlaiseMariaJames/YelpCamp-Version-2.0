@@ -48,7 +48,12 @@
 
 <h2 id="Jan23">January 2023</h2>
 
-<h3 id="Sort-AvgRating">Sort & Average Rating Update 2.0.5V</h3>
+<h3 id="Sort-AvgRating">Sort & Average Rating Update 2.0.6V</h3>
+
+1. Add Sort Campgrounds script to support sorting.
+2. Modify Index view and Campground controller to support sorting.
+
+### Sort & Average Rating Update 2.0.5V
 
 1. Modify Campground model to support average rating.
 2. Modify Show, Index and categories views to support average rating.
