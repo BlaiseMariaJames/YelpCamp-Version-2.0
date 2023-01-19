@@ -4,9 +4,9 @@
         <div class="col-lg-6 offset-lg-3">
             <form action="/campgrounds" method="post" class="needs-validation d-inline" novalidate
                 enctype="multipart/form-data">
-                <% let firstPage=(!category && !places); %>
-                    <% let secondPage=(!category && places); %>
-                        <% let thirdPage=(places && category); %>
+                <% let firstPage=(!categoryAvailable && !places); %>
+                    <% let secondPage=(!categoryAvailable && places); %>
+                        <% let thirdPage=(places && categoryAvailable); %>
                             <% let percentageFinished=(firstPage) ? 33 : ((secondPage) ? 66 : 100) %>
                             <div class="progress mt-3 mb-3" role="progressbar" aria-valuenow="<%=percentageFinished%>" 
                                 aria-valuemin="0" aria-valuemax="100">

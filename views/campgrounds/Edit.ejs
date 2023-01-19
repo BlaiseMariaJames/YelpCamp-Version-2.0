@@ -3,9 +3,9 @@
         <h1 class="text-center">Edit a campground</h1>
         <div class="col-lg-6 offset-lg-3">
             <form action="/campgrounds?_method=PATCH" method="post" class="needs-validation d-inline" novalidate>
-                <% let firstPage=(!category && !places); %>
-                    <% let secondPage=(!category && places); %>
-                        <% let thirdPage=(places && category); %>
+                <% let firstPage=(!categoryAvailable && !places); %>
+                    <% let secondPage=(!categoryAvailable && places); %>
+                        <% let thirdPage=(places && categoryAvailable); %>
                             <% let percentageFinished=(firstPage) ? 33 : ((secondPage) ? 66 : 100) %>
                                 <% if(campground.images.length> 0) { %>
                                     <div id="campgroundCarousel" class="carousel slide mt-2 mb-3"

@@ -48,7 +48,12 @@
 
 <h2 id="Jan23">January 2023</h2>
 
-<h3 id="Sort-AvgRating">Sort & Average Rating Update 2.0.6V</h3>
+<h3 id="Sort-AvgRating">Sort & Average Rating Update 2.0.7V (Major Update)</h3>
+
+1. Make changes to all input fields to have a consistent usage of quotes.
+2. Modify Index view, Navbar partial and Campground controller to support explore campgrounds.
+
+### Sort & Average Rating Update 2.0.6V
 
 1. Add Sort Campgrounds script to support sorting.
 2. Modify Index view and Campground controller to support sorting.

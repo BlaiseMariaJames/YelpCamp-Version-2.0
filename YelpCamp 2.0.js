@@ -177,7 +177,7 @@ application.use('/campgrounds/:campgroundId/reviews', reviewRouteHandler);
 
 // HOME ROUTE 
 application.get('/', (request, response) => {
-    response.render('HomePage', { title: "HomePage" });
+    response.render('HomePage', { title: "HomePage", current: "", category: "" });
 });
 
 // ANY OTHER ROUTE
@@ -202,7 +202,7 @@ function handleDefaultErrors(error, request, response, next) {
 // ERROR HANDLER MIDDLEWARE FUNCTION TO HANDLE APPLICATION ERRORS
 function handleApplicationErrors(error, request, response, next) {
     console.log(`Error Occurred, ${error.title}`);
-    response.status(error.statusCode).render('ErrorPage', { title: error.title, error });
+    response.status(error.statusCode).render('ErrorPage', { title: error.title, error, current: "", category: "" });
 }
 
 // USING ERROR HANDLING MIDDLEWARES

@@ -110,14 +110,15 @@ async function seedData(username, email) {
             const oldAuthor = await User.findOne({ username });
             const author = oldAuthor._id.toString();
             // Select a random title.
-            const title = `${findRandom(descriptors)} ${findRandom(places)}`;
+            const title = `${findRandom(descriptors)} ${findRandom(places)}`.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
             // Select images
             const images = await uploadSampleCampgroundImages();
             // Select a random price.
             let price = Math.floor(Math.random() * 10000) + 2001;
             price -= price % 500;
             // Select a random location.
-            const location = `${findRandom(cities).city}, ${findRandom(cities).state}`;
+            const { city, state, longitude, latitude } = findRandom(cities);
+            const location = `${city}, ${state}`.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
             /* Select geometry.
             // APPROACH ONE: Geocoding location.
             const geoData = await geoCoder.forwardGeocode({
@@ -129,7 +130,7 @@ async function seedData(username, email) {
             // APPROACH TWO: Using Cities.js file.
             let geometry = {
                 type: "Point",
-                coordinates: [findRandom(cities).longitude, findRandom(cities).latitude]
+                coordinates: [longitude, latitude]
             }
             // Random description.
             const description = 'An awesome place awaits you...';

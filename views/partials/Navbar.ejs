@@ -1,25 +1,36 @@
 <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand">YelpCamp</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+        <a href="/" class="navbar-brand">YelpCamp</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbar">
             <div class="navbar-nav">
-                <a class="nav-link" href="/">Home</a>
-                <a class="nav-link" href="/campgrounds">All Campgrounds</a>
-                <a class="nav-link" href="/campgrounds/new">Add Campgrounds</a>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown"
-                        aria-expanded="false">Categories</a>
+                    <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Explore Campgrounds</a>
                     <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/campgrounds/categories?category=Types">Campground Types</a></li>
-                        <li><a class="dropdown-item" href="/campgrounds/categories?category=Locations">Campground Locations</a></li>
-                        <li><a class="dropdown-item" href="/campgrounds/categories?category=Amenities">Campground Amenities</a></li>
-                        <li><a class="dropdown-item" href="/campgrounds/categories?category=Activities">Campground Activities</a>
-                        </li>
+                        <% let allFinds=[{ field: "latest" , label: "Latest Campgrounds" }, { field: "earliest" , label: "Earliest Campgrounds" }, { field: "top-rated" , label: "Top Rated Campgrounds" }, { field: "premium" , label: "Premium Campgrounds" }, { field: "economic" , label: "Economic Campgrounds" }, { field: "title-asc" , label: "Campground Title [A-Z]" }, { field: "title-desc" , label: "Campground Title [Z-A]" }, { field: "location-asc" , label: "Campground Location [A-Z]" }, { field: "location-desc" , label: "Campground Location [Z-A]" }] %>
+                        <% for(let find of allFinds){ %>
+                            <% if((current && current.find) && current.find === find.field) { %>
+                                <li class="text-bg-info"><a class="dropdown-item" href="/campgrounds?find=<%=find.field%>" style="pointer-events: none"><%=find.label%></a></li>
+                                <% } else { %>
+                                    <li><a class="dropdown-item" href="/campgrounds?find=<%=find.field%>"><%=find.label%></a></li>
+                                    <% } %>
+                                        <% } %>
                     </ul>
                 </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Campground Categories</a>
+                    <ul class="dropdown-menu">
+                        <% let allSelects=[{ field: "Types" , label: "Campground Types" }, { field: "Locations" , label: "Campground Locations" }, { field: "Amenities" , label: "Campground Amenities" }, { field: "Activities" , label: "Campground Activities" }] %>
+                        <% for(let select of allSelects){ %>
+                            <% if((category) && category === select.field) { %>
+                                <li class="text-bg-info"><a class="dropdown-item" href="/campgrounds/categories?category=<%=select.field%>" style="pointer-events: none"><%=select.label%></a></li>
+                                <% } else { %>
+                                    <li><a class="dropdown-item" href="/campgrounds/categories?category=<%=select.field%>"><%=select.label%></a></li>
+                                    <% } %>
+                                        <% } %>
+                    </ul>
+                </li>
+                <a class="nav-link" href="/campgrounds/new">Add Campgrounds</a>
             </div>
             <div class="navbar-nav ms-auto">
                 <% if(!currentUser) { %>

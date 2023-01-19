@@ -7,12 +7,12 @@ const ApplicationError = require("../utilities/Error Handling/Application Error 
 
 // Register --> Form to register a new user.
 module.exports.renderRegisterForm = (request, response) => {
-    response.render('users/Register', { title: "Register" });
+    response.render('users/Register', { title: "Register", current: "", category: "" });
 }
 
 // Create --> Create a new user account.
 module.exports.createUser = async (request, response, next) => {
-    const { username, email, password } = request.body;
+    let { username, email, password } = request.body;
     const { error } = UserSchema.validate(request.body);
     // IF ANY SCHEMATIC ERROR
     if (error) {
@@ -23,6 +23,9 @@ module.exports.createUser = async (request, response, next) => {
         // Use below code to redirect to Error Page and make user aware of errors.
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     }
+    username = username.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
+    email = email.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
+    password = password.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
     const newUser = new User({ username, email });
     try {
         const registeredUser = await User.register(newUser, password);
@@ -53,7 +56,7 @@ module.exports.createUser = async (request, response, next) => {
 
 // Login --> Form to login a user.
 module.exports.renderLoginForm = (request, response) => {
-    response.render('users/Login', { title: "Login" });
+    response.render('users/Login', { title: "Login", current: "", category: "" });
 }
 
 // Authenticate --> Authenticate a user.

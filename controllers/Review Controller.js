@@ -23,7 +23,7 @@ module.exports.createReview = async (request, response, next) => {
         // Use below code to redirect to Error Page and make user aware of errors.
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
-        review.body = review.body.replace(/[\r\n\t]/gm, ' ');
+        review.body = review.body.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
         const newReview = new Review(review);
         await newReview.save();
         campground.reviews.push(newReview);

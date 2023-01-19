@@ -18,16 +18,14 @@
                             style="background-image: url(<%=campgroundBackgroundImageURL%>); background-size: cover;">
                             <div class="col d-flex flex-column justify-content-between">
                                 <div class="row">
-                                    <div class="card-body px-4">
-                                        <div class="card-head d-flex align-items-center">
-                                            <h1 class="card-title">
-                                                <%=campground.title%>
-                                            </h1>
-                                            <h6 class="ms-auto"><i class="fa-solid fa-flip fa-star"
-                                                    style="color: #ffd700;"></i>
-                                                <%= campground.avgRating %> (<%= campground.reviews.length %>)
-                                            </h6>
-                                        </div>
+                                    <div class="card-body d-flex flex-column px-4">
+                                        <h4 class="ms-auto"><i class="fa-solid fa-flip fa-star"
+                                                style="color: #ffd700;"></i>
+                                            <%= campground.avgRating %> (<%= campground.reviews.length %>)
+                                        </h4>
+                                        <h1 class="card-title">
+                                            <%=campground.title%>
+                                        </h1>
                                         <div class="card-text">
                                             <small class="text-muted">
                                                 <%=campground.location%>
