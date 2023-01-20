@@ -11,6 +11,9 @@ const User = require("../controllers/User Controller");
 // REQUIRING WRAPPER FUNCTION TO HANDLE ASYNC ERRORS
 const handleAsyncErrors = require("../utilities/Error Handling/Async Error Handling Middleware Function.js");
 
+// REQUIRING MIDDLEWARE FUNCTION TO CHECK IF USER IS LOGGED IN 
+const isLoggedIn = require("../utilities/Authentication/Check If Logged In.js");
+
 // REQUIRING MIDDLEWARE FUNCTION TO CHECK IF ANY USER IS ALREADY LOGGED IN 
 const isAlreadyLoggedIn = require("../utilities/Authentication/Check If Already Logged In.js");
 
@@ -26,6 +29,8 @@ router.route('/register')
 router.route('/login')
     .get(isAlreadyLoggedIn, User.renderLoginForm)
     .post(isAlreadyLoggedIn, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }), User.authenticateUser);
+
+router.get('/users/:username', isLoggedIn, User.viewProfile);
 
 router.post('/logout', isAlreadyLoggedOut, User.logoutUser);
 

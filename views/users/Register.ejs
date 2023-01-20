@@ -22,6 +22,33 @@
                                 </div>
                             </div>
                             <div class="mt-3">
+                                <label class="form-label">Username Instructions : </label>
+                                <div class="card-footer border-0">
+                                    <p><b>Username Example:</b> john123 or john_123</p>
+                                    <ul>
+                                        <li>Should start with a lowercase letter from (a-z).</li>
+                                        <li>Must be between 3 to 20 characters long.</li>
+                                        <li>Must end with a letter (a-z) or number (0-9).</li>
+                                        <li>Must not contain a sequence of two or more underscores (_).</li>
+                                        <li>Can contain lowercase letters from (a-z), digits, or underscores.</li>
+                                        <li>Please do not keep an explicit or inappropriate name/username. It may lead to suspension of your account.</li>
+                                    </ul>
+                                    <p><b>Note:</b> Choose wisely your username, for you will not be able to change it later.</p>
+                                </div>
+                            </div>
+                            <div class="mt-3">
+                                <label for="name" class="form-label">Enter Name<span class="mandatory">*</span>
+                                    : </label>
+                                <input type="text" class="form-control" name="name" id="name"
+                                    placeholder="Enter Name" required>
+                                <div class="valid-feedback">
+                                    Looks good!
+                                </div>
+                                <div class="invalid-feedback">
+                                    Please provide a valid name.
+                                </div>
+                            </div>
+                            <div class="mt-3">
                                 <label for="email" class="form-label">Enter Email<span class="mandatory">*</span> :
                                 </label>
                                 <input type="email" class="form-control" name="email" id="email"

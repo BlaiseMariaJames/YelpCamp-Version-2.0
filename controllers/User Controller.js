@@ -12,7 +12,7 @@ module.exports.renderRegisterForm = (request, response) => {
 
 // Create --> Create a new user account.
 module.exports.createUser = async (request, response, next) => {
-    let { username, email, password } = request.body;
+    let { username, name, email, password } = request.body;
     const { error } = UserSchema.validate(request.body);
     // IF ANY SCHEMATIC ERROR
     if (error) {
@@ -24,9 +24,10 @@ module.exports.createUser = async (request, response, next) => {
         // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     }
     username = username.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
+    name = name.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
     email = email.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
     password = password.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
-    const newUser = new User({ username, email });
+    const newUser = new User({ username, name, email });
     try {
         const registeredUser = await User.register(newUser, password);
         request.login(registeredUser, function (error) {
@@ -65,6 +66,17 @@ module.exports.authenticateUser = (request, response) => {
     const redirectUrl = request.session.returnTo || '/campgrounds';
     delete request.session.returnTo;
     response.redirect(redirectUrl);
+}
+
+// View Profile --> View user profile.
+module.exports.viewProfile = async (request, response, next) => {
+    let { username } = request.params;
+    const user = await User.findOne({ username });
+    if (!user) {
+        // ERROR HANDLED : User not found.
+        return next(new ApplicationError("Sorry!, We couldn't find the user!", 'User Not Found', 404));
+    }
+    response.render('users/Profile', { title: `${user.name} (@${user.username})`, user, current: "", category: "" });
 }
 
 // Logout --> Logout a user.

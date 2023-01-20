@@ -11,13 +11,20 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
     username: {
         type: String,
-        required: true,
-        unique: true
+        unique: true,
+        minlength: 3,
+        maxlength: 20,
+        match: /^[a-z](?!.*__)[a-z0-9_]{1,18}[a-z0-9]$/,
+        required: [true, "The field 'username' is mandatory"]
+    },
+    name: {
+        type: String,
+        required: [true, "The field 'name' is mandatory"]
     },
     email: {
         type: String,
-        required: true,
-        unique: true
+        unique: true,
+        required: [true, "The field 'email' is mandatory"]
     }
 });
 

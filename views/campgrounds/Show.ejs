@@ -61,7 +61,7 @@
                                 </li>
                                 <li class="list-group-item">
                                     <b>Suggested By:</b>
-                                    <%= campground.author.username %>
+                                    <%=campground.author.name%> <a href="/users/<%=campground.author.username%>" title="View <%=campground.author.name%>" class="text-decoration-none"><%=`(@${campground.author.username})`%></a>
                                 </li>
                                 <li class="list-group-item">
                                     <b>Price:</b> Rs. <%=campground.price %>/-
@@ -167,7 +167,7 @@
                         <% for(let review of campground.reviews) { %>
                             <div class="card mb-3">
                                 <div class="card-header d-flex flex-wrap justify-content-between"><b>
-                                        <%=review.author.username%>
+                                    <%=review.author.name%> <a href="/users/<%=review.author.username%>" title="View <%=review.author.name%>" class="text-decoration-none"><%=`(@${review.author.username})`%></a>
                                     </b><span class="starability-result" data-rating="<%= review.rating %>">Rated: <%=
                                             review.rating %> stars</span></div>
                                 <div class="card-body">

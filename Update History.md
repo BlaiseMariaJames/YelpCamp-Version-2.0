@@ -24,6 +24,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#User-Profile">User Profile</a></li>
 <li><a href="#Sort-AvgRating">Sort & Average Rating</a></li>
 <li><a href="#Categories-Pagination">Categories & Pagination</a></li>
 <li><a href="#Initial-v2">Initial v2</a></li>
@@ -48,6 +49,13 @@
 
 <h2 id="Jan23">January 2023</h2>
 
+<h3 id="User-Profile">User Profile Update 2.0.8V</h3>
+
+1. Create Profile view and route to support user profile.
+2. Modify Show, Index and Categories views to support user profile.
+3. Modify User model and Register route to support username and fullname.
+4. Modify Add camps to database, User controller to support user profile.
+   
 <h3 id="Sort-AvgRating">Sort & Average Rating Update 2.0.7V (Major Update)</h3>
 
 1. Make changes to all input fields to have a consistent usage of quotes.
@@ -61,7 +69,7 @@
 ### Sort & Average Rating Update 2.0.5V
 
 1. Modify Campground model to support average rating.
-2. Modify Show, Index and categories views to support average rating.
+2. Modify Show, Index and Categories views to support average rating.
 3. Modify Add camps to database, Campground controller and Helmet Configuration to support font-awesome average star ratings.
 
 <h3 id="Categories-Pagination">Categories & Pagination Update 2.0.4V (Major Update)</h3>

@@ -57,7 +57,7 @@ const uploadSampleCampgroundImages = async () => {
 }
 
 // DEFINING SEED DATA FUNCTION
-async function seedData(username, email) {
+async function seedData(username, name, email) {
 
     // STEP 1: DELETING EXISTING DATA //
 
@@ -84,17 +84,17 @@ async function seedData(username, email) {
     readline.question("\nPress any key to continue...");
     console.clear();
     console.log("\nProceeding...");
-    
+
     // STEP 2: CREATING DATA //
-    
+
     // Create a new user account.
-    console.log(`\nCreating User...\n\nusername: ${username}\nemail: ${email}\npassword: 'coltisgreat'\n\nNOTE: Your default password is 'coltisgreat' you can change it anytime in the webpage...`);
+    console.log(`\nCreating User...\n\nusername: ${username}\nname: ${name}\nemail: ${email}\npassword: 'coltisgreat'\n\nNOTE: Your default password is 'coltisgreat' you can change it anytime in the webpage...`);
     console.log("\nUser data inserted successfully!");
     readline.question("\nPress any key to continue...");
     console.clear();
     console.log("\nProceeding...");
     const newUser = User({
-        username, email, 
+        username, name, email,
         salt: 'b70e6a9f24b279d2097371b8d39657af041cdb48c5ff61ba5ba5775cdba33843',
         hash: '3067162b122490dfa8aaa3cb41a42e31c1e6be3f5853dc834570ba6fe8f4451b0dec026af486f3098b10517a0a96b14bce0063fb0799d1da5ae2364c0156096aae9df0ceecd76cf401cb7614dfe86e245860518ae7958f433a11e9ff5365fc89ef1f96bb144da388d69211ee42576710f285b4142f6a120cd2d93c1ef3c8e5476428533307226a90f3967c776d00404a443a3c96770c446fb4ec0833dbd68bb6cbd22a94044c85bf7e18781b895b831914116d160366f26fbc47d3e7c089b186768c543e6396951ae40b6e25f605432b40bbd771473f8277d05d3c70961af25f8d0e90e16d8cf70fda799ae1ce04f0fa329979a8b6e27ebef37cfdf109156f2336cb91b931a2d9ffb2101d8bed7e3ac0f42cacabf2dcfcced050295785be28e0eb3929a32e64a5d3fb2b25cfbbdb656a9da6caf6d5ad981ad2c135959f1fe2a3de0ed3899bb84417243b6424060ce853853d41e1250189566457ef1a79ebcbfa586db7ca2b77a10e586e5fdca84a39a712a763bc3922234b3a150a2c7563e4b91d78977ef73250d0c5b81e537a30a2ad275c8bd9b63aefcdd894e6ab80be7b487080ed22266e3962215f1e7563319bb381ab92143a334b2487399ff1f9788132f78c120b64dd7f9274c25170aa2349d8ebfb46f9a99fb5396ed3bb8868ad6557111b5649387d6fcdba40315e253ec1bd42bc1c8f5e0ed1bb389a15e92e03a921'
     });
@@ -145,7 +145,7 @@ async function seedData(username, email) {
             const avgRating = 0;
             // Creating new camp.
             console.log(`Seeding Campground ${i} into database...`);
-            const camp = new Campground({ author, title, images, price, location, accurateLocation: location, geometry, description, categories, addedOn, avgRating });         
+            const camp = new Campground({ author, title, images, price, location, accurateLocation: location, geometry, description, categories, addedOn, avgRating });
             await camp.save();
         }
         console.log("\nData inserted successfully!");
@@ -178,23 +178,26 @@ databaseConnection.once("open", async () => {
     if (permission.toLowerCase() === "yes") {
         console.clear();
         console.log("\nProceeding...\n\nRequesting User details - The campgrounds created will be registered under the following user details...");
-        let username = readline.question("\nEnter username: ");
-        let email = readline.question("\nEnter email: ");
-        let validateUser = {username, email, password: "password"};
+        let username = readline.question("\nUsername Instructions :\n\nUsername Example: john123 or john_123\n\n1. Should start with a lowercase letter from (a-z).\n2. Must be between 3 to 20 characters long.\n3. Must end with a letter (a-z) or number (0-9).\n4. Must not contain a sequence of two or more underscores (_).\n5. Can contain lowercase letters from (a-z), digits, or underscores.\n6. Please do not keep an explicit or inappropriate name/username. It may lead to suspension of your account.\n\nNote: Choose wisely your username, for you will not be able to change it later.\n\nEnter your username: ");
+        let name = readline.question("\nEnter your full name: ");
+        let email = readline.question("\nEnter your email: ");
+        let validateUser = { username, name, email, password: "willBeSoonReplaced" };
         let { error } = UserSchema.validate(validateUser);
         // IF ANY SCHEMATIC ERROR
         while (error) {
+            console.clear();
             let errorMessage = error.details.map(error => error.message).join(',');
             console.log(`\nCannot create user account, ${errorMessage}.`);
             console.log("\nTrying again....");
-            username = readline.question("\nEnter username: ");
-            email = readline.question("\nEnter email: ");
-            validateUser = {username, email, password: "password"};
+            username = readline.question("\nUsername Instructions :\n\nUsername Example: john123 or john_123\n\n1. Should start with a lowercase letter from (a-z).\n2. Must be between 3 to 20 characters long.\n3. Must end with a letter (a-z) or number (0-9).\n4. Must not contain a sequence of two or more underscores (_).\n5. Can contain lowercase letters from (a-z), digits, or underscores.\n6. Please do not keep an explicit or inappropriate name/username. It may lead to suspension of your account.\n\nNote: Choose wisely your username, for you will not be able to change it later.\n\nEnter your username: ");
+            name = readline.question("\nEnter your full name: ");
+            email = readline.question("\nEnter your email: ");
+            validateUser = { username, name, email, password: "willBeSoonReplaced" };
             error = UserSchema.validate(validateUser).error;
         }
         console.clear();
         console.log("\nProceeding...\n");
-        await seedData(username, email)
+        await seedData(username, name, email)
             .then(() => {
                 console.log("\nDisconnecting from the database...");
                 mongoose.connection.close();

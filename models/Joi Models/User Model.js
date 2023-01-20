@@ -7,7 +7,13 @@ Joi = Joi.extend(escapeHTMLExtension);
 
 // DEFINING USER SCHEMA
 const UserSchema = Joi.object({
-    username: Joi.string().required().escapeHTML(),
+    username: Joi.string().required()
+        .pattern(/^[a-z](?!.*__)[a-z0-9_]{1,18}[a-z0-9]$/)
+        .messages(
+            { 'string.pattern.base': '"username" failed to satisfy the instructions' }
+        )
+        .escapeHTML(),
+    name: Joi.string().required().escapeHTML(),
     email: Joi.string().email().required().escapeHTML(),
     password: Joi.string().required().escapeHTML()
 });
