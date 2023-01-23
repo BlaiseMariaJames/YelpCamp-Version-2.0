@@ -30,7 +30,7 @@ router.route('/login')
     .get(isAlreadyLoggedIn, User.renderLoginForm)
     .post(isAlreadyLoggedIn, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }), User.authenticateUser);
 
-router.get('/users/:username', isLoggedIn, User.viewProfile);
+router.get('/profile', isLoggedIn, User.viewProfile);
 
 router.post('/logout', isAlreadyLoggedOut, User.logoutUser);
 

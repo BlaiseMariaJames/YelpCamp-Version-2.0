@@ -1,4 +1,5 @@
-const optionsHolder = document.querySelector("#categories");
+const heading = document.querySelector("#heading");
+const optionsHolder = document.querySelector(".categories");
 const campgroundContainers = document.querySelectorAll(".campground");
 const options = { "Latest": { sortBy: "latest" }, "Earliest": { sortBy: "earliest" }, "Top Rated": { sortBy: "top-rated" }, "Premium": { sortBy: "premium" }, "Economic": { sortBy: "economic" }, "Title [A-Z]": { sortBy: "title-asc" }, "Title [Z-A]": { sortBy: "title-desc" }, "Location [A-Z]": { sortBy: "location-asc" }, "Location [Z-A]": { sortBy: "location-desc" } };
 
@@ -11,4 +12,5 @@ optionsHolder.addEventListener("change", (handleSortByChange) => {
     }
     const campground = document.querySelector(`#${options[value].sortBy}`);
     campground.classList.remove("d-none");
+    heading && (heading.innerHTML = `${value}`);
 });

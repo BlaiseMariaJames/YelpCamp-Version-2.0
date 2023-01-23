@@ -19,9 +19,9 @@
         <link rel="stylesheet" href="/CSS/Categories Page.css">
 </head>
 
-<body class="d-flex flex-column vh-100 bg-light justify-content-between">
+<body class="d-flex flex-column bg-light" style="min-height: 100vh;">
     <%- include('../partials/Navbar') %>
-        <main class="container mt-3 mb-3">
+        <main class="container mt-3 mb-3 d-flex flex-column" style="flex: 1;">
             <%- include('../partials/Flash') %>
                 <%- body %>
         </main>

@@ -2,6 +2,9 @@
 const User = require("../models/Mongoose Models/User Model.js");
 const UserSchema = require("../models/Joi Models/User Model.js");
 
+// REQUIRING CAMPGROUND MODEL
+const Campground = require("../models/Mongoose Models/Campground Model.js");
+
 // REQUIRING APPLICATION ERROR HANDLER CLASS 
 const ApplicationError = require("../utilities/Error Handling/Application Error Handler Class.js");
 
@@ -70,13 +73,17 @@ module.exports.authenticateUser = (request, response) => {
 
 // View Profile --> View user profile.
 module.exports.viewProfile = async (request, response, next) => {
-    let { username } = request.params;
-    const user = await User.findOne({ username });
-    if (!user) {
-        // ERROR HANDLED : User not found.
-        return next(new ApplicationError("Sorry!, We couldn't find the user!", 'User Not Found', 404));
+    let { _id } = request.user;
+    let campgrounds = {}, error = false;
+    const user = await User.findById({ _id });
+    campgrounds["latest"] = await Campground.find({ author: user._id }).sort([["addedOn", -1]]).populate('author');
+    campgrounds["top-rated"] = await Campground.find({ author: user._id }).sort([["avgRating", -1]]).populate('author');
+    if (campgrounds.latest.length) {
+        response.render('users/Profile', { title: `${user.name} (@${user.username})`, user, campgrounds, error, current: "", category: "" });
+    } else {
+        error = true;
+        response.render('campgrounds/Index', { title: "No Campgrounds", error, current: "", category: "" });
     }
-    response.render('users/Profile', { title: `${user.name} (@${user.username})`, user, current: "", category: "" });
 }
 
 // Logout --> Logout a user.

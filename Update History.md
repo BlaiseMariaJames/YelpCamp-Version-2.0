@@ -49,7 +49,14 @@
 
 <h2 id="Jan23">January 2023</h2>
 
-<h3 id="User-Profile">User Profile Update 2.0.8V</h3>
+<h3 id="User-Profile">User Profile Update 2.0.9V (Major Update)</h3>
+
+1. Modify Profile view and route to support user profile.
+2. Style BoilerPlate layout, Navbar and NotFound partials. 
+3. Modify Campground routes to enhance user authentication.
+4. Modify Show, Index and Categories views to view campgrounds by user.
+   
+### User Profile Update 2.0.8V
 
 1. Create Profile view and route to support user profile.
 2. Modify Show, Index and Categories views to support user profile.

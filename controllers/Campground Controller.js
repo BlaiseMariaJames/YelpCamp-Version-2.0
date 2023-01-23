@@ -11,6 +11,9 @@ const geoCoder = mapboxGeoCoding({ accessToken: mapboxToken });
 const Campground = require("../models/Mongoose Models/Campground Model.js");
 const CampgroundSchema = require("../models/Joi Models/Campground Model.js");
 
+// REQUIRING USER MODEL
+const User = require("../models/Mongoose Models/User Model.js");
+
 // REQUIRING APPLICATION ERROR HANDLER CLASS 
 const ApplicationError = require("../utilities/Error Handling/Application Error Handler Class.js");
 
@@ -123,12 +126,18 @@ module.exports.showCampground = async (request, response, next) => {
 
 // Index --> Display all campgrounds.
 module.exports.allCampgrounds = async (request, response, next) => {
-    let { page, limit, select, find } = request.query;
+    let { page, limit, select, find, user } = request.query;
     page = page ? parseInt(page) : 1;
     limit = limit ? parseInt(limit) : 12;
-    select = select ? select : false;
-    find = find ? find : (select ? false : "latest");
-    let error = false, title = "", allCampgrounds = {}, campgrounds = { page, limit, find, select, results: {} };
+    user = user ? user : false;
+    select = user ? false : (select ? select : false);
+    find = (user || select) ? false : (find ? find : "latest");
+    if ((user || select || find != "latest") && !request.isAuthenticated()) {
+        request.session.returnTo = request.originalUrl;
+        request.flash('error', 'Please Login to Continue!');
+        return response.redirect('/login');
+    }
+    let error = false, title = "", username = "", userFound = {}, allCampgrounds = {}, campgrounds = { page, limit, user, select, find, results: {} };
     const startIndex = (page - 1) * limit, endIndex = page * limit;
     const options = {
         "Latest": { sortBy: "latest", sortFunction: (a, b) => b.addedOn - a.addedOn },
@@ -143,7 +152,11 @@ module.exports.allCampgrounds = async (request, response, next) => {
     };
     const allFinds = ['latest', 'earliest', 'top-rated', 'premium', 'economic', 'title-asc', 'title-desc', 'location-asc', 'location-desc', false];
     const allSelects = ['rv', 'tent', 'backcountry', 'cabin', 'beach', 'desert', 'forest', 'mountain', 'lakefront', 'family', 'luxury', 'economic', 'pet-friendly', 'adventure', 'educational', 'hunting', 'festival', false];
-    if (!allSelects.includes(select) || !allFinds.includes(find)) {
+    user && (userFound = await User.findOne({ username: user }));
+    if (user && !userFound) {
+        // ERROR HANDLED: USER DOESN'T EXISTS
+        return next(new ApplicationError("Sorry!, Invalid User ID. We couldn't find the campgrounds!!", 'Invalid User ID', 400));
+    } else if (!allSelects.includes(select) || !allFinds.includes(find)) {
         // ERROR HANDLED: CATEGORY OR FIND DOESN'T EXISTS
         return next(new ApplicationError("Sorry!, Invalid Category. We couldn't find the campgrounds!!", 'Invalid Category', 400));
     } else {
@@ -162,13 +175,26 @@ module.exports.allCampgrounds = async (request, response, next) => {
             allCampgrounds.sort(sortFunction);
             paginatedCampgrounds = allCampgrounds.slice(startIndex, endIndex);
             campgrounds.results.latest = paginatedCampgrounds;
-        } else {
-            // FETCH CAMPGROUNDS FOR ALL FINDS (All Campgrounds, Campgrounds of specific category)
+        } else if (user) {
+            // FETCH CAMPGROUNDS FOR ALL FINDS (Campgrounds of specific user)
+            username = `${userFound.name}`;
+            title = `${userFound.name} @(${userFound.username})`;
             for (let option in options) {
-                let paginatedCampgrounds = [];
+                let paginatedCampgrounds = [], query = {};
+                const { sortBy, sortFunction } = options[option];
+                query["author"] = userFound._id;
+                allCampgrounds = await Campground.find(query).populate('author');
+                paginatedCampgrounds = allCampgrounds.slice(startIndex, endIndex);
+                // Find, paginate then sort.
+                paginatedCampgrounds.sort(sortFunction);
+                campgrounds.results[sortBy] = paginatedCampgrounds;
+            }
+        } else {
+            // FETCH CAMPGROUNDS FOR ALL FINDS (Campgrounds of specific category)
+            title = `${select} Based Campgrounds`.toUpperCase();
+            for (let option in options) {
                 const { sortBy, sortFunction } = options[option];
                 // FETCH CAMPGROUNDS FOR A SPECIFIC SELECT (RV based, Tent based, ...)
-                title = `${select} Based Campgrounds`.toUpperCase();
                 for (const category in dbCategories) {
                     const { key, values } = dbCategories[category];
                     for (const value of values) {
@@ -187,7 +213,7 @@ module.exports.allCampgrounds = async (request, response, next) => {
         }
     }
     if (campgrounds.results.latest.length) {
-        response.render('campgrounds/Index', { title, total: allCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, error, category: "" });
+        response.render('campgrounds/Index', { title, username, total: allCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, error, category: "" });
     } else {
         error = true;
         response.render('campgrounds/Index', { title: "No Campgrounds", error, current: "", category: "" });

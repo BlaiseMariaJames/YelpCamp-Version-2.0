@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar sticky-top navbar-expand-xl navbar-dark bg-dark">
     <div class="container-fluid">
         <a href="/" class="navbar-brand">YelpCamp</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"><span class="navbar-toggler-icon"></span></button>
@@ -38,7 +38,7 @@
                     <a class="nav-link" href="/register">Register</a>
                     <% } else { %>
                         <a class="navbar-brand">Welcome, <%=currentUser.name%></a>
-                        <a href="/users/<%=currentUser.username%>" class="nav-link d-grid"><button type="submit" class="btn btn-info btn-sm">View Profile</button></a>
+                        <a href="/profile" class="nav-link d-grid"><button type="submit" class="btn btn-info btn-sm">View Profile</button></a>
                         <form action="/logout" method="post" class="nav-link d-grid">
                             <button type="submit" class="btn btn-danger btn-sm">Logout</button>
                         </form>
