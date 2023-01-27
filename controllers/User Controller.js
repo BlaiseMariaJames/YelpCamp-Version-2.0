@@ -8,6 +8,9 @@ const Campground = require("../models/Mongoose Models/Campground Model.js");
 // REQUIRING APPLICATION ERROR HANDLER CLASS 
 const ApplicationError = require("../utilities/Error Handling/Application Error Handler Class.js");
 
+// REQUIRING UTIL HELPER MODULE FROM NODE
+const util = require("util");
+
 // Register --> Form to register a new user.
 module.exports.renderRegisterForm = (request, response) => {
     response.render('users/Register', { title: "Register", current: "", category: "" });
@@ -23,8 +26,6 @@ module.exports.createUser = async (request, response, next) => {
         // Below two lines of code will redirect to the same page and make user aware of errors.
         request.flash('error', `Cannot create user account, ${errorMessage}.`);
         return response.status(400).redirect('/register');
-        // Use below code to redirect to Error Page and make user aware of errors.
-        // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     }
     username = username.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
     name = name.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
@@ -47,14 +48,10 @@ module.exports.createUser = async (request, response, next) => {
             // Below two lines of code will redirect to the same page and make user aware of errors.
             request.flash('error', "Cannot create user account, A user with the given email is already registered.");
             return response.status(400).redirect('/register');
-            // Use below code to redirect to Error Page and make user aware of errors.
-            // return next(new ApplicationError("Cannot create user account, A user with the given email is already registered.", "Bad Request", 400));
         }
         // Below two lines of code will redirect to the same page and make user aware of errors.
         request.flash('error', `Cannot create user account, ${error.message}.`);
         return response.status(400).redirect('/register');
-        // Use below code to redirect to Error Page and make user aware of errors.
-        // return next(new ApplicationError(error.message, "Bad Request", 400));
     }
 }
 
@@ -78,12 +75,29 @@ module.exports.viewProfile = async (request, response, next) => {
     const user = await User.findById({ _id });
     campgrounds["latest"] = await Campground.find({ author: user._id }).sort([["addedOn", -1]]).populate('author');
     campgrounds["top-rated"] = await Campground.find({ author: user._id }).sort([["avgRating", -1]]).populate('author');
-    if (campgrounds.latest.length) {
-        response.render('users/Profile', { title: `${user.name} (@${user.username})`, user, campgrounds, error, current: "", category: "" });
-    } else {
-        error = true;
-        response.render('campgrounds/Index', { title: "No Campgrounds", error, current: "", category: "" });
+    error = (campgrounds.latest.length) ? false : true;
+    response.render('users/Profile', { title: `${user.name} (@${user.username})`, user, campgrounds, error, current: "", category: "" });
+}
+
+// Update Profile --> Update user profile.
+module.exports.updateProfile = async (request, response, next) => {
+    const { name, password } = request.body;
+    const { user } = response.locals;
+    user.name = name;
+    const { username, email } = user._doc;
+    const { error } = UserSchema.validate({ username, name, email, password });
+    // IF ANY SCHEMATIC ERROR
+    if (error) {
+        let errorMessage = error.details.map(error => error.message).join(',');
+        // Use below code to redirect to Error Page and make user aware of errors.
+        return next(new ApplicationError(`Cannot edit user profile, ${errorMessage}.`, "Bad Request", 400));
     }
+    await user.save();
+    // Login user with updated credentials.
+    const login = util.promisify(request.login.bind(request));
+    await login(user);
+    request.flash('success', 'Profile successfully updated');
+    response.redirect('/profile');
 }
 
 // Logout --> Logout a user.

@@ -20,6 +20,12 @@ const isAlreadyLoggedIn = require("../utilities/Authentication/Check If Already 
 // REQUIRING MIDDLEWARE FUNCTION TO CHECK IF ANY USER IS ALREADY LOGGED OUT
 const isAlreadyLoggedOut = require("../utilities/Authentication/Check If Already Logged Out.js");
 
+// REQUIRING MIDDLEWARE FUNCTION TO CHECK IF PASSWORD PROVIDED IN EDIT PROFILE IS VALID
+const isValidPassword = require("../utilities/Authentication/Check If Valid Password.js");
+
+// REQUIRING MIDDLEWARE FUNCTION TO CHANGE CURRENT PASSWORD
+const changePassword = require("../utilities/Authentication/Change Password.js");
+
 // RESPONDING TO THE SERVER AT USER MODEL BASED ROUTE
 
 router.route('/register')
@@ -30,7 +36,9 @@ router.route('/login')
     .get(isAlreadyLoggedIn, User.renderLoginForm)
     .post(isAlreadyLoggedIn, passport.authenticate('local', { failureFlash: true, failureRedirect: '/login', keepSessionInfo: true }), User.authenticateUser);
 
-router.get('/profile', isLoggedIn, User.viewProfile);
+router.route('/profile')
+    .get(isLoggedIn, User.viewProfile)
+    .patch(isLoggedIn, handleAsyncErrors(isValidPassword), handleAsyncErrors(changePassword), handleAsyncErrors(User.updateProfile));
 
 router.post('/logout', isAlreadyLoggedOut, User.logoutUser);
 

@@ -20,8 +20,6 @@ module.exports.createReview = async (request, response, next) => {
         // Below two lines of code will redirect to the same page and make user aware of errors.
         request.flash('error', `Cannot create review, ${errorMessage}.`);
         response.status(400).redirect(`/campgrounds/${campgroundId}`);
-        // Use below code to redirect to Error Page and make user aware of errors.
-        // return next(new ApplicationError(errorMessage, "Bad Request", 400));
     } else {
         review.body = review.body.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
         const newReview = new Review(review);

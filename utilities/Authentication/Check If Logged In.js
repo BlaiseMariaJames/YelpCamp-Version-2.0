@@ -1,4 +1,4 @@
-// REQUIRING MIDDLEWARE FUNCTION TO CHECK IF USER IS LOGGED IN 
+// DEFINING MIDDLEWARE FUNCTION TO CHECK IF USER IS LOGGED IN 
 function checkIfLoggedIn(request, response, next) {
     if (!request.isAuthenticated()) {
         request.session.returnTo = request.originalUrl;

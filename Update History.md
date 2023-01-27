@@ -49,7 +49,13 @@
 
 <h2 id="Jan23">January 2023</h2>
 
-<h3 id="User-Profile">User Profile Update 2.0.9V (Major Update)</h3>
+<h3 id="User-Profile">User Profile Update 2.1.0V</h3>
+
+1. Add Edit Profile to Profile view to support editing user profile.
+2. Create Update Profile route, Check If Valid Password and Change Password middlewares.
+3. Modify Bootstrap validations, JOI User model validations to support validations while editing user profile.
+
+### User Profile Update 2.0.9V (Major Update)
 
 1. Modify Profile view and route to support user profile.
 2. Style BoilerPlate layout, Navbar and NotFound partials. 

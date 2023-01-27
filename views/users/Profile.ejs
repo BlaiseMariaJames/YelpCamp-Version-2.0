@@ -5,9 +5,87 @@
     </div>
     <hr>
     <div class="row d-flex justify-content-center">
-        <div class="col-lg-12">
+        <div class="col-lg-4 mb-3 mb-lg-0">
             <div class="card shadow" style="height: 100%;">
+                <div class="card-body">
+                    <h3 class="card-title">Edit Profile</h3>
+                    <p class="my-3 mandatory">* Mandatory Fields</p>
+                    <form action="/profile?_method=PATCH" method="post" class="needs-validation" novalidate>
+                        <label class="mt-3"><b>Edit My Name: </b></label>
+                        <div class="mt-3 d-none">
+                            <label for="username" class="form-label">Username <span class="mandatory">*</span> : </label>
+                            <input type="text" class="form-control" name="username" id="username"
+                                placeholder="Enter username" value="<%=user.username%>">
+                        </div>
+                        <div class="mt-3 d-none">
+                            <label for="email" class="form-label">Email<span class="mandatory">*</span> : </label>
+                            <input type="email" class="form-control" name="email" id="email"
+                                placeholder="Enter email" value="<%=user.email%>">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid email.
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label for="name" class="form-label">Enter Name<span class="mandatory">*</span> : </label>
+                            <input type="text" class="form-control" name="name" id="name" value="<%=user.name%>"
+                                placeholder="Enter name" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid name.
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label for="password" class="form-label">Enter Current Password (is required to update profile)<span class="mandatory">*</span> : </label>
+                            <input type="password" class="form-control" name="password" id="password"
+                                placeholder="Enter current password" required>
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Please provide a valid password.
+                            </div>
+                        </div>
+                        <label class="mt-5"><b>Change My Current Password: </b></label>
+                        <div class="mt-3">
+                            <label for="newPassword" class="form-label">Enter New Password (Optional) : </label>
+                            <input type="password" class="form-control" name="newPassword" id="newPassword"
+                                placeholder="Enter new password">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Passwords don't match.
+                            </div>
+                        </div>
+                        <div class="mt-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password (is required to update current password)<span class="mandatory">*</span> : </label>
+                            <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
+                                placeholder="Confirm password">
+                            <div class="valid-feedback">
+                                Looks good!
+                            </div>
+                            <div class="invalid-feedback">
+                                Passwords don't match.
+                            </div>
+                        </div>
+                        <div class="d-grid mt-3 gap-2">
+                            <button type="submit" class="btn btn-success">Submit</button>
+                            <button type="reset" class="btn btn-danger">Reset</button>
+                            <a href="/users/<%=user.username%>" class="btn btn-secondary">Go back</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="card shadow">
                 <div class="card-body d-flex flex-column">
+                    <% if(!error) { %>
                     <% const options={ "Latest" : { sortBy: "latest" }, "Top Rated" : { sortBy: "top-rated" } }; %>
                         <div class="my-2 ms-auto">
                             <label class="form-label">Sort results by: </label>
@@ -17,7 +95,7 @@
                                     <% } %>
                             </select>
                         </div>
-                        <h3 class="card-title"><span id="heading">Latest</span> Campgrounds</h3>
+                        <h3 class="card-title">My <span id="heading">Latest</span> Campgrounds</h3>
                         <hr>
                         <% for(let camp in campgrounds) { %>
                             <div class="d-flex flex-row justify-content-start gap-4 p-4 campground wrapper <%=(camp === "latest") ? "" : " d-none" %>" id="<%=camp%>">
@@ -54,6 +132,11 @@
                                             </div>
                                             <% } %>
                             </div>
+                            <% } %>
+                        <% } else { %>
+                            <h3 class="card-title">My Campgrounds</h3>
+                            <hr>
+                            <%- include('../partials/NotFound') %>
                             <% } %>
                 </div>
             </div>

@@ -15,7 +15,9 @@ const UserSchema = Joi.object({
         .escapeHTML(),
     name: Joi.string().required().escapeHTML(),
     email: Joi.string().email().required().escapeHTML(),
-    password: Joi.string().required().escapeHTML()
+    password: Joi.string().required().escapeHTML(),
+    newPassword: Joi.string().allow('').escapeHTML(),
+    confirmPassword: Joi.string().allow('').escapeHTML()
 });
 
 // EXPORTING USER SCHEMA

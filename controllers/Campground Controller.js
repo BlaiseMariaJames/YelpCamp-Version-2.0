@@ -86,8 +86,6 @@ const createCampgroundHandler = () => {
             // Below two lines of code will redirect to the same page and make the user aware of errors.
             request.flash('error', `Cannot create campground, ${errorMessage}.`);
             response.status(400).redirect('/campgrounds/new');
-            // Use below code to redirect to Error Page and make the user aware of errors.
-            // return next(new ApplicationError(errorMessage, "Bad Request", 400));
         } else {
             newCampgroundData.title = newCampgroundData.title.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
             newCampgroundData.location = newCampgroundData.location.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
@@ -294,8 +292,6 @@ const updateCampgroundHandler = () => {
             // Below two lines of code will redirect to the same page and make user aware of errors.
             request.flash('error', `Cannot edit campground, ${errorMessage}.`);
             response.status(400).redirect(`/campgrounds/${id}/edit`);
-            // Use below code to redirect to Error Page and make user aware of errors.
-            // return next(new ApplicationError(errorMessage, "Bad Request", 400));
         } else {
             oldCampgroundObj.title = oldCampgroundObj.title.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
             oldCampgroundObj.location = oldCampgroundObj.location.replace(/[\r\n\t]+/gm, ' ').replace(/`/g, "'").replace(/"/g, "'");
