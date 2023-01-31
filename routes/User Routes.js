@@ -1,6 +1,11 @@
-// REQUIRING EXPRESS AND PASSPORT
+// REQUIRING EXPRESS, PASSPORT AND CLOUDINARY STORAGE
 const express = require("express");
 const passport = require("passport");
+const { storage } = require("../utilities/Cloudinary/Cloudinary Configuration.js");
+
+// MULTER CONFIGURATION
+const multer = require("multer");
+const upload = multer({ storage });
 
 // CREATING ROUTER INSTANCE 
 const router = express.Router();
@@ -30,7 +35,7 @@ const changePassword = require("../utilities/Authentication/Change Password.js")
 
 router.route('/register')
     .get(isAlreadyLoggedIn, User.renderRegisterForm)
-    .post(isAlreadyLoggedIn, handleAsyncErrors(User.createUser));
+    .post(isAlreadyLoggedIn, upload.single('image'), handleAsyncErrors(User.createUser));
 
 router.route('/login')
     .get(isAlreadyLoggedIn, User.renderLoginForm)
@@ -38,7 +43,7 @@ router.route('/login')
 
 router.route('/profile')
     .get(isLoggedIn, User.viewProfile)
-    .patch(isLoggedIn, handleAsyncErrors(isValidPassword), handleAsyncErrors(changePassword), handleAsyncErrors(User.updateProfile));
+    .patch(isLoggedIn, upload.single('image'), handleAsyncErrors(isValidPassword), handleAsyncErrors(changePassword), handleAsyncErrors(User.updateProfile));
 
 router.post('/logout', isAlreadyLoggedOut, User.logoutUser);
 

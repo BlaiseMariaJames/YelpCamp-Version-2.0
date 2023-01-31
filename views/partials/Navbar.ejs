@@ -32,16 +32,12 @@
                 </li>
                 <a class="nav-link" href="/campgrounds/new">Add Campgrounds</a>
             </div>
-            <div class="navbar-nav ms-auto">
+            <div class="navbar-nav ms-auto d-flex align-items-baseline">
                 <% if(!currentUser) { %>
                     <a class="nav-link" href="/login">Login</a>
                     <a class="nav-link" href="/register">Register</a>
                     <% } else { %>
-                        <a class="navbar-brand">Welcome, <%=currentUser.name%></a>
-                        <a href="/profile" class="nav-link d-grid"><button type="submit" class="btn btn-info btn-sm">View Profile</button></a>
-                        <form action="/logout" method="post" class="nav-link d-grid">
-                            <button type="submit" class="btn btn-danger btn-sm">Logout</button>
-                        </form>
+                        <a href="/profile" class="navbar-brand" title="View Profile">Welcome, <%=currentUser.name%> <img src="<%=currentUser.image.navItem%>" class="logo ms-1" alt="<%=currentUser.name%>'s photo"></a>
                         <% } %>
             </div>
         </div>

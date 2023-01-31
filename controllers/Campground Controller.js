@@ -135,7 +135,7 @@ module.exports.allCampgrounds = async (request, response, next) => {
         request.flash('error', 'Please Login to Continue!');
         return response.redirect('/login');
     }
-    let error = false, title = "", username = "", userFound = {}, allCampgrounds = {}, campgrounds = { page, limit, user, select, find, results: {} };
+    let error = false, title = "", userFound = {}, allCampgrounds = {}, campgrounds = { page, limit, user, select, find, results: {} };
     const startIndex = (page - 1) * limit, endIndex = page * limit;
     const options = {
         "Latest": { sortBy: "latest", sortFunction: (a, b) => b.addedOn - a.addedOn },
@@ -175,7 +175,6 @@ module.exports.allCampgrounds = async (request, response, next) => {
             campgrounds.results.latest = paginatedCampgrounds;
         } else if (user) {
             // FETCH CAMPGROUNDS FOR ALL FINDS (Campgrounds of specific user)
-            username = `${userFound.name}`;
             title = `${userFound.name} @(${userFound.username})`;
             for (let option in options) {
                 let paginatedCampgrounds = [], query = {};
@@ -211,7 +210,7 @@ module.exports.allCampgrounds = async (request, response, next) => {
         }
     }
     if (campgrounds.results.latest.length) {
-        response.render('campgrounds/Index', { title, username, total: allCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, error, category: "" });
+        response.render('campgrounds/Index', { title, userFound, total: allCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, error, category: "" });
     } else {
         error = true;
         response.render('campgrounds/Index', { title: "No Campgrounds", error, current: "", category: "" });

@@ -1,12 +1,12 @@
 // REQUIRING CLOUDINARY
 const { cloudinary } = require("./Cloudinary Configuration");
 
-// FUNCTION TO DELETE CAMPGROUND IMAGES FROM CLOUDINARY (IF IN CASE OF ANY ERROR WHILE UPLOADING)
-const deleteCampgroundImages = (campgroundImages) => {
+// FUNCTION TO DELETE IMAGES FROM CLOUDINARY (IF IN CASE OF ANY ERROR WHILE UPLOADING)
+const deleteImages = (imageFiles) => {
     // Deleting images.
-    for (let file of campgroundImages) {
+    for (let file of imageFiles) {
         cloudinary.uploader.destroy(file.filename);
     }
 };
 
-module.exports = deleteCampgroundImages;
+module.exports = deleteImages;

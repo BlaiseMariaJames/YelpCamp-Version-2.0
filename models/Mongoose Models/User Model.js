@@ -7,6 +7,29 @@ const passportLocalMongoose = require("passport-local-mongoose");
 // STORING SCHEMA OBJECT INTO A VARIABLE
 const Schema = mongoose.Schema;
 
+// DEFINING IMAGE SCHEMA
+const ImageSchema = new Schema({
+    _id: { _id: false },
+    url: {
+        type: String,
+        required: [true, "The field 'image url' is mandatory"]
+    },
+    filename: {
+        type: String,
+        required: [true, "The field 'image filename' is mandatory"]
+    }
+});
+
+// DEFINING VIRTUAL FUNCTION TO SET VIRTUAL PROPERTY 'PROFILE' FOR AN IMAGE
+ImageSchema.virtual('profile').get(function () {
+    return this.url.replace('/upload', '/upload/w_80,h_80,c_fill,g_face,r_max,bo_3px_solid_black');
+});
+
+// DEFINING VIRTUAL FUNCTION TO SET VIRTUAL PROPERTY 'SMALL' FOR AN IMAGE
+ImageSchema.virtual('navItem').get(function () {
+    return this.url.replace('/upload', '/upload/w_35,h_35,c_fill,g_face,r_max,bo_3px_solid_black');
+});
+
 // DEFINING USER SCHEMA
 const UserSchema = new Schema({
     username: {
@@ -25,7 +48,12 @@ const UserSchema = new Schema({
         type: String,
         unique: true,
         required: [true, "The field 'email' is mandatory"]
-    }
+    },
+    bio: {
+        type: String,
+        required: false
+    },
+    image: ImageSchema
 });
 
 // CONFIGURING PASSPORT-LOCAL-MONGOOSE TO USER SCHEMA

@@ -15,7 +15,21 @@
         </div>
         <% } %>
         <% if (current.user) { %>
-          <h1 class="mb-3 pb-3 border-bottom"><%=username%>'s Campgrounds</h1>
+          <div class="mb-3">
+            <div class="d-flex flex-wrap">
+              <div class="d-flex flex-wrap align-items-center gap-4">
+                <img src="<%=userFound.image.profile%>" class="logo" alt="<%=userFound.name%>'s photo">
+                <div class="d-flex flex-column">
+                  <h3><%=userFound.name%></h3>
+                  <h5>@(<%=userFound.username%>)</h5>
+                  <% if(userFound.bio) { %>
+                    <p><%=userFound.bio%></p>
+                    <% } %>
+                </div>
+              </div>
+            </div>
+            <h1 class="mb-3 pb-3 border-bottom"><%=userFound.name%>'s Campgrounds</h1>
+          </div>
           <% } %>
           <% for(let campgroundSortBy in campgrounds) { %>
             <% if(current.find) { %>

@@ -49,7 +49,12 @@
 
 <h2 id="Jan23">January 2023</h2>
 
-<h3 id="User-Profile">User Profile Update 2.1.0V</h3>
+<h3 id="User-Profile">User Profile Update 2.1.1V (Major Update)</h3>
+
+1. Modify Add Camps to database, User models and Register view to enhance user password authentication.
+2. Modify Profile view, Update Profile route, User controller and other middlewares to support create/edit user bio and profile photo.
+   
+### User Profile Update 2.1.0V
 
 1. Add Edit Profile to Profile view to support editing user profile.
 2. Create Update Profile route, Check If Valid Password and Change Password middlewares.
