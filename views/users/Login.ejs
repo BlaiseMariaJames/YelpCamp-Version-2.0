@@ -21,17 +21,22 @@
                                     Please provide a valid username.
                                 </div>
                             </div>
-                            <div class="mt-3">
+                            <div class="mt-3 password">
                                 <label for="password" class="form-label">Enter Password<span class="mandatory">*</span>
                                     : </label>
                                 <input type="password" class="form-control" name="password" id="password"
                                     placeholder="Enter Password" required>
+                                <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1701142131/YelpCamp%20Related%20Media/zkvg4rxknhwuebgnmd6v.jpg"
+                                    class="togglePassword">
                                 <div class="valid-feedback">
                                     Looks good!
                                 </div>
                                 <div class="invalid-feedback">
                                     Please provide a valid password.
                                 </div>
+                            </div>
+                            <div class="mt-2 d-flex flex-column">
+                                <label class="form-label ms-auto"><a href="/forgot-password" style="text-decoration: none;">Forgot Password?</a></label>
                             </div>
                             <div class="d-grid mt-3 gap-2">
                                 <button type="submit" class="btn btn-success">Login</button>
@@ -46,3 +51,4 @@
             </div>
         </div>
     </div>
+    <script src="/JS/Hide-Show Password.js"></script>

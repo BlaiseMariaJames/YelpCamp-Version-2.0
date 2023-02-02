@@ -15,6 +15,7 @@
 #### By Month:
 
 <ul>
+<li><a href="#Feb23">February 2023</a></li>
 <li><a href="#Jan23">January 2023</a></li>
 <li><a href="#Oct22">October 2022 (Yelpcamp v1)</a></li>
 <li><a href="#Sep22">September 2022</a></li>
@@ -24,6 +25,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Email-ForgotPassword">Email & Forgot Password</a></li>
 <li><a href="#User-Profile">User Profile</a></li>
 <li><a href="#Sort-AvgRating">Sort & Average Rating</a></li>
 <li><a href="#Categories-Pagination">Categories & Pagination</a></li>
@@ -47,6 +49,17 @@
 <li><a href="#Initial">Initial</a></li>
 </ul>
 
+<h2 id="Feb23">February 2023</h2>
+
+<h3 id="Email-ForgotPassword">Email & Forgot Password Update 2.1.2V (Major Update)</h3>
+
+1. Seperate Password schema logic from User schema.
+2. Modify User controller to support sending emails.
+3. Install send-grid node module to support sending emails.
+4. Modify Bootstrap (client-side) and Change Password (server-side) validations.
+5. Create Forgot and Reset Password views and routes to support forgot/reset password.
+6. Modify all form passwords and create Hide-Show Password logic to support hide/show password.
+   
 <h2 id="Jan23">January 2023</h2>
 
 <h3 id="User-Profile">User Profile Update 2.1.1V (Major Update)</h3>

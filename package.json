@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "@mapbox/mapbox-sdk": "^0.15.0",
+    "@sendgrid/mail": "^7.7.0",
     "cloudinary": "^1.33.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^4.6.0",

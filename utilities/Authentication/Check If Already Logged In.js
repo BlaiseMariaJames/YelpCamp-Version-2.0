@@ -2,7 +2,7 @@
 function checkIfLoggedIn(request, response, next) {
     if (request.isAuthenticated()) {
         request.flash('success', 'You are already logged in!');
-        return response.redirect('/campgrounds');
+        return response.redirect('/profile');
     }
     next();
 }

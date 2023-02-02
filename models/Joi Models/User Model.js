@@ -31,23 +31,7 @@ const UserSchema = Joi.object({
     image: Joi.object({
         url: Joi.string().required().escapeHTML(),
         filename: Joi.string().required().escapeHTML()
-    }).allow(''),
-    newPassword: Joi.string().allow('')
-        .pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/)
-        .messages({
-            'string.base': '"new password" must be a string',
-            'string.empty': '"new password" cannot be an empty string',
-            'string.pattern.base': '"new password" failed to satisfy the instructions. It must be between 8 to 15 characters long and include a mix of uppercase and lowercase letters, at least one digit, and at least one special character from [@, $, !, %, *, ?, &]',
-        })
-        .escapeHTML(),
-    confirmPassword: Joi.string().allow('')
-        .pattern(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,15}$/)
-        .messages({
-            'string.base': '"confirm password" must be a string',
-            'string.empty': '"confirm password" cannot be an empty string',
-            'string.pattern.base': '"confirm password" failed to satisfy the instructions. It must be between 8 to 15 characters long and include a mix of uppercase and lowercase letters, at least one digit, and at least one special character from [@, $, !, %, *, ?, &]',
-        })
-        .escapeHTML()
+    }).allow('')
 });
 
 // EXPORTING USER SCHEMA

@@ -53,7 +53,9 @@ const UserSchema = new Schema({
         type: String,
         required: false
     },
-    image: ImageSchema
+    image: ImageSchema,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 // CONFIGURING PASSPORT-LOCAL-MONGOOSE TO USER SCHEMA

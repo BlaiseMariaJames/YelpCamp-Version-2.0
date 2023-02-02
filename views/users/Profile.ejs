@@ -27,22 +27,6 @@
                     <p class="my-3 mandatory">* Mandatory Fields</p>
                     <form action="/profile?_method=PATCH" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
                         <label class="mt-3"><b>Edit My Profile: </b></label>
-                        <div class="mt-3 d-none">
-                            <label for="username" class="form-label">Username <span class="mandatory">*</span> : </label>
-                            <input type="text" class="form-control" name="username" id="username"
-                                placeholder="Enter username" value="<%=user.username%>">
-                        </div>
-                        <div class="mt-3 d-none">
-                            <label for="email" class="form-label">Email<span class="mandatory">*</span> : </label>
-                            <input type="email" class="form-control" name="email" id="email"
-                                placeholder="Enter email" value="<%=user.email%>">
-                            <div class="valid-feedback">
-                                Looks good!
-                            </div>
-                            <div class="invalid-feedback">
-                                Please provide a valid email.
-                            </div>
-                        </div>
                         <div class="mt-3">
                             <label for="name" class="form-label">Edit Name<span class="mandatory">*</span> : </label>
                             <input type="text" class="form-control" name="name" id="name" value="<%=user.name%>"
@@ -99,10 +83,12 @@
                                 </p>
                             </div>
                         </div>
-                        <div class="mt-3">
+                        <div class="mt-3 password">
                             <label for="newPassword" class="form-label">Enter New Password (Optional) : </label>
                             <input type="password" class="form-control" name="newPassword" id="newPassword"
                                 placeholder="Enter new password">
+                            <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1701142131/YelpCamp%20Related%20Media/zkvg4rxknhwuebgnmd6v.jpg"
+                                class="togglePassword">
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
@@ -110,28 +96,36 @@
                                 Passwords don't match, try again.
                             </div>
                         </div>
-                        <div class="mt-3">
-                            <label for="confirmPassword" class="form-label">Confirm Password (is required to update current password)<span class="mandatory">*</span> : </label>
+                        <div class="mt-3 password">
+                            <label for="confirmPassword" class="form-label">Confirm Password : </label>
                             <input type="password" class="form-control" name="confirmPassword" id="confirmPassword"
                                 placeholder="Confirm password">
+                            <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1701142131/YelpCamp%20Related%20Media/zkvg4rxknhwuebgnmd6v.jpg"
+                                class="togglePassword">
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
                             <div class="invalid-feedback">
                                 Passwords don't match, try again.
                             </div>
+                            <label class="form-label mt-2"><span class="mandatory">*</span> confirm password is required to change password.</label>
                         </div>
-                        <label class="mt-5"><b>Confirm Changes: </b></label>
-                        <div class="mt-3">
-                            <label for="password" class="form-label">Enter Current Password (is required to update profile or change password)<span class="mandatory">*</span> : </label>
+                        <label class="mt-5"><b>Confirm Changes (is required to update profile or change password) : </b></label>
+                        <div class="mt-3 password">
+                            <label for="password" class="form-label">Enter Current Password<span class="mandatory">*</span> : </label>
                             <input type="password" class="form-control" name="password" id="password"
                                 placeholder="Enter current password" required>
+                            <img src="https://res.cloudinary.com/dtwgxcqkr/image/upload/v1701142131/YelpCamp%20Related%20Media/zkvg4rxknhwuebgnmd6v.jpg"
+                                class="togglePassword">
                             <div class="valid-feedback">
                                 Looks good!
                             </div>
                             <div class="invalid-feedback">
                                 Please provide a valid password.
                             </div>
+                        </div>
+                        <div class="mt-2 d-flex flex-column">
+                            <label class="form-label ms-auto"><a href="/forgot-password" style="text-decoration: none;">Forgot Password?</a></label>
                         </div>
                         <div class="d-grid mt-3 gap-2">
                             <button type="submit" class="btn btn-success">Submit</button>
@@ -142,7 +136,11 @@
             </div>
         </div>
         <div class="col-lg-8">
-            <div class="card shadow">
+            <div class="card shadow"
+                <% if(!error) { %>
+                    style="height:100%;"
+                    <% } %>
+            >
                 <div class="card-body d-flex flex-column">
                     <% if(!error) { %>
                     <% const options={ "Latest" : { sortBy: "latest" }, "Top Rated" : { sortBy: "top-rated" } }; %>
@@ -157,10 +155,10 @@
                         <h3 class="card-title">My <span id="heading">Latest</span> Campgrounds</h3>
                         <hr>
                         <% for(let camp in campgrounds) { %>
-                            <div class="d-flex flex-row justify-content-start gap-4 p-4 campground wrapper <%=(camp === "latest") ? "" : " d-none" %>" id="<%=camp%>">
+                            <div class="d-flex flex-row justify-content-start my-auto gap-4 campground flex-wrap <%=(camp === "latest") ? "" : " d-none" %>" id="<%=camp%>">
                                     <% for (let campground of campgrounds[camp]) { %>
                                         <% let campgroundBackgroundImageURL=(campground.images.length>0) ? (campground.images[0].url).substr(0, 49) + "/o_35/" + (campground.images[0].url).substr(49) : "" %>
-                                            <div class="card view" style="background-image: url(<%=campgroundBackgroundImageURL%>); background-size: cover;">
+                                            <div class="card view" style="background-image: url(<%=campgroundBackgroundImageURL%>); background-size: cover; min-width: 40%;">
                                                 <div class="col d-flex flex-column justify-content-between">
                                                     <div class="row">
                                                         <div class="card-body d-flex flex-column px-4">
@@ -192,6 +190,9 @@
                                             <% } %>
                             </div>
                             <% } %>
+                            <div class="row text-center mt-3 px-3">
+                                <a href="/campgrounds?user=<%=user.username%>" class="btn btn-primary" title="View More">Click to View More</a>
+                            </div>
                         <% } else { %>
                             <h3 class="card-title">My Campgrounds</h3>
                             <hr>
@@ -201,6 +202,7 @@
             </div>
         </div>
     </div>
+    <script src="/JS/Hide-Show Password.js"></script>
     <% if(!error){ %>
         <script src="/JS/Sort Campgrounds.js"></script>
     <% } %>

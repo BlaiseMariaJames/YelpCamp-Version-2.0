@@ -14,14 +14,14 @@
                 let newPassword = form.querySelector('#newPassword');
                 let confirmPassword = form.querySelector('#confirmPassword');
                 const editProfile = newPassword && confirmPassword;
-                editProfile && (invalidPasswords = (newPassword.value && !confirmPassword.value) || (!newPassword.value && confirmPassword.value) || (newPassword.value && confirmPassword.value && (newPassword.value !== confirmPassword.value)) ? true : false);
+                editProfile && (invalidPasswords = (form.id === "reset-password" && !newPassword.value && !confirmPassword) || (newPassword.value && !confirmPassword.value) || (!newPassword.value && confirmPassword.value) || (newPassword.value && confirmPassword.value && (newPassword.value !== confirmPassword.value)) ? true : false);
                 if (!form.checkValidity() || (editProfile && invalidPasswords)) {
                     if (editProfile && invalidPasswords) {
                         newPassword.value = "";
                         confirmPassword.value = "";
                         newPassword.required = true;
                         confirmPassword.required = true;
-                    } else if (editProfile && !invalidPasswords && newPassword.required && confirmPassword.required) {
+                    } else if (editProfile && !invalidPasswords && form.id !== "reset-password" && newPassword.required && confirmPassword.required) {
                         newPassword.required = false;
                         confirmPassword.required = false;
                         form.classList.add('was-validated');

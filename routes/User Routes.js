@@ -43,7 +43,15 @@ router.route('/login')
 
 router.route('/profile')
     .get(isLoggedIn, User.viewProfile)
-    .patch(isLoggedIn, upload.single('image'), handleAsyncErrors(isValidPassword), handleAsyncErrors(changePassword), handleAsyncErrors(User.updateProfile));
+    .patch(isLoggedIn, upload.single('image'), handleAsyncErrors(isValidPassword), handleAsyncErrors((req, res, next) => changePassword(req, res, next, false)), handleAsyncErrors(User.updateProfile));
+
+router.route('/forgot-password')
+    .get(User.renderForgotPasswordForm)
+    .patch(User.forgotPassword);
+
+router.route('/reset-password/:token')
+    .get(User.renderResetPasswordForm)
+    .patch(handleAsyncErrors(User.resetPassword));
 
 router.post('/logout', isAlreadyLoggedOut, User.logoutUser);
 
