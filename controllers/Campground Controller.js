@@ -124,6 +124,11 @@ module.exports.showCampground = async (request, response, next) => {
 
 // Index --> Display all campgrounds.
 module.exports.allCampgrounds = async (request, response, next) => {
+    let { query } = request;
+    let { dbQuery, paginateUrl } = response.locals;
+    delete response.locals.dbQuery;
+    request.query.min = await Campground.findOne().sort({ "price": 1 }).select("price").lean().exec().then(campground => campground?.price || 0);
+    request.query.max = await Campground.findOne().sort({ "price": -1 }).select("price").lean().exec().then(campground => campground?.price || 0);
     let { page, limit, select, find, user } = request.query;
     page = page ? parseInt(page) : 1;
     limit = limit ? parseInt(limit) : 12;
@@ -169,7 +174,7 @@ module.exports.allCampgrounds = async (request, response, next) => {
                 }
             }
             // Find, sort then paginate.
-            allCampgrounds = await Campground.find({}).sort([["addedOn", -1]]).populate('author');
+            allCampgrounds = await Campground.find(dbQuery).sort([["addedOn", -1]]).populate('author');
             allCampgrounds.sort(sortFunction);
             paginatedCampgrounds = allCampgrounds.slice(startIndex, endIndex);
             campgrounds.results.latest = paginatedCampgrounds;
@@ -177,10 +182,10 @@ module.exports.allCampgrounds = async (request, response, next) => {
             // FETCH CAMPGROUNDS FOR ALL FINDS (Campgrounds of specific user)
             title = `${userFound.name} @(${userFound.username})`;
             for (let option in options) {
-                let paginatedCampgrounds = [], query = {};
+                let paginatedCampgrounds = [];
                 const { sortBy, sortFunction } = options[option];
-                query["author"] = userFound._id;
-                allCampgrounds = await Campground.find(query).populate('author');
+                dbQuery["author"] = userFound._id;
+                allCampgrounds = await Campground.find(dbQuery).sort([["addedOn", -1]]).populate('author');
                 paginatedCampgrounds = allCampgrounds.slice(startIndex, endIndex);
                 // Find, paginate then sort.
                 paginatedCampgrounds.sort(sortFunction);
@@ -196,9 +201,8 @@ module.exports.allCampgrounds = async (request, response, next) => {
                     const { key, values } = dbCategories[category];
                     for (const value of values) {
                         if (select === value) {
-                            const query = {};
-                            query[`categories.${key}`] = value;
-                            allCampgrounds = await Campground.find(query).populate('author');
+                            dbQuery[`categories.${key}`] = value;
+                            allCampgrounds = await Campground.find(dbQuery).populate('author');
                             paginatedCampgrounds = allCampgrounds.slice(startIndex, endIndex);
                         }
                     }
@@ -210,7 +214,7 @@ module.exports.allCampgrounds = async (request, response, next) => {
         }
     }
     if (campgrounds.results.latest.length) {
-        response.render('campgrounds/Index', { title, userFound, total: allCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, error, category: "" });
+        response.render('campgrounds/Index', { title, userFound, total: allCampgrounds.length, current: campgrounds, campgrounds: campgrounds.results, error, category: "", query, paginateUrl });
     } else {
         error = true;
         response.render('campgrounds/Index', { title: "No Campgrounds", error, current: "", category: "" });

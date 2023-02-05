@@ -97,13 +97,8 @@ const CampgroundSchema = new Schema({
         }
     },
     price: {
-        type: String,
-        validate: {
-            validator: function (price) {
-                return /^\d+$/.test(price);
-            },
-            message: "Price of the campground has to be a number with a minimum value of 0"
-        },
+        type: Number,
+        min: 0,
         required: [true, "The field 'price' is mandatory"]
     },
     description: {
@@ -170,6 +165,9 @@ CampgroundSchema.methods.calculateAvgRating = function () {
     this.save();
     return Math.floor(this.avgRating);
 };
+
+// DEFINING 2DSPHERE INDEXES THAT SUPPORT GEOSPATIAL QUERIES ON OUR MAP.
+CampgroundSchema.index({ geometry: '2dsphere' });
 
 // DEFINING CAMPGROUND MODEL
 const Campground = mongoose.model('Campground', CampgroundSchema);

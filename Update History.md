@@ -25,6 +25,7 @@
 #### By Type:
 
 <ul>
+<li><a href="#Search-Filter">Search & Filter</a></li>
 <li><a href="#Email-ForgotPassword">Email & Forgot Password</a></li>
 <li><a href="#User-Profile">User Profile</a></li>
 <li><a href="#Sort-AvgRating">Sort & Average Rating</a></li>
@@ -50,6 +51,12 @@
 </ul>
 
 <h2 id="Feb23">February 2023</h2>
+
+<h3 id="Search-Filter">Search & Filter Update 2.1.3V (Major Update)</h3>
+
+1. Create Use My Location to support use my current location.
+2. Modify Campground controller, Add campgrounds to database file and Index view to support search and filter.
+3. Create Filter schema, Search-Filter partial, Search & Filter middleware and Clear Distance to support search and filter.
 
 <h3 id="Email-ForgotPassword">Email & Forgot Password Update 2.1.2V (Major Update)</h3>
 

@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-xl navbar-dark bg-dark">
+<nav class="navbar sticky-top navbar-expand-xxl navbar-dark bg-dark">
     <div class="container-fluid">
         <a href="/" class="navbar-brand">YelpCamp</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"><span class="navbar-toggler-icon"></span></button>
@@ -39,6 +39,10 @@
                     <% } else { %>
                         <a href="/profile" class="navbar-brand" title="View Profile">Welcome, <%=currentUser.name%> <img src="<%=currentUser.image.navItem%>" class="logo ms-1" alt="<%=currentUser.name%>'s photo"></a>
                         <% } %>
+                        <form action="/campgrounds" class="form-inline d-flex gap-2">
+                            <input class="form-control" type="search" name="search" id="search" placeholder="Search Campgrounds">
+                            <button class="btn btn-info" type="submit">Search</button>
+                        </form>
             </div>
         </div>
     </div>

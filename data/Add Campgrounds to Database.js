@@ -8,6 +8,10 @@ if (process.env.NODE_ENV !== "production") {
     require("dotenv").config();
 }
 
+// REQUIRING SEND GRID MAIL ALONG WITH ITS CONFIGURATION
+const sgMail = require("@sendgrid/mail");
+sgMail.setApiKey(process.env.SENDGRID_KEY);
+
 // CONFIGURING CLOUDINARY WITH .ENV VARIABLES
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -100,6 +104,14 @@ async function seedData(username, name, email, bio) {
         hash: 'cb5aeb164aba8736b7b51463467a4a6cafcf02545e5fb0f203f7022719c66cbef449c309f63b2123b494cc377c76fb34e0baddccb002755ec03fd0825a0f9923a7b1e5a48d01be26fc88406aa97d9f0246d93e344c750d618d37e5bf3f93226ffa92bca7973a4cda50beaced977144485b31e252f7dd1f6226ed564661eff0f3be9416a42ff2be0798b5a79577a2f95d8a2f793e22533f345e26d677b90e2326adab5339b7e856e2d04852ef193aa8a936b33c80451d18724aa724d448f31f133892bd784d10e42e90ec3a6ee77558a810f5ef81bf519f42e705ac8768022de2eb2b2bb85ca468727dbb31a881a86f966541d6b677d674a102765e1cbe939837466af961856f9341e48129320862b45d2cb01e3adcd3d623cb29d451f64c44909475746fa670238fbe48a95ad41949069a43a37756e588429b4443a069973168af9f8240bc6eb194c539a2a30bffee0e0bff61a9a9219487194acb3e5a1682cf149d0288d511ec4df2731c092dc0f29df32ddde931ab10b41abea01d7dddce796bff0a826d8cc397201c63062eaf63fef1483e8fea5617b1137632ee1ce517d3e01e1c5be0d91268fb302d2df54a9466c9a53e8b50031b342cfbeb9e39af5f09bd52145fe9f0231fbc4941bc44ee174f87902bc3010532eb8759edbd11d32c4a814bfd186f77f79f23529eae183485a26223563b37124ba43ae2080315405404'
     });
     await newUser.save();
+    // Send email.
+    const msg = {
+        to: email,
+        from: 'Yelpcamp v2 Admin <helpdesk.yelpcampv2@gmail.com>',
+        subject: 'Yelpcamp v2 - Welcome',
+        html: "<h1>Welcome to YelpCamp!</h1><p>Dear Camper, Welcome to YelpCamp, your ultimate destination for discovering, sharing, and exploring campgrounds around the world! We're thrilled to have you join our community of outdoor enthusiasts.</p><h2>What is YelpCamp?</h2><p>YelpCamp is a platform designed for campers, nature lovers, and adventure seekers. Whether you're a seasoned camper or just starting your outdoor journey, YelpCamp is here to make your camping experience unforgettable.</p><h2>Key Features:</h2><ol><li><strong>Create Your Camping Haven:</strong> Share your favorite camping spots with the world! Easily create and showcase your own campgrounds, complete with photos, descriptions, and useful tips.</li><li><strong>Discover Hidden Gems:</strong> Explore a vast database of campgrounds worldwide. From serene lakeside retreats to rugged mountain escapes, YelpCamp helps you find the perfect spot for your next adventure.</li><li><strong>Plan Your Trip:</strong> Utilize our planning tools to organize your camping trips effortlessly. Check weather forecasts, create packing lists, and map out your route all in one place.</li><li><strong>Real User Reviews:</strong> Hear from fellow campers! Read and leave reviews to help the community find the best spots and make informed decisions about their next camping destination.</li><li><strong>Interactive Maps:</strong> Navigate with ease using our interactive maps. Locate campgrounds, nearby attractions, and essential amenities to make the most of your outdoor experience.</li><li><strong>Connect with Like-minded Campers:</strong> Join discussions, share tips, and connect with a community that shares your passion for the great outdoors. Exchange stories, recommendations, and create lasting connections.</li></ol><p>YelpCamp is more than just a platform; it's a community dedicated to making camping accessible, enjoyable, and memorable. We're excited to embark on this outdoor journey with you.</p><p>Start creating, sharing, and exploring today!</p><p>Happy Camping!</p><p>Best regards,<br>Blaise Maria James - Yelpcamp Admin,<br>The YelpCamp Team.</p>"
+    };
+    await sgMail.send(msg);
 
     // Creating Campgrounds.
     console.log("\nCreating Campgrounds...");
@@ -135,7 +147,7 @@ async function seedData(username, name, email, bio) {
             // Campground suggested on.
             const addedOn = new Date();
             // Default average campground rating
-            const avgRating = 0;
+            const avgRating = (Math.random() * 5).toFixed(1);
             // Creating new camp.
             console.log(`Seeding Campground ${i} into database...`);
             const camp = new Campground({ author, title, images, price, location, accurateLocation: location, geometry, description, categories, addedOn, avgRating });

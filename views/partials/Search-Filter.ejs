@@ -1,0 +1,81 @@
+<div class="card">
+    <div class="card-body">
+        <form action="/campgrounds" method="GET">
+            <h3 class="card-title">Search and Filter</h3>
+            <div class="mt-3">
+                <label class="form-label" for="search">Search</label>
+                <input class="form-control" type="text" placeholder="Search" name="search" id="search" value="<%= query.search %>">
+            </div>
+            <div class="mt-3">
+                <div>
+                    <label class="form-label" for="location">Location</label>
+                    <input class="form-control mb-2" type="text" id="location" name="location" placeholder="Location" value="<%= query.location %>">
+                    <small><a href="" id="use-my-location" style="text-decoration: none;">use my location</a></small>
+                    <p class="mt-1" id="status"></p>
+                </div>
+                <h4 class="mt-3">Distance (miles)</h4>
+                <div class="d-flex gap-4">
+                    <div>
+                        <input class="form-check-input" type="radio" name="distance" id="distance25" value="25" <%=query.distance==='25' ? 'checked' : '' %>>
+                        <label class="form-check-label" for="distance25">25</label>
+                    </div>
+                    <div>
+                        <input class="form-check-input" type="radio" name="distance" id="distance50" value="50" <%=query.distance==='50' ? 'checked' : '' %>>
+                        <label class="form-check-label" for="distance50">50</label>
+                    </div>
+                    <div>
+                        <input class="form-check-input" type="radio" name="distance" id="distance100" value="100" <%=query.distance==='100' ? 'checked' : '' %>>
+                        <label class="form-check-label" for="distance100">100</label>
+                    </div>
+                    <a href="" id="clear-distance" style="text-decoration: none;">clear</a>
+                </div>
+            </div>
+            <div class="mt-3">
+                <h4>Price</h4>
+                <div class="d-flex justify-content-evenly gap-3">
+                    <div class="d-flex flex-column" style="flex: 1;">
+                        <label class="form-label" for="min">Min</label>
+                        <input class="form-control" type="number" id="min" name="price[min]" min="<%=query.min%>" max="<%=query.max%>" step="1" placeholder="<%=query.min%>" value="<%= query.price ? query.price.min : '' %>">
+                    </div>
+                    <div class="d-flex flex-column" style="flex: 1;">
+                        <label class="form-label" for="max">Max</label>
+                        <input class="form-control" type="number" id="max" name="price[max]" min="<%=query.min%>" max="<%=query.max%>" step="1" placeholder="<%=query.max%>" value="<%= query.price ? query.price.max : '' %>">
+                    </div>
+                </div>
+            </div>
+            <div class="mt-3">
+                <h4>Rating</h4>
+                <% const ratings=[4.5, 4.0, 3.5, 3.0]; %>
+                    <% for (let rating of ratings) { %>
+                        <div class="mt-2">
+                            <input class="form-check-input" type="radio" id="<%=rating%>-stars" name="avgRating"
+                                value="<%= rating %>" <%=query.avgRating === String(rating) ? 'checked' : '' %>>
+                            <label class="form-check-label" for="<%=rating%>-stars">
+                                <div class="card-text mb-3 d-inline">
+                                    <% for (let i=0; i < 5; i++) { %>
+                                        <% if (i + 0.5===rating) { %>
+                                            <i class="fas fa-star-half-alt" style="color: #ffd700;"></i>
+                                            <% } else if (i < rating) { %>
+                                                <i class="fas fa-star" style="color: #ffd700;"></i>
+                                                <% } else { %>
+                                                    <i class="far fa-star" style="color: #ffd700;"></i>
+                                                    <% } %>
+                                                        <% } %>
+                                </div>
+                                <%= rating.toFixed(1) %> stars & up
+                            </label>
+                        </div>
+                        <% } %>
+                        <div class="mt-2">
+                            <input class="form-check-input" type="radio" id="zero-stars" name="avgRating" value="0" <%=!query.avgRating || query.avgRating < '3' ? 'checked' : '' %>>
+                            <label class="form-check-label" for="zero-stars">All ratings</label>
+                        </div>
+            </div>
+            <div class="mt-3 d-flex justify-content-evenly">
+                <a href="/campgrounds" class="card-link btn btn-danger" style="flex: 1;">Reset</a>
+                <input class="card-link btn btn-success" style="flex: 1;" type="submit">
+            </div>
+        </form>
+    </div>
+</div>
+<script src="/JS/Use My Location.js"></script>
